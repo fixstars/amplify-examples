@@ -5,13 +5,13 @@ dependencies:
   - appmode
   - pip
   - pip:
-      - amplify>=0.6.5
+      - amplify>=0.10.4
       - dwave-system>=1.3.0
       - minorminer>=0.2.5
       - japanmap
       - matplotlib
       - numpy
-      - ipywidgets<8.0.0
+      - ipywidgets
       - geopy
       - folium
       - pandas
