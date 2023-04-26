@@ -19,7 +19,9 @@ folium = "*"
 pandas = "*"
 sklearn = "*"
 numpy = "*"
+torch = "*"
+scikit-learn = "*"
+mypy = "*"
 
 [requires]
 python_version = "3"
-
