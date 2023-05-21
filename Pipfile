@@ -6,13 +6,13 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-amplify = {extras = ["extra"],version = ">=0.10.4,<1.0.0"}
+amplify = {extras = ["extra"], version = ">=0.10.4,<1.0.0"}
 jupyter = "*"
 japanmap = "*"
 matplotlib = "*"
 appmode = "*"
 ipywidgets = "*"
-black = "*"
+black = {extras = ["jupyter"], version = "*"}
 nbqa = "*"
 geopy = "*"
 folium = "*"
@@ -22,6 +22,5 @@ numpy = "*"
 torch = "*"
 scikit-learn = "*"
 mypy = "*"
-
 [requires]
 python_version = "3"

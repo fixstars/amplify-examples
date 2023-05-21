@@ -1,5 +1,32 @@
 stages:
+  - format
   - push
+
+format:
+  stage: format
+  tags:
+    - docker
+  image: python:3.10
+  script:
+    - git remote set-url origin https://gitlab-ci-token:$GITLAB_TOKEN@${CI_REPOSITORY_URL##*@}
+    - git config user.email "noreply@fixstars.com"
+    - git config user.name "GitLab Bot"
+    - git fetch origin $CI_COMMIT_REF_NAME
+    - git switch -C $CI_COMMIT_REF_NAME origin/$CI_COMMIT_REF_NAME
+    - git clean -xfd
+    - apt-get update && apt-get install -y jq
+    - pip install pipenv
+    - pipenv install --skip-lock
+    - pipenv run ./format.sh
+    - git add -u
+    - |-
+      if [ $(git status -s -uno --ignore-submodules=all | wc -l) -gt 0 ]; then
+          git commit -m "🎨 Format"
+          git push origin $CI_COMMIT_REF_NAME
+          exit 1
+      fi
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 
 sync-repositories:
   stage: push
@@ -15,8 +42,7 @@ sync-repositories:
     - git config user.name "GitLab Bot"
     - git fetch github main
     - git fetch origin main develop
-    - git switch develop
-    - git reset --hard origin/develop
+    - git switch -C develop origin/develop
     - git clean -xfd
     # rebase and push
     - git status
