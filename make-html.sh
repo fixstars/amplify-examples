@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 for NBPATH in $(shopt -s globstar && /bin/ls -1 notebooks/**/samples/*.ipynb); do
     JP_OR_EN=$(echo ${NBPATH} | cut -c 11-12)
