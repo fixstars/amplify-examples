@@ -15507,6 +15507,7 @@ $$
 <span class="kn">from</span> <span class="nn">amplify.client</span> <span class="kn">import</span> <span class="n">FixstarsClient</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
+<span class="c1"># client.token = &quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;  # ローカル環境等で使用する場合は、Amplify AEのアクセストークンを入力してください。</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">5000</span>  <span class="c1"># タイムアウト5秒</span>
 
 <span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
