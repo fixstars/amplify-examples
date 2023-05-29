@@ -15147,6 +15147,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li>3.5. <a href="#3_5">参考</a></li>
 </ul>
 </li>
+<li>4. <a href="#4">参考文献</a></li>
 </ul>
 
 </div>
@@ -15215,7 +15216,7 @@ $$
 \end{aligned}
 $$<p>ここで、FM は $\boldsymbol{x}$ の2次式であるため、上式は QUBO による最適化が可能な関数形となります。式中の $\boldsymbol{w}$ や $\boldsymbol{v}$（$v_{ij}$, $w_i$）は、上式のモデルを機械学習した後に得られる FM パラメータ（機械学習における重みやバイアス）であり、$k$ はハイパーパラメータです。</p>
 <p>FM パラメータ数は、ハイパーパラメータである $k$ に依存し、$k=D$ のとき、FM は QUBO の相互作用項と同じ自由度がある一方、$k$ を小さくすることで FM パラメータ数を減らし過学習を抑制する効果があります。</p>
-<p>このように、獲得関数 $g(\boldsymbol{x})$ に FM を採用し、その最適化を量子アニーリング（QA）やイジングマシンを用いて実施することで、ベイズ最適化における前述の課題を解決し、一般的な問題に適用することができます。このように、量子アニーリング・イジングマシンと機械学習を融合して行うブラックボックス最適化手法を FMQA と呼ぶ場合があります。</p>
+<p>獲得関数 $g(\boldsymbol{x})$ に FM を採用し、その最適化を量子アニーリング（QA）やイジングマシンを用いて実施することで、ベイズ最適化における前述の課題を解決し、一般的な問題に適用することができます。このように、量子アニーリング・イジングマシンと機械学習を融合して行うブラックボックス最適化手法を FMQA と呼ぶ場合があります（<a href="#4">4. 参考文献</a> 参照）。</p>
 
 </div>
 </div>
@@ -15233,7 +15234,7 @@ $$<p>ここで、FM は $\boldsymbol{x}$ の2次式であるため、上式は Q
 <ul>
 <li><p>初期教師データの事前準備 ($N_0$ セット)</p>
 <ol>
-<li>初期教師データとして、$N_0$ 個の入力サンプル $\{\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_{N_0}\}$ と、対応する $N_0$ 個の出力 $\{f(\boldsymbol{x}_1), f(\boldsymbol{x}_2), \cdots, \boldsymbol{x}_{N_0}\}$ を得る。<br/><br/></li>
+<li>初期教師データとして、$N_0$ 個の入力サンプル $\{\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_{N_0}\}$ と、対応する $N_0$ 個の出力 $\{f(\boldsymbol{x}_1), f(\boldsymbol{x}_2), \cdots, f(\boldsymbol{x}_{N_0})\}$ を得る。<br/><br/></li>
 </ol>
 </li>
 <li><p>FMQA による最適化サイクルの実施 ($N-N_0$ 回)</p>
@@ -15706,7 +15707,7 @@ $$
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="3"></a></p>
 <h2 id="3.-FMQA-%E5%AE%9F%E8%A1%8C%E4%BE%8B">3. FMQA &#23455;&#34892;&#20363;<a class="anchor-link" href="#3.-FMQA-%E5%AE%9F%E8%A1%8C%E4%BE%8B">&#182;</a></h2><p><a id="3_1"></a></p>
-<h3 id="3.1.-$%5Cboldsymbol%7Bx%7D$%E3%81%AE2%E6%AC%A1%E5%BC%8F%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E6%9C%80%E9%81%A9%E5%8C%96">3.1. $\boldsymbol{x}$&#12398;2&#27425;&#24335;&#12395;&#23550;&#12377;&#12427;&#26368;&#36969;&#21270;<a class="anchor-link" href="#3.1.-$%5Cboldsymbol%7Bx%7D$%E3%81%AE2%E6%AC%A1%E5%BC%8F%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E6%9C%80%E9%81%A9%E5%8C%96">&#182;</a></h3><p>本サンプルコードで最適化対象とする代数式は、次の2次式です。$Q$ は乱数で生成される成分の平均値がゼロな $d$ 次元対象行列であり、<code>make_Q</code> で作成されます。</p>
+<h3 id="3.1.-$%5Cboldsymbol%7Bx%7D$%E3%81%AE2%E6%AC%A1%E5%BC%8F%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E6%9C%80%E9%81%A9%E5%8C%96">3.1. $\boldsymbol{x}$&#12398;2&#27425;&#24335;&#12395;&#23550;&#12377;&#12427;&#26368;&#36969;&#21270;<a class="anchor-link" href="#3.1.-$%5Cboldsymbol%7Bx%7D$%E3%81%AE2%E6%AC%A1%E5%BC%8F%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E6%9C%80%E9%81%A9%E5%8C%96">&#182;</a></h3><p>本サンプルコードで最適化対象とする代数式は、次の2次式です。$Q$ は乱数で生成される成分の平均値がゼロな $d$ 次元対称行列であり、<code>make_Q</code> で作成されます。</p>
 $$
 f(\boldsymbol{x}) = \boldsymbol{x}^T Q \boldsymbol{x}
 $$<p>本来 FMQA は、未知関数に対して実施されるものであることに注意してください。今回は、簡単な理解のため、既知関数である上記 $f(\boldsymbol{x})$ を、未知関数（＝ブラックボックス）として取り扱っています。</p>
@@ -15905,6 +15906,37 @@ pred<span class="w"> </span>value:<span class="w"> </span>-76.81540215271143
 </div>
 </div>
 
+</div>
+<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a id="4"></a></p>
+<h2 id="4.-%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">4. &#21442;&#32771;&#25991;&#29486;<a class="anchor-link" href="#4.-%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">&#182;</a></h2><p>本サンプルコードでご紹介したブラックボックス最適化手法は、次の研究で Factorization Mechine with Quantum Anealing (FMQA) として提案されたものです。</p>
+<ul>
+<li>K. Kitai, J. Guo, S. Ju, S. Tanaka, K. Tsuda, J. Shiomi, and R. Tamura, &quot;Designing metamaterials with quantum annealing and factorization machines&quot;, <a href="https://doi.org/10.1103/PhysRevResearch.2.013319">Physical Review Research 2, 013319 (2020)</a>.</li>
+</ul>
+<p>この論文では、FMQA により『メタマテリアル』の探索が実施されており、論文内では従来のブラックボックス最適化手法であるベイズ最適化に比べて優位な性能を示すことも報告されています。また、次の研究では、フォトニック結晶の設計において、本ブラックボックス最適化手法が活用されています。</p>
+<ul>
+<li>T. Inoue, Y. Seki, S. Tanaka, N. Togawa, K. Ishizaki, and S. Noda, &quot;Towards optimization of photonic-crystal surface-emitting lasers via quantum annealing,&quot; <a href="https://doi.org/10.1364/OE.476839">Opt. Express  30, 43503-43512 (2022)</a>.</li>
+</ul>
+<p>これらの研究報告は、様々な分野におけるブラックボックス最適化問題において、FM と組合せ最適化に基づく本最適化手法 (FMQA) が汎用的に適用できる可能性を示唆しています。</p>
+<p>また、機械学習とアニーリングに基づくブラックボックス最適化に関して、以下の解説記事をご紹介します。この解説記事において、本ブラックボックス最適化手法は、量子アニーリング (Quantum Annealing) から一般的なアニーリング (Annealing) に拡張した名称である Factorization Machine with Annealing (FMA) として紹介されています。</p>
+<ul>
+<li>田中 宗, 山下 将司, 関 優也, アニーリングマシンによるブラックボックス最適化, <a href="https://doi.org/10.3902/jnns.29.164">日本神経回路学会誌, 2022, 29 巻, 4 号, p. 164-173</a></li>
+</ul>
+<p>Fixstars Amplify では、材料探索だけでなく、化学反応、流体力学分野に関するブラックボックス最適化例も以下のとおり公開しています。本サンプルコードで紹介したブラックボックス最適化の応用例としてご覧ください。</p>
+<ul>
+<li><a href="./fmqa_1_supercon.ipynb">ブラックボックス最適化によるモデル超電導材料の探索</a></li>
+<li><a href="./fmqa_2_reactor.ipynb">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
+<li><a href="./fmqa_3_aerofoil.ipynb">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
+</ul>
+
+</div>
+</div>
+</div>
 </div>
 </body>
 
