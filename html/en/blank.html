@@ -15103,7 +15103,19 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     </script>
     <!-- End of mathjax configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+
+<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Using-Different-Machines">Using Different Machines<a class="anchor-link" href="#Using-Different-Machines">&#182;</a></h1><p>This tutorial explains sample client setup code for using some of the machines supported by Fixstars Amplify. For a more complete and detailed explanation, please refer to <a href="https://amplify.fixstars.com/en/docs/client.html">Client Class Overviews</a>.</p>
+
+</div>
+</div>
+</div>
+</div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15127,7 +15139,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Client-Settings">Client Settings<a class="anchor-link" href="#Client-Settings">&#182;</a></h2><h3 id="When-using-Amplify-Annealing-Engine">When using Amplify Annealing Engine<a class="anchor-link" href="#When-using-Amplify-Annealing-Engine">&#182;</a></h3>
+<h2 id="Client-Settings">Client Settings<a class="anchor-link" href="#Client-Settings">&#182;</a></h2><h3 id="Amplify-Annealing-Engine">Amplify Annealing Engine<a class="anchor-link" href="#Amplify-Annealing-Engine">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -15143,6 +15155,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># Timeout is 1 second</span>
+<span class="c1"># client.token = &quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;  # If you use Amplify in a local environment, enter the Amplify API token.</span>
 </pre></div>
 
      </div>
@@ -15157,39 +15170,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="When-using-D-Wave-2000Q">When using D-Wave 2000Q<a class="anchor-link" href="#When-using-D-Wave-2000Q">&#182;</a></h3>
-</div>
-</div>
-</div>
-</div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client</span> <span class="kn">import</span> <span class="n">DWaveClient</span>
-
-<span class="n">client</span> <span class="o">=</span> <span class="n">DWaveClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;DW_2000Q_VFYC_6&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">num_reads</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Execution count 100</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="When-using-D-Wave-Advantage">When using D-Wave Advantage<a class="anchor-link" href="#When-using-D-Wave-Advantage">&#182;</a></h3>
+<h3 id="D-Wave-2000Q-/-Advantage">D-Wave 2000Q / Advantage<a class="anchor-link" href="#D-Wave-2000Q-/-Advantage">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -15203,10 +15184,16 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client.ocean</span> <span class="kn">import</span> <span class="n">DWaveSamplerClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">DWaveSamplerClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;Advantage_system1.1&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">num_reads</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Execution count 100</span>
+<span class="n">client_dwave</span> <span class="o">=</span> <span class="n">DWaveSamplerClient</span><span class="p">()</span>
+<span class="n">client_dwave</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
+
+<span class="c1"># D-Wave 2000Q</span>
+<span class="n">client_dwave</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;DW_2000Q_VFYC_6&quot;</span>
+<span class="n">client_dwave</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">num_reads</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Execution count 100</span>
+
+<span class="c1"># D-Wave Advantage</span>
+<span class="n">client_dwave</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;Advantage_system1.1&quot;</span>
+<span class="n">client_dwave</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">num_reads</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Execution count 100</span>
 </pre></div>
 
      </div>
@@ -15221,7 +15208,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="When-using-D-Wave-Leap-Hybrid">When using D-Wave Leap Hybrid<a class="anchor-link" href="#When-using-D-Wave-Leap-Hybrid">&#182;</a></h3>
+<h3 id="D-Wave-Leap-Hybrid">D-Wave Leap Hybrid<a class="anchor-link" href="#D-Wave-Leap-Hybrid">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -15235,10 +15222,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client.ocean</span> <span class="kn">import</span> <span class="n">LeapHybridSamplerClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">LeapHybridSamplerClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;hybrid_binary_quadratic_model_version2&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">time_limit</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Timeout is 3 seconds</span>
+<span class="n">client_leap_hybrid</span> <span class="o">=</span> <span class="n">LeapHybridSamplerClient</span><span class="p">()</span>
+<span class="n">client_leap_hybrid</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
+<span class="n">client_leap_hybrid</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;hybrid_binary_quadratic_model_version2&quot;</span>
+<span class="n">client_leap_hybrid</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">time_limit</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Timeout is 3 seconds</span>
 </pre></div>
 
      </div>
@@ -15253,7 +15240,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="When-using-Fujitsu-DA2PT-solver">When using Fujitsu DA2PT solver<a class="anchor-link" href="#When-using-Fujitsu-DA2PT-solver">&#182;</a></h3>
+<h3 id="Fujitsu-DA4-solver">Fujitsu DA4 solver<a class="anchor-link" href="#Fujitsu-DA4-solver">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -15265,11 +15252,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client</span> <span class="kn">import</span> <span class="n">FujitsuDA2PTSolverClient</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client</span> <span class="kn">import</span> <span class="n">FujitsuDA4SolverClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">FujitsuDA2PTSolverClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">number_iterations</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">client_fujitsu_da4</span> <span class="o">=</span> <span class="n">FujitsuDA4SolverClient</span><span class="p">()</span>
+<span class="n">client_fujitsu_da4</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
+<span class="n">client_fujitsu_da4</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">time_limit_sec</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Timeout is 3 seconds</span>
 </pre></div>
 
      </div>
@@ -15284,7 +15271,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="When-using-Toshiba-SBM">When using Toshiba SBM<a class="anchor-link" href="#When-using-Toshiba-SBM">&#182;</a></h3>
+<h3 id="Toshiba-SBM">Toshiba SBM<a class="anchor-link" href="#Toshiba-SBM">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -15298,9 +15285,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client</span> <span class="kn">import</span> <span class="n">ToshibaClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">ToshibaClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://xxx.xxx.xxx.xxx&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Timeout is 1 second</span>
+<span class="n">client_toshiba_sbm</span> <span class="o">=</span> <span class="n">ToshibaClient</span><span class="p">()</span>
+<span class="n">client_toshiba_sbm</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://xxx.xxx.xxx.xxx&quot;</span>  <span class="c1"># API URL</span>
+<span class="n">client_toshiba_sbm</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Timeout is 1 second</span>
 </pre></div>
 
      </div>
@@ -15315,7 +15302,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="When-using-Hitachi-CMOS-Annealing-Machine">When using Hitachi CMOS Annealing Machine<a class="anchor-link" href="#When-using-Hitachi-CMOS-Annealing-Machine">&#182;</a></h3>
+<h3 id="Hitachi-CMOS-Annealing-Machine">Hitachi CMOS Annealing Machine<a class="anchor-link" href="#Hitachi-CMOS-Annealing-Machine">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -15329,12 +15316,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client</span> <span class="kn">import</span> <span class="n">HitachiClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">HitachiClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_num_steps</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_step_length</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_initial</span> <span class="o">=</span> <span class="mf">100.0</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_target</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">client_hitachi</span> <span class="o">=</span> <span class="n">HitachiClient</span><span class="p">()</span>
+<span class="n">client_hitachi</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;Please enter your token.&quot;</span>
+<span class="n">client_hitachi</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_num_steps</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">client_hitachi</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_step_length</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">client_hitachi</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_initial</span> <span class="o">=</span> <span class="mf">100.0</span>
+<span class="n">client_hitachi</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">temperature_target</span> <span class="o">=</span> <span class="mf">0.02</span>
 </pre></div>
 
      </div>
@@ -15349,7 +15336,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Formulation-of-a-problem">Formulation of a problem<a class="anchor-link" href="#Formulation-of-a-problem">&#182;</a></h2>
+<h2 id="Formulation-of-an-example-problem">Formulation of an example problem<a class="anchor-link" href="#Formulation-of-an-example-problem">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -15361,8 +15348,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Example of cost function formulation</span>
-<span class="n">q</span> <span class="o">=</span> <span class="n">gen_symbols</span><span class="p">(</span><span class="n">BinaryPoly</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># コスト関数の定式化例</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">BinarySymbolGenerator</span><span class="p">()</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">cost_func</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="n">cost_func</span>
 </pre></div>

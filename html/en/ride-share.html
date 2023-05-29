@@ -15216,16 +15216,19 @@ $$
 <span class="sd">    then generates the coordinates of the points of the number of cars + the number of people, and generates a distance matrix based on the coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ncars</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">ncars</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ncars</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ncars</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">parking</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ncars</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ncars</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">parking</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Maximum value of ncars is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">parking</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2"> ncars : </span><span class="si">{</span><span class="n">ncars</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">parking</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
         <span class="n">ncars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parking</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">npeople</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">npeople</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">C</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Limit capacity to ensure feasibility.</span>
-        <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">npeople</span> <span class="o">//</span> <span class="n">ncars</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">npeople</span> <span class="o">//</span> <span class="n">ncars</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">npeople</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ncars</span> <span class="o">*</span> <span class="n">C</span> <span class="o">&lt;</span> <span class="n">npeople</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fail to create valid problem.</span><span class="se">\n</span><span class="s2">Please retry after changing random seed.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">ncars</span> <span class="o">+</span> <span class="n">npeople</span>
     <span class="n">ind2coord</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span>
@@ -15239,10 +15242,10 @@ $$
         <span class="n">tmp</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">))</span>
         <span class="n">ind2coord</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
 
-    <span class="n">D</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">geodesic</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tmp</span><span class="p">[</span><span class="n">j</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">m</span>
+            <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">geodesic</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tmp</span><span class="p">[</span><span class="n">j</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">m</span>
     <span class="k">return</span> <span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">ind2coord</span>
 </pre></div>
 
@@ -15410,35 +15413,10 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">BinaryPoly</span><span class="p">,</span> <span class="n">gen_symbols</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">BinarySymbolGenerator</span>
 
-
-<span class="k">class</span> <span class="nc">SymbolGenerator</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">VariableConstructor</span> <span class="o">=</span> <span class="n">c</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">LastIndex</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">def</span> <span class="nf">gen_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">shape</span><span class="p">):</span>
-        <span class="n">symbol</span> <span class="o">=</span> <span class="n">gen_symbols</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">VariableConstructor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LastIndex</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">LastIndex</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">symbol</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GenSymbol</span> <span class="o">=</span> <span class="n">SymbolGenerator</span><span class="p">(</span><span class="n">BinaryPoly</span><span class="p">)</span>
-<span class="n">q</span> <span class="o">=</span> <span class="n">GenSymbol</span><span class="o">.</span><span class="n">gen_symbols</span><span class="p">(</span><span class="n">npeople</span><span class="p">,</span> <span class="n">ncars</span><span class="p">)</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">BinarySymbolGenerator</span><span class="p">()</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">npeople</span><span class="p">,</span> <span class="n">ncars</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15471,15 +15449,9 @@ First, in order to align the order of the terms related to the distance and the 
 
 
 <span class="k">def</span> <span class="nf">regularizeDistance</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
-    <span class="n">ncar</span><span class="p">,</span> <span class="n">npeople</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncar</span><span class="p">):</span>
-        <span class="c1"># Adjust the mean and variance of the distance when the position of the car is fixed</span>
-        <span class="n">average</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">))</span> <span class="o">/</span> <span class="n">npeople</span>
-        <span class="n">variance</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">))</span> <span class="o">/</span> <span class="n">npeople</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">):</span>
-            <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span> <span class="o">/</span> <span class="n">variance</span>
-    <span class="k">return</span> <span class="n">D</span>
+    <span class="n">average</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
 </pre></div>
 
      </div>
@@ -15532,12 +15504,12 @@ The first half of the term is related to the distance traveled and the second ha
 
 <span class="k">def</span> <span class="nf">setObjective</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Objective function&quot;&quot;&quot;</span>
-    <span class="n">distance_cost</span> <span class="o">=</span> <span class="n">sum_poly</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">ncars</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">)]</span>
-    <span class="p">)</span>  <span class="c1"># Term related to the distance traveled by each user</span>
-    <span class="n">ride_rate_cost</span> <span class="o">=</span> <span class="n">sum_poly</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">sum_poly</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">C</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">)])</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">)]</span>
-    <span class="p">)</span>  <span class="c1"># Term related to the occupancy rate of each vehicle</span>
+    <span class="c1"># Term related to the distance traveled by each user</span>
+    <span class="n">distance_cost</span> <span class="o">=</span> <span class="n">sum_poly</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">ncars</span><span class="p">:,</span> <span class="p">:</span><span class="n">ncars</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+
+    <span class="c1"># Term related to the occupancy rate of each vehicle</span>
+    <span class="n">ride_rate_cost</span> <span class="o">=</span> <span class="p">((</span><span class="n">q</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">C</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
     <span class="n">cost</span> <span class="o">=</span> <span class="n">distance_cost</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">ride_rate_cost</span>
     <span class="k">return</span> <span class="n">cost</span>
 </pre></div>
@@ -15569,23 +15541,21 @@ and the <code>less_equal</code> function is used to express constraint(2) $\sum_
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.constraint</span> <span class="kn">import</span> <span class="n">equal_to</span><span class="p">,</span> <span class="n">less_equal</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.constraint</span> <span class="kn">import</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">less_equal</span>
 
 
 <span class="k">def</span> <span class="nf">setConstraints</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">k1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Functions to set constraint equations for small-scale problems&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">k2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">k2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">C</span><span class="p">,</span> <span class="n">C</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">k2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">C</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="n">k1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">k1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">alpha</span><span class="p">,</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">C</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">k1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">C</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
     <span class="c1"># Constraint(1) that each person rides in one car</span>
-    <span class="n">allocate_constraints</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">equal_to</span><span class="p">(</span><span class="n">sum_poly</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">)]),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">)</span>
-    <span class="p">]</span>
+    <span class="n">allocate_constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">one_hot</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">)]</span>
+
     <span class="c1"># Constraint(2) that no more than C people can fit in one car</span>
-    <span class="n">capacity_constraints</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">less_equal</span><span class="p">(</span><span class="n">sum_poly</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npeople</span><span class="p">)]),</span> <span class="n">C</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">)</span>
-    <span class="p">]</span>
+    <span class="n">capacity_constraints</span> <span class="o">=</span> <span class="p">[</span><span class="n">less_equal</span><span class="p">(</span><span class="n">sum_poly</span><span class="p">(</span><span class="n">q</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]),</span> <span class="n">C</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">)]</span>
 
     <span class="n">constraints</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">allocate_constraints</span><span class="p">)</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">capacity_constraints</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">constraints</span>
@@ -15653,7 +15623,7 @@ and the <code>less_equal</code> function is used to express constraint(2) $\sum_
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2000</span>  <span class="c1"># Time limit</span>
-<span class="c1"># client.token = &quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;  # If you use it in a local environment, please enter the access token for Amplify AE</span>
+<span class="c1"># client.token = &quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;  # If you use it in a local environment, please enter the access token for Fixstars Amplify AE</span>
 
 <span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
@@ -15686,19 +15656,11 @@ You can use <code>decode_solution</code> to substitute them to the original vari
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">decode_solution</span>
-
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="c1"># Throw an exception if no viable solution is found</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># 実行可能解が見つかっていなければ例外を投げる</span>
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No feasible solution was found.&quot;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># If viable solutions are found, display their objective function values in order.</span>
-    <span class="k">for</span> <span class="n">solution</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-        <span class="n">energy</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">energy</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">values</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;energy = </span><span class="si">{</span><span class="n">energy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="c1"># print(f&quot;q = {decode_solution(q, values)}&quot;)</span>
-<span class="n">q_values</span> <span class="o">=</span> <span class="n">decode_solution</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">q_values</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15848,8 +15810,10 @@ The first step is to define the variables.</p>
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">ncars</span> <span class="o">+</span> <span class="n">npeople</span>
 
-<span class="n">GenSymbol</span> <span class="o">=</span> <span class="n">SymbolGenerator</span><span class="p">(</span><span class="n">BinaryPoly</span><span class="p">)</span>
-<span class="n">q</span> <span class="o">=</span> <span class="n">GenSymbol</span><span class="o">.</span><span class="n">gen_symbols</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">BinarySymbolGenerator</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15877,9 +15841,9 @@ The first step is to define the variables.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cost</span> <span class="o">=</span> <span class="n">sum_poly</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-<span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">einsum</span>
+
+<span class="n">cost</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,i,j-&gt;&quot;</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -15907,15 +15871,16 @@ The first step is to define the variables.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">car_constraints</span> <span class="o">=</span> <span class="n">equal_to</span><span class="p">(</span>
-    <span class="n">sum_poly</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">)]),</span> <span class="n">ncars</span> <span class="o">//</span> <span class="mi">2</span>
-<span class="p">)</span>  <span class="c1"># Constraint for the number of cars after the split to be half of the original number</span>
-<span class="n">people_constraints</span> <span class="o">=</span> <span class="n">equal_to</span><span class="p">(</span>
-    <span class="n">sum_poly</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">,</span> <span class="n">n</span><span class="p">)]),</span> <span class="n">npeople</span> <span class="o">//</span> <span class="mi">2</span>
-<span class="p">)</span>  <span class="c1"># Constraint for the number of people after the split to be half of the original number.</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.constraint</span> <span class="kn">import</span> <span class="n">equal_to</span>
+
+<span class="c1"># Constraint for the number of cars after the split to be half of the original number</span>
+<span class="n">car_constraints</span> <span class="o">=</span> <span class="n">equal_to</span><span class="p">(</span><span class="n">sum_poly</span><span class="p">(</span><span class="n">q</span><span class="p">[:</span><span class="n">ncars</span><span class="p">]),</span> <span class="n">ncars</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Constraint for the number of people after the split to be half of the original number.</span>
+<span class="n">people_constraints</span> <span class="o">=</span> <span class="n">equal_to</span><span class="p">(</span><span class="n">sum_poly</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">ncars</span><span class="p">:</span><span class="n">n</span><span class="p">]),</span> <span class="n">npeople</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Set the strength of the constraint</span>
-<span class="n">k1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="nb">sum</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]))</span> <span class="o">+</span> <span class="mi">3</span>
+<span class="n">k1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">+</span> <span class="mi">3</span>
 
 <span class="n">constraints</span> <span class="o">=</span> <span class="n">car_constraints</span> <span class="o">+</span> <span class="n">people_constraints</span>
 <span class="n">constraints</span> <span class="o">*=</span> <span class="n">k1</span>
@@ -16016,13 +15981,14 @@ The first step is to define the variables.</p>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to split the result of clustering&quot;&quot;&quot;</span>
     <span class="n">energy</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">q_values</span> <span class="o">=</span> <span class="n">decode_solution</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">q_values</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">cluster1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">q_values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">cluster2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">q_values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nc1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster1</span><span class="p">)</span>
     <span class="n">nc2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster2</span><span class="p">)</span>
-    <span class="n">D1</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nc1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nc1</span><span class="p">)]</span>
-    <span class="n">D2</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nc2</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nc2</span><span class="p">)]</span>
+    <span class="n">D1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nc1</span><span class="p">,</span> <span class="n">nc1</span><span class="p">))</span>
+    <span class="n">D2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nc2</span><span class="p">,</span> <span class="n">nc2</span><span class="p">))</span>
+
     <span class="n">C1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">C2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nc1</span><span class="p">):</span>
@@ -16150,12 +16116,10 @@ The first step is to define the variables.</p>
         <span class="n">k1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="nb">sum</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]))</span> <span class="o">+</span> <span class="mi">3</span>
     <span class="n">half_cars</span> <span class="o">=</span> <span class="n">ncars</span> <span class="o">//</span> <span class="mi">2</span>
     <span class="n">half_emp</span> <span class="o">=</span> <span class="n">npeople</span> <span class="o">//</span> <span class="mi">2</span>
-    <span class="n">cost</span> <span class="o">=</span> <span class="n">sum_poly</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,i,j-&gt;&quot;</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">constraints</span> <span class="o">=</span> <span class="n">equal_to</span><span class="p">(</span><span class="n">sum_poly</span><span class="p">(</span><span class="n">q</span><span class="p">[:</span><span class="n">ncars</span><span class="p">]),</span> <span class="n">half_cars</span><span class="p">)</span> <span class="o">+</span> <span class="n">equal_to</span><span class="p">(</span>
+        <span class="n">sum_poly</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">ncars</span><span class="p">:</span><span class="n">n</span><span class="p">]),</span> <span class="n">half_emp</span>
     <span class="p">)</span>
-    <span class="n">constraints</span> <span class="o">=</span> <span class="n">equal_to</span><span class="p">(</span>
-        <span class="n">sum_poly</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">)]),</span> <span class="n">half_cars</span>
-    <span class="p">)</span> <span class="o">+</span> <span class="n">equal_to</span><span class="p">(</span><span class="n">sum_poly</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncars</span><span class="p">,</span> <span class="n">n</span><span class="p">)]),</span> <span class="n">half_emp</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">cost</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">constraints</span>
     <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">half_cars</span><span class="p">,</span> <span class="n">half_emp</span>
 </pre></div>
@@ -16187,9 +16151,8 @@ The first step is to define the variables.</p>
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">construct</span><span class="p">(</span><span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">k1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create a model for a small-scale problem after partitioning&quot;&quot;&quot;</span>
-    <span class="n">GenSymbol</span> <span class="o">=</span> <span class="n">SymbolGenerator</span><span class="p">(</span><span class="n">BinaryPoly</span><span class="p">)</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">regularizeDistance</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">GenSymbol</span><span class="o">.</span><span class="n">gen_symbols</span><span class="p">(</span><span class="n">npeople</span><span class="p">,</span> <span class="n">ncars</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">BinarySymbolGenerator</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">npeople</span><span class="p">,</span> <span class="n">ncars</span><span class="p">)</span>
     <span class="n">cost</span> <span class="o">=</span> <span class="n">setObjective</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
     <span class="n">constraints</span> <span class="o">=</span> <span class="n">setConstraints</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">k1</span><span class="o">=</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="o">=</span><span class="n">k2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">cost</span> <span class="o">+</span> <span class="n">constraints</span>
@@ -16373,8 +16336,7 @@ so as long as this value is greater than a predetermined value (50 in this case)
     <span class="k">while</span> <span class="p">(</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">C</span><span class="p">)</span> <span class="o">*</span> <span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">param</span><span class="o">.</span><span class="n">bit_size</span><span class="p">:</span>
         <span class="p">(</span><span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">coord</span><span class="p">)</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
 
-        <span class="n">GenSymbol</span> <span class="o">=</span> <span class="n">SymbolGenerator</span><span class="p">(</span><span class="n">BinaryPoly</span><span class="p">)</span>
-        <span class="n">q</span> <span class="o">=</span> <span class="n">GenSymbol</span><span class="o">.</span><span class="n">gen_symbols</span><span class="p">(</span><span class="n">ncars</span> <span class="o">+</span> <span class="n">npeople</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">BinarySymbolGenerator</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ncars</span> <span class="o">+</span> <span class="n">npeople</span><span class="p">)</span>
 
         <span class="n">model</span><span class="p">,</span> <span class="n">ncars1</span><span class="p">,</span> <span class="n">npeople1</span> <span class="o">=</span> <span class="n">splitProblem</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ncars</span><span class="p">,</span> <span class="n">npeople</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -16404,8 +16366,7 @@ so as long as this value is greater than a predetermined value (50 in this case)
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No feasible solution was found.&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The small-scale problem </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> was solved&quot;</span><span class="p">)</span>
-        <span class="n">energy</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-        <span class="n">q_values</span> <span class="o">=</span> <span class="n">decode_solution</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">q_values</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">q_values</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
         <span class="n">last</span> <span class="o">+=</span> <span class="n">ncars</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Describing the results...&quot;</span><span class="p">)</span>
@@ -16455,22 +16416,6 @@ so as long as this value is greater than a predetermined value (50 in this case)
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">solve</span><span class="p">(</span><span class="o">*</span><span class="n">problem</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
      </div>
