@@ -15117,7 +15117,7 @@ $$
 r_{LD} = F_L/F_D
 $$<p>の最大化を目的とします。翼型の構築手法として、様々な方法が考えられますが、今回、翼形は、複素平面上の円に ジューコフスキー変換という写像をかけることで構築します。また、目的関数として揚抗比の負値（$-r_{LD}$）を用い、目的関数値の取得（評価）には、流体シミュレーションを用います。</p>
 <p>また、今回は入力変数として整数を取る非バイナリ変数を対象に最適化を実施します。目的関数や獲得関数を QUBO 式で記述するために、非バイナリ変数からバイナリ決定変数に変換する必要があります。この目的のために、本サンプルプログラムでは one-hot エンコーディングを採用し、必要となるエンコーダー・デコーダーの実装も紹介します。</p>
-<p>ブラックボックス最適化や FMQA の基本知識については、『<a href="./fmqa_0_algebra.ipynb">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』をご覧ください。また、FMQA を活用した他の応用ケースとして、『<a href="./fmqa_2_reactor.ipynb">ブラックボックス最適化による化学プラントにおける生産量最大化</a>』も紹介されていますので、ご覧ください。</p>
+<p>ブラックボックス最適化や FMQA の基本知識については、『<a href="https://amplify.fixstars.com/ja/demo/fmqa_0_algebra">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』をご覧ください。また、FMQA を活用した他の応用ケースとして、『<a href="https://amplify.fixstars.com/ja/demo/fmqa_2_reactor">ブラックボックス最適化による化学プラントにおける生産量最大化</a>』も紹介されていますので、ご覧ください。</p>
 <p>本ノートブックは以下の構成となっています。</p>
 <ul>
 <li>1. <a href="#1">翼型の定義及び流体シミュレーション</a><ul>
@@ -15144,11 +15144,11 @@ $$<p>の最大化を目的とします。翼型の構築手法として、様々
 </ul>
 <hr />
 <p>※本オンラインデモ &amp; チュートリアル環境では、連続実行時間が20分程度に制限されています。必要に応じて、最適化サイクル回数 $N$ （後述）を小さくして実行したり、本サンプルプログラムをご自身の環境にコピーしていただき、実行してください。その場合、翼生成及び流体シミュレーションに関する以下のライブラリを適宜ダウンロードし、次のようなディレクトリ構成で保存し、サンプルコードを実行してください。</p>
-<p>├ <a href="./fmqa_3_aerofoil.ipynb"></a><code>fmqa_3_aerofoil.ipynb</code>（本サンプルプログラム）<br />
+<p>├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/fmqa_3_aerofoil.ipynb"></a><code>fmqa_3_aerofoil.ipynb</code>（本サンプルプログラム）<br />
 └ <code>utils/</code><br />
-　　├ <a href="./utils/__init__.py"></a><code>__init__.py</code><br />
-　　├ <a href="./utils/joukowski.py"></a><code>joukowski.py</code><br />
-　　└ <a href="./utils/lbm.py"></a><code>lbm.py</code></p>
+　　├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/__init__.py"></a><code>__init__.py</code> （空ファイル）<br />
+　　├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/joukowski.py"></a><code>joukowski.py</code><br />
+　　└ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/lbm.py"></a><code>lbm.py</code></p>
 
 </div>
 </div>
@@ -15303,7 +15303,7 @@ $$<p>で記述され、$\zeta\rightarrow z$ の2つの複素平面の写像を�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="2"></a></p>
-<h2 id="2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85%EF%BC%88%E6%95%B4%E6%95%B0%E5%85%A5%E5%8A%9B%E5%80%A4%EF%BC%89">2. FMQA &#12398;&#12503;&#12525;&#12464;&#12521;&#12512;&#23455;&#35013;&#65288;&#25972;&#25968;&#20837;&#21147;&#20516;&#65289;<a class="anchor-link" href="#2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85%EF%BC%88%E6%95%B4%E6%95%B0%E5%85%A5%E5%8A%9B%E5%80%A4%EF%BC%89">&#182;</a></h2><p>ここでは、FMQA のプログラム実装を行います。FMQA 部分の実装の多くは、『<a href="./fmqa_0_algebra.ipynb">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』と同様ですので、詳細はそちらの解説をご覧ください。</p>
+<h2 id="2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85%EF%BC%88%E6%95%B4%E6%95%B0%E5%85%A5%E5%8A%9B%E5%80%A4%EF%BC%89">2. FMQA &#12398;&#12503;&#12525;&#12464;&#12521;&#12512;&#23455;&#35013;&#65288;&#25972;&#25968;&#20837;&#21147;&#20516;&#65289;<a class="anchor-link" href="#2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85%EF%BC%88%E6%95%B4%E6%95%B0%E5%85%A5%E5%8A%9B%E5%80%A4%EF%BC%89">&#182;</a></h2><p>ここでは、FMQA のプログラム実装を行います。FMQA 部分の実装の多くは、『<a href="https://amplify.fixstars.com/ja/demo/fmqa_0_algebra">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』と同様ですので、詳細はそちらの解説をご覧ください。</p>
 <p>今回の FMQA では、バイナリ変数ではなく、整数ベクトルを目的関数への入力値として考慮している、という大きな相違点があることにご注意ください。FMQA における整数入力値の取り扱いは、『<a href="#2_6">2.6. One-hot エンコーダー・デコーダーの実装</a>』をご覧ください。</p>
 
 </div>

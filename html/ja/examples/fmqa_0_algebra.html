@@ -15112,9 +15112,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="%E9%87%8F%E5%AD%90%E3%82%A2%E3%83%8B%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%BB%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AB%E3%82%88%E3%82%8B%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E6%9C%80%E9%81%A9%E5%8C%96">&#37327;&#23376;&#12450;&#12491;&#12540;&#12522;&#12531;&#12464;&#12539;&#12452;&#12472;&#12531;&#12464;&#12510;&#12471;&#12531;&#12395;&#12424;&#12427;&#12502;&#12521;&#12483;&#12463;&#12508;&#12483;&#12463;&#12473;&#26368;&#36969;&#21270;<a class="anchor-link" href="#%E9%87%8F%E5%AD%90%E3%82%A2%E3%83%8B%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%BB%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AB%E3%82%88%E3%82%8B%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E6%9C%80%E9%81%A9%E5%8C%96">&#182;</a></h1><p>本サンプルコードでは、ブラックボックス最適化の一手法である FMQA を紹介するために、ある代数式を未知のブラックボックス関数と見なし、その出力値を最小化するような入力値を推定します。より現実的なモデルケースにおける FMQA の実施例やサンプルコードは、以下のリンクをご覧ください。</p>
 <ul>
-<li><a href="./fmqa_1_supercon.ipynb">ブラックボックス最適化によるモデル超電導材料の探索</a></li>
-<li><a href="./fmqa_2_reactor.ipynb">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
-<li><a href="./fmqa_3_aerofoil.ipynb">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_1_supercon">ブラックボックス最適化によるモデル超電導材料の探索</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_2_reactor">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_3_aerofoil">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
 </ul>
 <p>また、最適化対象が既知関数で2次式である場合、二次制約なし二値最適化（QUBO: Quadratic Unconstrained Binary Optimization）形式での最適化が可能です。QUBO問題の解説やサンプルコード、Amplify の使い方は、以下のリンクをご覧ください（一部抜粋）。</p>
 <ul>
@@ -15169,7 +15169,7 @@ $$
     \mathrm{subject\,\,to\,\,}&amp;\boldsymbol{x} \in [0,1]^D
 \end{aligned}
 $$<p>例えば、Amplify のデモ・チュートリアルで紹介しているいくつかの最適化問題のように、$f(\boldsymbol{x})$ の関数が既知（かつ $\boldsymbol{x}$ の2次式）の場合、$f(\boldsymbol{x})$ を目的関数とすることで、直接、二次制約なし二値最適化（QUBO: Quadratic Unconstrained Binary Optimization）としての最適化実施が可能です。</p>
-<p>※ここで、$\boldsymbol{x}$ としてバイナリ変数ベクトルを仮定しますが、非バイナリ変数を one-hot エンコーディング等を使い、バイナリ変数に変換することができます。そのようなサンプルは、<a href="./fmqa_3_aerofoil.ipynb">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a>でご覧になれます。</p>
+<p>※ここで、$\boldsymbol{x}$ としてバイナリ変数ベクトルを仮定しますが、非バイナリ変数を one-hot エンコーディング等を使い、バイナリ変数に変換することができます。そのようなサンプルは、<a href="https://amplify.fixstars.com/ja/demo/fmqa_3_aerofoil">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a>でご覧になれます。</p>
 <p>一方、物理現象や社会現象に対するシミュレーションや実験によって得られる値を最小化（または最大化）する最適化の場合、目的関数 $f(\boldsymbol{x})$ はシミュレーションあるいは実験ということになり、目的関数を具体的な式で記述することはできません。このような未知の目的関数 $f(\boldsymbol{x})$ に対して行う数理最適化のことをブラックボックス最適化と呼びます。また、そのような目的関数の評価（シミュレーションや実験の実施）には、一般的に比較的大きなコストが必要なため、決定変数の集合が有限であっても、全検索による最適化は困難な場合が多く、できるだけ少ない目的関数の評価回数での最適化が要求されます。</p>
 
 </div>
@@ -15855,9 +15855,9 @@ pred<span class="w"> </span>value:<span class="w"> </span>-76.81540215271143
 <p><a id="3_4"></a></p>
 <h3 id="3.4.-%E3%81%BE%E3%81%A8%E3%82%81">3.4. &#12414;&#12392;&#12417;<a class="anchor-link" href="#3.4.-%E3%81%BE%E3%81%A8%E3%82%81">&#182;</a></h3><p>今回は、比較的単純な既知関数を対象として、FMQA による最適化を実施しました。しかし、本来、FMQA が力を発揮するのは、強い非線形性を有する物理現象や社会現象など、評価にシミュレーションや実験計測が必要な未知関数に対する最適化です。Amplify では、そのようなより現実的なモデルケースにおける FMQA の実施例やサンプルコードも紹介しています。</p>
 <ul>
-<li><a href="./fmqa_1_supercon.ipynb">ブラックボックス最適化によるモデル超電導材料の探索</a></li>
-<li><a href="./fmqa_2_reactor.ipynb">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
-<li><a href="./fmqa_3_aerofoil.ipynb">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_1_supercon">ブラックボックス最適化によるモデル超電導材料の探索</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_2_reactor">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_3_aerofoil">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
 </ul>
 
 </div>
@@ -15929,9 +15929,9 @@ pred<span class="w"> </span>value:<span class="w"> </span>-76.81540215271143
 </ul>
 <p>Fixstars Amplify では、材料探索だけでなく、化学反応、流体力学分野に関するブラックボックス最適化例も以下のとおり公開しています。本サンプルコードで紹介したブラックボックス最適化の応用例としてご覧ください。</p>
 <ul>
-<li><a href="./fmqa_1_supercon.ipynb">ブラックボックス最適化によるモデル超電導材料の探索</a></li>
-<li><a href="./fmqa_2_reactor.ipynb">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
-<li><a href="./fmqa_3_aerofoil.ipynb">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_1_supercon">ブラックボックス最適化によるモデル超電導材料の探索</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_2_reactor">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_3_aerofoil">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
 </ul>
 
 </div>

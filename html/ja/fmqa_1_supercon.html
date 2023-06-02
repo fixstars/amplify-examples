@@ -15112,11 +15112,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E6%9C%80%E9%81%A9%E5%8C%96%E3%81%AB%E3%82%88%E3%82%8B%E3%83%A2%E3%83%87%E3%83%AB%E8%B6%85%E9%9B%BB%E5%B0%8E%E6%9D%90%E6%96%99%E3%81%AE%E6%8E%A2%E7%B4%A2">&#12502;&#12521;&#12483;&#12463;&#12508;&#12483;&#12463;&#12473;&#26368;&#36969;&#21270;&#12395;&#12424;&#12427;&#12514;&#12487;&#12523;&#36229;&#38651;&#23566;&#26448;&#26009;&#12398;&#25506;&#32034;<a class="anchor-link" href="#%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E6%9C%80%E9%81%A9%E5%8C%96%E3%81%AB%E3%82%88%E3%82%8B%E3%83%A2%E3%83%87%E3%83%AB%E8%B6%85%E9%9B%BB%E5%B0%8E%E6%9D%90%E6%96%99%E3%81%AE%E6%8E%A2%E7%B4%A2">&#182;</a></h1><p>ブラックボックス最適化の効果的な活用方法を理解していただくために、本サンプルコードでは、疑似的な材料から構成される超電導材料の探索を例題として取り扱います。</p>
 <p>なお、本サンプルコードでは、非線形なモデル代数式に基づいて、材料探索を行いますが、モデル代数式の代わりに、高精度なシミュレーションや実験計測結果を用いても同様のステップで様々な材料探索に関する FMQA 最適化を行うことが可能で、その場合、本サンプルコードをほぼそのまま活用いただけます。</p>
-<p>ブラックボックス最適化や FMQA の基本知識については、『<a href="./fmqa_0_algebra.ipynb">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』をご覧ください。</p>
+<p>ブラックボックス最適化や FMQA の基本知識については、『<a href="https://amplify.fixstars.com/ja/demo/fmqa_0_algebra">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』をご覧ください。</p>
 <p>また、FMQA を活用したより応用的なモデルケースとして、</p>
 <ul>
-<li><a href="./fmqa_2_reactor.ipynb">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
-<li><a href="./fmqa_3_aerofoil.ipynb">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_2_reactor">ブラックボックス最適化による化学プラントにおける生産量最大化</a></li>
+<li><a href="https://amplify.fixstars.com/ja/demo/fmqa_3_aerofoil">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a></li>
 </ul>
 <p>も紹介されていますので、ご覧ください。</p>
 <p>本ノートブックは、以下の構成となっています。</p>
@@ -15322,7 +15322,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="2"></a></p>
-<h2 id="2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85">2. FMQA &#12398;&#12503;&#12525;&#12464;&#12521;&#12512;&#23455;&#35013;<a class="anchor-link" href="#2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85">&#182;</a></h2><p>ここでは、FMQA のプログラム実装を行います。FMQA部分の実装は、『<a href="./fmqa_0_algebra.ipynb">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』と同一ですので、詳細はそちらの解説をご覧ください。</p>
+<h2 id="2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85">2. FMQA &#12398;&#12503;&#12525;&#12464;&#12521;&#12512;&#23455;&#35013;<a class="anchor-link" href="#2.-FMQA-%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A3%85">&#182;</a></h2><p>ここでは、FMQA のプログラム実装を行います。FMQA部分の実装は、『<a href="https://amplify.fixstars.com/ja/demo/fmqa_0_algebra">量子アニーリング・イジングマシンによるブラックボックス最適化</a>』と同一ですので、詳細はそちらの解説をご覧ください。</p>
 
 </div>
 </div>
