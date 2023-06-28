@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15111,13 +15220,15 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Tutorial">Tutorial<a class="anchor-link" href="#Tutorial">&#182;</a></h1><h2 id="%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">&#12399;&#12376;&#12417;&#12395;<a class="anchor-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">&#182;</a></h2><p>Amplify SDK はイジングマシンを手軽に扱うためのミドルウェアライブラリです。イジングマシンとは、<a href="https://en.wikipedia.org/wiki/Ising_model%3E">イジング模型</a> あるいは <a href="https://en.wikipedia.org/wiki/Quadratic_unconstrained_binary_optimization">QUBO模型</a> と呼ばれる、二次二値多変数多項式の最小化問題に対する専用のハードウェアです。下記はQUBOによる表現例になります。</p>
-$$
+<p>$$
 f = \sum_{i &lt; j}{Q_{i,j} q_i q_j} + \sum_{i}{Q_{i,i} q_i} \quad \left(q_i \in \left\{ 0, 1\right\} \right)
-$$<p>通常、イジングマシンを実行するためには「対象となる最適化問題」を「実行マシンへ入力可能な形式」に変換する必要があります。
+$$</p>
+<p>通常、イジングマシンを実行するためには「対象となる最適化問題」を「実行マシンへ入力可能な形式」に変換する必要があります。
 なぜなら多くのイジングマシンは、バイナリ変数 $\left\{0, 1\right\}$ または イジング変数 :$\left\{-1, 1\right\}$ の二次多項式のみを入力可能形式とし (論理模型) 、マシンによっては任意の二次二値多項式を扱えるわけではなく、ハードウェア仕様に起源する変数間のグラフ構造に従った形式 (物理模型) で表現する必要があるためです。</p>
 <p>ユーザの対象とする最適化問題 (入力模型) をイジングマシンで実行する場合、入力模型から論理模型に変換し、さらに論理模型をマシン固有の物理模型に変換するという手順を踏みます。一方、マシンの出力値を解釈するためにこの手順の逆変換を各々のステップに施します。この変換・逆変換処理では、変換に伴う制約条件等の「前処理」や出力値の逆変換に伴う制約条件の充足検査等の「後処理」もまた重要になります。</p>
-<p>Amplify SDK は最適化問題をイジングマシンで実行するための統合インターフェースを提供し、入力模型やマシンの仕様に依存した変換・逆変換や前処理・後処理を隠蔽します。また、入力模型の作成や結果の解釈を行うための支援機能を提供します。Amplify SDK のアーキテクチャについてはリファレンス<a href="%5B%E6%9D%BE%E7%94%B0%E4%BD%B3%E5%B8%8C" title="イジングマシンにおける共通ソフトウェア基盤開発&quot; 2020年電子情報通信学会総合大会](https://amplify.fixstars.com/docs/_static/paper.pdf">1</a>を参照してください。次の図は Amplify SDK によるイジングマシンへの入力から実行及び結果の解釈までのフローを表します。</p>
+<p>Amplify SDK は最適化問題をイジングマシンで実行するための統合インターフェースを提供し、入力模型やマシンの仕様に依存した変換・逆変換や前処理・後処理を隠蔽します。また、入力模型の作成や結果の解釈を行うための支援機能を提供します。Amplify SDK のアーキテクチャについてはリファレンス[1]を参照してください。次の図は Amplify SDK によるイジングマシンへの入力から実行及び結果の解釈までのフローを表します。</p>
 <p><img src="https://amplify.fixstars.com/docs/_images/architecture.png" alt="architecture.png" /></p>
+<p>[1]: <a href="https://amplify.fixstars.com/docs/_static/paper.pdf">松田佳希 &quot;イジングマシンにおける共通ソフトウェア基盤開発&quot; 2020年電子情報通信学会総合大会</a></p>
 <p>各フローと Amplify SDK が提供するクラスの対応関係は次の通りです。</p>
 <h3 id="%E5%85%A5%E5%8A%9B%E3%83%AC%E3%82%A4%E3%83%A4">&#20837;&#21147;&#12524;&#12452;&#12516;<a class="anchor-link" href="#%E5%85%A5%E5%8A%9B%E3%83%AC%E3%82%A4%E3%83%A4">&#182;</a></h3><p>ユーザがイジングマシンへの「入力模型」として直接操作を行います。下記の数式を取り扱うことが出来ます。</p>
 <ul>
@@ -15163,9 +15274,10 @@ $$<p>通常、イジングマシンを実行するためには「対象となる
 </ol>
 <p>ここからは上記に従い各レイヤでの Amplify SDK の実際の使用手順について説明します。</p>
 <p>まずは上述の「入力模型」の取り扱いについて説明します。最も単純な例題として、下記のバイナリ変数 $\left\{0, 1\right\}$ についての関数 (バイナリ多項式) の最小化問題を取り上げます。</p>
-$$
+<p>$$
 f\left(q_0,q_1\right)=1−q_0q_1
-$$<p>$q_0,q_1∈\left\{0, 1\right\}$ なので自明に $f\left(q_0=1,q_1=1\right)=0$が最適解となります。ここから実際にこの問題をマシンに入力し、適切な解が出力されるかを確認していきます。</p>
+$$</p>
+<p>$q_0,q_1∈\left\{0, 1\right\}$ なので自明に $f\left(q_0=1,q_1=1\right)=0$が最適解となります。ここから実際にこの問題をマシンに入力し、適切な解が出力されるかを確認していきます。</p>
 <p>バイナリ多項式をプログラムコード上で表現するために BinaryPoly クラスが提供されています。</p>
 
 </div>

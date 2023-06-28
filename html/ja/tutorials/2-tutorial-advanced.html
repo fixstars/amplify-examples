@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15132,7 +15241,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 制約が課されていると、制約条件を満たす「実行可能解」の中から最適解を見つける必要があります。</p>
 <p>しかし、 QUBO やイジングモデルでは制約を扱うことができません。
 そのため、制約条件付きの最適化問題を QUBO に帰着させて解く場合は、その制約条件を目的関数の一部として表現する必要があります。</p>
-<p>基本的なアプローチとして、制約条件を満たす場合に最小値をとるようなペナルティ関数 $g$ を元の目的関数 $f$ に重みを付けて追加する方法が行われます。 
+<p>基本的なアプローチとして、制約条件を満たす場合に最小値をとるようなペナルティ関数 $g$ を元の目的関数 $f$ に重みを付けて追加する方法が行われます。
 $f$ の代わりに、$h = f + \lambda g \quad (\lambda \gt 0)$ の最適解を求めることで、ペナルティ関数 $g$ が最小、すなわち制約条件を満たす実行可能解の取得が可能になります。
 実際には、得られた解が必ずしも最適解であるとは限らないので、$h$ の解を $g$ で評価したときに最小値であるかを確認することで、実行可能解かどうかを識別します。</p>
 <p>例えば、等式制約</p>
@@ -15191,6 +15300,7 @@ $$
 
 $\mathbf{x}$ が制約条件を満たす場合、ペナルティ関数は $g(\mathbf{x})=0$ となり最小値を取ります。$\mathbf{x}$ が制約条件を満たさない場合は $0$ より大きな値となりペナルティが課されます。従って、このペナルティ関数が最小値 $0$ となる場合は等式制約が充足され、それ以外の値をとる場合は制約が充足されていないということになります。  -->
 
+
 </div>
 </div>
 </div>
@@ -15202,9 +15312,10 @@ $\mathbf{x}$ が制約条件を満たす場合、ペナルティ関数は $g(\ma
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Amplify-%E3%81%A7%E3%81%AE%E7%AD%89%E5%BC%8F%E5%88%B6%E7%B4%84%E3%81%AE%E6%89%B1%E3%81%84">Amplify &#12391;&#12398;&#31561;&#24335;&#21046;&#32004;&#12398;&#25201;&#12356;<a class="anchor-link" href="#Amplify-%E3%81%A7%E3%81%AE%E7%AD%89%E5%BC%8F%E5%88%B6%E7%B4%84%E3%81%AE%E6%89%B1%E3%81%84">&#182;</a></h3><p>3つのバイナリ変数 $\mathbf{q} = (q_0, q_1, q_2)$ を生成し、これらの変数間に</p>
-$$
+<p>$$
 q_0  q_1 + q_2 = 1
-$$<p>の等式制約を課すことを考えます。Amplify では、<code>equal_to</code> 関数を用いて等式制約に対応したオブジェクトを生成することができます。</p>
+$$</p>
+<p>の等式制約を課すことを考えます。Amplify では、<code>equal_to</code> 関数を用いて等式制約に対応したオブジェクトを生成することができます。</p>
 
 </div>
 </div>
@@ -15246,9 +15357,10 @@ $$<p>の等式制約を課すことを考えます。Amplify では、<code>equa
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>この制約条件では、以下のソースコードを動作させることで</p>
-$$
+<p>$$
 (q_0, q_1, q_2) = (1, 1, 0),\, (1, 0, 1),\, (0, 0, 1),\, (0, 1, 1)
-$$<p>となる4つの解を得ることが確認できます。</p>
+$$</p>
+<p>となる4つの解を得ることが確認できます。</p>
 
 </div>
 </div>
@@ -15291,17 +15403,20 @@ $$<p>となる4つの解を得ることが確認できます。</p>
 <h3 id="one-hot-%E5%88%B6%E7%B4%84">one-hot &#21046;&#32004;<a class="anchor-link" href="#one-hot-%E5%88%B6%E7%B4%84">&#182;</a></h3><p>等式制約の例として、 one-hot 制約を紹介します。</p>
 <p>$N$個のバイナリ変数 $q_0, q_1, \cdots, q_{N-1}$ が与えられている際に、これらの変数のどれか一つだけが $1$ となり、それ以外の変数は全て $0$ となるような制約を課すような場合があります。
 このような制約は one-hot 制約と呼ばれ、以下の式として表すことができます。</p>
-$$
+<p>$$
 \sum_{i=0}^{N-1}q_i = q_0 + q_1 + \cdots + q_{N-1} = 1
-$$<p>この制約を表すペナルティ関数は</p>
-$$
+$$</p>
+<p>この制約を表すペナルティ関数は</p>
+<p>$$
 g(\mathbf{q}) = \left(\sum_{i=0}^{N-1}q_i - 1\right)^2
-$$<p>となり、制約条件が満たされた場合は最小値 $0$ をとり、それ以外の場合は正の値をとる関数となります。</p>
+$$</p>
+<p>となり、制約条件が満たされた場合は最小値 $0$ をとり、それ以外の場合は正の値をとる関数となります。</p>
 <p>以下では バイナリ変数が3つの場合の one-hot 制約に対応したペナルティ関数の実装と確認方法を紹介します。</p>
 <p>$q_0, q_1, q_2$ の3つのバイナリ変数に $q_0 + q_1 + q_2 = 1$ の制約を課したプログラムを動作させることで、</p>
-$$
+<p>$$
 (q_0, q_1, q_2) = (0, 0, 1),\, (0, 1, 0),\, (1, 0, 0)
-$$<p>となることが確認できます。</p>
+$$</p>
+<p>となることが確認できます。</p>
 
 </div>
 </div>

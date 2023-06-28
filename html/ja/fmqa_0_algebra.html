@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15163,12 +15272,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <p><a id="1"></a></p>
 <h2 id="1.-FMQA-%E3%81%AE%E8%AA%AC%E6%98%8E">1. FMQA &#12398;&#35500;&#26126;<a class="anchor-link" href="#1.-FMQA-%E3%81%AE%E8%AA%AC%E6%98%8E">&#182;</a></h2><p><a id="1_1"></a></p>
 <h3 id="1.1.-%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E6%9C%80%E9%81%A9%E5%8C%96%E3%81%A8%E3%81%AF">1.1. &#12502;&#12521;&#12483;&#12463;&#12508;&#12483;&#12463;&#12473;&#26368;&#36969;&#21270;&#12392;&#12399;<a class="anchor-link" href="#1.1.-%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E6%9C%80%E9%81%A9%E5%8C%96%E3%81%A8%E3%81%AF">&#182;</a></h3><p>FMQA は、ベイズ最適化に似たブラックボックス最適化法の一つです。通常、数理最適化では、何らかの目的関数 $f(\boldsymbol{x})$ を最小化（あるいは最大化）するような決定変数 $\boldsymbol{x}$ を推定することを目的とします。ここで、目的関数 $f(\boldsymbol{x})$ に関する情報（関数形、勾配、劣モジュラ性、凸性等）が与えられている場合、効率的な最適化が可能です。</p>
-$$ 
+<p>$$ 
 \begin{aligned}
     \mathrm{Minimize}&amp;\,\,f(\boldsymbol{x}) \\
     \mathrm{subject\,\,to\,\,}&amp;\boldsymbol{x} \in [0,1]^D
 \end{aligned}
-$$<p>例えば、Amplify のデモ・チュートリアルで紹介しているいくつかの最適化問題のように、$f(\boldsymbol{x})$ の関数が既知（かつ $\boldsymbol{x}$ の2次式）の場合、$f(\boldsymbol{x})$ を目的関数とすることで、直接、二次制約なし二値最適化（QUBO: Quadratic Unconstrained Binary Optimization）としての最適化実施が可能です。</p>
+$$</p>
+<p>例えば、Amplify のデモ・チュートリアルで紹介しているいくつかの最適化問題のように、$f(\boldsymbol{x})$ の関数が既知（かつ $\boldsymbol{x}$ の2次式）の場合、$f(\boldsymbol{x})$ を目的関数とすることで、直接、二次制約なし二値最適化（QUBO: Quadratic Unconstrained Binary Optimization）としての最適化実施が可能です。</p>
 <p>※ここで、$\boldsymbol{x}$ としてバイナリ変数ベクトルを仮定しますが、非バイナリ変数を one-hot エンコーディング等を使い、バイナリ変数に変換することができます。そのようなサンプルは、<a href="https://amplify.fixstars.com/ja/demo/fmqa_3_aerofoil">ブラックボックス最適化と流体シミュレーションによる翼形状の最適化</a>でご覧になれます。</p>
 <p>一方、物理現象や社会現象に対するシミュレーションや実験によって得られる値を最小化（または最大化）する最適化の場合、目的関数 $f(\boldsymbol{x})$ はシミュレーションあるいは実験ということになり、目的関数を具体的な式で記述することはできません。このような未知の目的関数 $f(\boldsymbol{x})$ に対して行う数理最適化のことをブラックボックス最適化と呼びます。また、そのような目的関数の評価（シミュレーションや実験の実施）には、一般的に比較的大きなコストが必要なため、決定変数の集合が有限であっても、全検索による最適化は困難な場合が多く、できるだけ少ない目的関数の評価回数での最適化が要求されます。</p>
 
@@ -15208,13 +15318,14 @@ $$<p>例えば、Amplify のデモ・チュートリアルで紹介している�
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="1_3"></a></p>
 <h3 id="1.3.-FMQA-%E3%81%A8%E3%81%AF">1.3. FMQA &#12392;&#12399;<a class="anchor-link" href="#1.3.-FMQA-%E3%81%A8%E3%81%AF">&#182;</a></h3><p>ベイズ最適化で必要な獲得関数 $g(\boldsymbol{x})$ として、次式のような機械学習モデルの一種である Factorization Machine (FM) を用いる場合を考えます。</p>
-$$ 
+<p>$$ 
 \begin{aligned}
   g(\boldsymbol{x} | \boldsymbol{w}, \boldsymbol{v}) &amp;= w_0 + \langle \boldsymbol{w}, \boldsymbol{x}\rangle + \sum_{i=1}^D \sum_{j=i+1}^D \langle \boldsymbol{v}_i, \boldsymbol{v}_j \rangle x_i x_j \\
  &amp;=w_0 + \sum_{i=1}^D w_i x_i + \sum_{i=1}^D \sum_{j=i+1}^D \sum_{f=1}^k v_{if}v_{jf}x_ix_j \\
  &amp;=w_0 + \sum_{i=1}^D w_i x_i + \frac{1}{2}\sum_{f=1}^k\left(\left(\sum_{i=1}^D v_{i f} x_i\right)^2 - \sum_{i=1}^D v_{i f}^2 x_i^2\right)
 \end{aligned}
-$$<p>ここで、FM は $\boldsymbol{x}$ の2次式であるため、上式は QUBO による最適化が可能な関数形となります。式中の $\boldsymbol{w}$ や $\boldsymbol{v}$（$v_{ij}$, $w_i$）は、上式のモデルを機械学習した後に得られる FM パラメータ（機械学習における重みやバイアス）であり、$k$ はハイパーパラメータです。</p>
+$$</p>
+<p>ここで、FM は $\boldsymbol{x}$ の2次式であるため、上式は QUBO による最適化が可能な関数形となります。式中の $\boldsymbol{w}$ や $\boldsymbol{v}$（$v_{ij}$, $w_i$）は、上式のモデルを機械学習した後に得られる FM パラメータ（機械学習における重みやバイアス）であり、$k$ はハイパーパラメータです。</p>
 <p>FM パラメータ数は、ハイパーパラメータである $k$ に依存し、$k=D$ のとき、FM は QUBO の相互作用項と同じ自由度がある一方、$k$ を小さくすることで FM パラメータ数を減らし過学習を抑制する効果があります。</p>
 <p>獲得関数 $g(\boldsymbol{x})$ に FM を採用し、その最適化を量子アニーリング（QA）やイジングマシンを用いて実施することで、ベイズ最適化における前述の課題を解決し、一般的な問題に適用することができます。このように、量子アニーリング・イジングマシンと機械学習を融合して行うブラックボックス最適化手法を FMQA と呼ぶ場合があります（<a href="#4">4. 参考文献</a> 参照）。</p>
 
@@ -15346,13 +15457,14 @@ $$<p>ここで、FM は $\boldsymbol{x}$ の2次式であるため、上式は Q
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a id="2_3"></a></p>
 <h3 id="2.3.-PyTorch-%E3%81%AB%E3%82%88%E3%82%8B-FM-%E3%81%AE%E5%AE%9F%E8%A3%85">2.3. PyTorch &#12395;&#12424;&#12427; FM &#12398;&#23455;&#35013;<a class="anchor-link" href="#2.3.-PyTorch-%E3%81%AB%E3%82%88%E3%82%8B-FM-%E3%81%AE%E5%AE%9F%E8%A3%85">&#182;</a></h3><p>FM の学習と推論を PyTorch で行います。<code>TorchFM</code> クラスでは、機械学習モデルとしての $g(\boldsymbol{x})$ を定義します。下式の通り、$g(\boldsymbol{x})$ 内の各項は、<code>TorchFM</code> クラス内の <code>out_lin</code>、<code>out_1</code>、<code>out_2</code>、<code>out_inter</code> に直接対応します。</p>
-$$
+<p>$$
 \begin{aligned}
   g(\boldsymbol{x} | \boldsymbol{w}, \boldsymbol{v}) &amp;= 
   \underset{\color{red}{\mathtt{out\_lin}}}{\underline{ w_0 + \sum_{i=1}^D w_i x_i} } + \underset{\color{red}{\mathtt{out\_inter}}}{\underline{\frac{1}{2}
   \left[\underset{\color{red}{\mathtt{out\_1}}}{\underline{ \sum_{f=1}^k\left(\sum_{i=1}^D v_{i f} x_i\right)^2 }} - \underset{\color{red}{\mathtt{out\_2}}}{\underline{ \sum_{f=1}^k\sum_{i=1}^D v_{i f}^2 x_i^2 }} \right] }}
 \end{aligned}
-$$
+$$</p>
+
 </div>
 </div>
 </div>
@@ -15708,9 +15820,10 @@ $$
 <p><a id="3"></a></p>
 <h2 id="3.-FMQA-%E5%AE%9F%E8%A1%8C%E4%BE%8B">3. FMQA &#23455;&#34892;&#20363;<a class="anchor-link" href="#3.-FMQA-%E5%AE%9F%E8%A1%8C%E4%BE%8B">&#182;</a></h2><p><a id="3_1"></a></p>
 <h3 id="3.1.-$%5Cboldsymbol%7Bx%7D$%E3%81%AE2%E6%AC%A1%E5%BC%8F%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E6%9C%80%E9%81%A9%E5%8C%96">3.1. $\boldsymbol{x}$&#12398;2&#27425;&#24335;&#12395;&#23550;&#12377;&#12427;&#26368;&#36969;&#21270;<a class="anchor-link" href="#3.1.-$%5Cboldsymbol%7Bx%7D$%E3%81%AE2%E6%AC%A1%E5%BC%8F%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E6%9C%80%E9%81%A9%E5%8C%96">&#182;</a></h3><p>本サンプルコードで最適化対象とする代数式は、次の2次式です。$Q$ は乱数で生成される成分の平均値がゼロな $d$ 次元対称行列であり、<code>make_Q</code> で作成されます。</p>
-$$
+<p>$$
 f(\boldsymbol{x}) = \boldsymbol{x}^T Q \boldsymbol{x}
-$$<p>本来 FMQA は、未知関数に対して実施されるものであることに注意してください。今回は、簡単な理解のため、既知関数である上記 $f(\boldsymbol{x})$ を、未知関数（＝ブラックボックス）として取り扱っています。</p>
+$$</p>
+<p>本来 FMQA は、未知関数に対して実施されるものであることに注意してください。今回は、簡単な理解のため、既知関数である上記 $f(\boldsymbol{x})$ を、未知関数（＝ブラックボックス）として取り扱っています。</p>
 <p>以下の条件（$D=100$、$N=100$、$N_0=70$）では、FMQA のサイクル完了までにおよそ数分の計算時間を要しますので、ご注意下さい。出力例を、『<a href="#3_3">3.3. FMQA サンプルコード実行例</a>』に紹介しています。</p>
 
 </div>

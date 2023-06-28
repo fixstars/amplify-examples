@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15131,7 +15240,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div align="center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg/361px-Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg.png"/>
 </div>
+
 <center>Reference: https://en.wikipedia.org/wiki/Sudoku</center>
+
 <p><a href="https://en.wikipedia.org/wiki/Sudoku_solving_algorithms">Various algorithms</a> have been devised to solve Sudoku puzzles using computers, such as depth-first search, probabilistic methods, constraint satisfaction problems, exact cover problems, etc. By following these algorithms, Sudoku puzzles can be solved mechanically.</p>
 <p>In this tutorial, we will show how to solve Sudoku puzzles using an Ising machine.
 Formulating the problem from the above Sudoku rules, we define the corresponding function, where finding its minimum value is equivalent to solving the Sudoku puzzle. In the case of Sudoku, only constraint conditions are needed, and no cost function appears.</p>
@@ -15139,6 +15250,7 @@ Formulating the problem from the above Sudoku rules, we define the corresponding
 <!-- [数独問題を解くアルゴリズムと実装](https://qiita.com/chinbaa_chi/items/4ba84c1c957473c7512d)
 [数独のアルゴリズムを考える ― 各種法の改善と高速化](https://www.slideshare.net/atmarksharp/ss-45348313)
  -->
+
 
 </div>
 </div>
@@ -15165,7 +15277,7 @@ We also assign the layer index $k=0,\dots,8$, so that the layer specified by the
 <p>From this observation, we can express the binary variables by $q_{i,j,k}$, where $i,j,k=0,\cdots,8$ correspond to the indices for rows, columns, and layers, respectively.
 For example, $q_{2,4,6}=1$ means that number $7$ is placed in the cell at the 3rd row and 5th column, and $q_{2,4,6}=0$ means that $7$ is not to be placed here.</p>
 <p>Using these variables, the constraints 1-3 can be written as the following one-hot constraints, respectively.</p>
-$$
+<p>$$
 \left\{
     \begin{align}
         &amp;\begin{split}
@@ -15182,7 +15294,8 @@ $$
         \end{split}
     \end{align}
 \right.
-$$<p>The constraints $(a)$, $(b)$ and $(c)$ correspond to rules 1, 2 and 3, respectively. The $(d)$ constraint corresponds to the basic condition that each cell can only contain one number.</p>
+$$</p>
+<p>The constraints $(a)$, $(b)$ and $(c)$ correspond to rules 1, 2 and 3, respectively. The $(d)$ constraint corresponds to the basic condition that each cell can only contain one number.</p>
 
 </div>
 </div>

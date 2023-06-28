@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15429,7 +15538,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 この手法のアイデアは、全ての分類器の中から最も高い精度が得られる組み合わせを求めてそれを使用するというものです。つまり、ノイズとなる余計な分類器を除外します。そこで「各分類器に対して、それを使用するか/しないか」をバイナリ変数で表します。</p>
 <p>まずは2クラス分類に対する定式化を行います。</p>
 <p>2クラス分類において、いくつかの弱分類器を取り除いたあと残ったものの多数決によって分類を行うとき、その結果は</p>
-$$ H(x) = {\rm sign}\left(\sum_{i=1}^{C}s_i h_i(x)\right)$$<p>となります。ここで、$C$は分類器の数、$h_i(x) \in \{-1, 1\}$は弱分類器、$s_i \in \{0, 1\}$はバイナリ変数です。</p>
+<p>$$ H(x) = {\rm sign}\left(\sum_{i=1}^{C}s_i h_i(x)\right)$$</p>
+<p>となります。ここで、$C$は分類器の数、$h_i(x) \in \{-1, 1\}$は弱分類器、$s_i \in \{0, 1\}$はバイナリ変数です。</p>
 <p>今回の目的を達成するために一番自然な目的関数は、誤分類の個数を数え、それを最小化すること、つまり
 $$\left(1-\textit{label}_x\times{\rm sign}\left(\sum_{i=1}^{C}s_i h_i(x_j)\right)\right)/2$$
 を最小化することです。
@@ -15440,16 +15550,18 @@ $$\left(\textit{label}_x\times\sum_{i=1}^{C}s_i h_i(x)-1\right)^2$$
 <p>一方で、使用する弱学習器が多すぎる場合、過学習によりテストデータの正解率が低くなってしまうことがあります。
 それを防ぐため、使用する弱分類器の数$\sum_{i=1}^Cs_i$をペナルティ項として上の式に重みをつけて足し合わせます。</p>
 <p>したがって、2クラス分類においては、バイナリ変数を最適化するために最小化すべき関数は以下のようになります。</p>
-$$ s_{\textit{min}} = \mathop{\rm arg~min}\limits_{s} \sum_{j=1}^{N_{\textit{train}}}\left(y_j
-\sum_{i=1}^{C}s_i h_i(x_j)-1\right)^2 + P\sum_{i=1}^{C}s_i$$<p>$N_{\textit{train}}$は学習データの数、$y_j \in \{-1, 1\}$はデータ$x_j$に対するラベル、$P$ は使用する弱分類器の数に対するペナルティ係数です。この値を大きく設定するほど、使用する弱学習器が少なくなります。</p>
-<p>次に、クラスごとに2値分類を行った結果を統合して多クラス分類を行うことを考えます。 
+<p>$$ s_{\textit{min}} = \mathop{\rm arg~min}\limits_{s} \sum_{j=1}^{N_{\textit{train}}}\left(y_j
+\sum_{i=1}^{C}s_i h_i(x_j)-1\right)^2 + P\sum_{i=1}^{C}s_i$$</p>
+<p>$N_{\textit{train}}$は学習データの数、$y_j \in \{-1, 1\}$はデータ$x_j$に対するラベル、$P$ は使用する弱分類器の数に対するペナルティ係数です。この値を大きく設定するほど、使用する弱学習器が少なくなります。</p>
+<p>次に、クラスごとに2値分類を行った結果を統合して多クラス分類を行うことを考えます。
 今回の例では$3(\textrm{クラス数})\times100(\textrm{クラスごとの分類器数})$、計300個の弱分類器を使用しているため、300個のバイナリ変数を定義し、
 以下の関数を最小化します。
 $$ s_{min} = \mathop{\rm arg~min}\limits_{s} \sum_{j=1}^{N_{train}}\sum_{l=0}^{\#labels-1}\left(y_j
 \sum_{i=1}^{C}s_{li} h_{li}(x_j)-1\right)^2 + P\sum_{l=0}^{\#labels-1}\sum_{i=1}^{C}s_{li}$$</p>
 <p>これは、2クラス分類で見たのと同様に、それぞれのラベルに対し、そのラベルの分類精度を向上させるような弱分類器の組み合わせを求めることを目的としています。</p>
 <p>このようにして使用する弱分類器を決定したあと、次のように新しい分類器$G(x)$を定義します。</p>
-$$ G(x) = {\rm arg~max}_l\left\{\sum_{i=1}^{C}s_{li} h_{li} \mid l=0,1,\dots\#\textit{labels}-1\right\} $$<p>(今回は、$\#\textit{labels}=3$に相当します。)
+<p>$$ G(x) = {\rm arg~max}_l\left\{\sum_{i=1}^{C}s_{li} h_{li} \mid l=0,1,\dots\#\textit{labels}-1\right\} $$</p>
+<p>(今回は、$\#\textit{labels}=3$に相当します。)
 $C$は分類器の数、$h_{li}(x) \in \{-1, 1\}$は弱分類器、$s_{li} \in \{0, 1\}$はバイナリ変数です。</p>
 <p>$ \displaystyle\sum_{i=1}^{C}s_{li} h_{li}(x) $ は、ラベル$l$に対応する分類器のなかで、データ$x$に対応するラベルが$l$であると予測した分類器の数の多さを表現しているため、この値が最も大きいラベルを予測として出力することで、多数決を達成することができます。</p>
 <p>参考文献：<a href="https://arxiv.org/abs/0811.0416">Training a Binary Classifier with the
@@ -15548,7 +15660,7 @@ Quantum Adiabatic Algorithm</a></p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>次に、最適化と結果の取り出しを行う関数を作成します。 
+<p>次に、最適化と結果の取り出しを行う関数を作成します。
 最適化にはアニーリングマシン（Fixstars Amplify AE）が使用されます。</p>
 
 </div>
@@ -15775,16 +15887,19 @@ Quantum Adiabatic Algorithm</a></p>
 </ol>
 <p>といった操作を繰り返します。 具体的には、以下のような操作となります。</p>
 <p>まず、弱分類器からいくつかを選ぶ操作の結果として得られる新しい分類器を$H(x)$とし、先ほどと同様に定義します。</p>
-$$ H(x) = {\rm sign}\left(\sum_{i=1}^{C}s_i h_i(x)\right)$$<p>$C$は分類器の数、$h_i(x) \in \{-1, 1\}$は弱分類器、$s_i \in \{0, 1\}$はバイナリ変数です。</p>
+<p>$$ H(x) = {\rm sign}\left(\sum_{i=1}^{C}s_i h_i(x)\right)$$</p>
+<p>$C$は分類器の数、$h_i(x) \in \{-1, 1\}$は弱分類器、$s_i \in \{0, 1\}$はバイナリ変数です。</p>
 <p>ここで、上の式のバイナリ変数$s$を最適化するために最小化すべき関数は以下のようになります。</p>
-$$ s_{min} = \mathop{\rm arg~min}\limits_{s} \sum_{j=1}^{N_{\textit{train}}}\left(y_j
-\sum_{i=1}^{C}s_ih_i(x_j)-1\right)^2 + P\sum_{i=1}^{C}s_i$$<p>$N_{train}$は学習データの数、$y_j \in \{-1, 1\}$はデータ$x_j$に対するラベルで、$P$はバイナリ変数に対するペナルティ(定数)です。</p>
+<p>$$ s_{min} = \mathop{\rm arg~min}\limits_{s} \sum_{j=1}^{N_{\textit{train}}}\left(y_j
+\sum_{i=1}^{C}s_ih_i(x_j)-1\right)^2 + P\sum_{i=1}^{C}s_i$$</p>
+<p>$N_{train}$は学習データの数、$y_j \in \{-1, 1\}$はデータ$x_j$に対するラベルで、$P$はバイナリ変数に対するペナルティ(定数)です。</p>
 <p>次に、$H(x)$を定める過程で選ばれなかった弱分類器を重みづけした学習データで学習しなおすことにより更新します。
 このとき、$j$番目の学習データの重み$d_j$は、分類器$H(x)$において$j$番目の学習データを誤分類する弱分類器が多いほど大きく重みづけるように、</p>
-$$
+<p>$$
 d_j \leftarrow d_j\times\left(y_j
 \sum_{i=1}^{C}s_ih_i(x_j)-1\right)^2
-$$<p>のようにして更新します。実際には、オーバーフローやアンダーフローを防ぐために、$\sum_{i=1}^Cd_j=1$となるように正規化して実装します。</p>
+$$</p>
+<p>のようにして更新します。実際には、オーバーフローやアンダーフローを防ぐために、$\sum_{i=1}^Cd_j=1$となるように正規化して実装します。</p>
 <p>次のループでは、このようにして更新された弱分類器と$H(x)$に含まれる弱分類器 (今回は合計100個あります) を用いて、再度弱分類器の最適な組み合わせを求め、選ばれなかった弱分類器を更新することになります。</p>
 <p>以上が二値分類を行う場合のQBoostの大まかな流れです。
 今回は、QBoostの多クラス分類への拡張として、一対多の二値分類を行う分類器を組み合わせることを考えます。</p>
@@ -16090,7 +16205,7 @@ Adiabatic Quantum Optimization</a></p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="%E3%81%BE%E3%81%A8%E3%82%81">&#12414;&#12392;&#12417;<a class="anchor-link" href="#%E3%81%BE%E3%81%A8%E3%82%81">&#182;</a></h2><p>ナイーブな手法、ノイズとなる分類器を除去する手法、QBoostの結果をまとめると以下のようになります。 
+<h2 id="%E3%81%BE%E3%81%A8%E3%82%81">&#12414;&#12392;&#12417;<a class="anchor-link" href="#%E3%81%BE%E3%81%A8%E3%82%81">&#182;</a></h2><p>ナイーブな手法、ノイズとなる分類器を除去する手法、QBoostの結果をまとめると以下のようになります。
 この結果から QBoost により分類精度を改善できていることがわかります。</p>
 
 </div>

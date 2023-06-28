@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15131,7 +15240,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div align="center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg/361px-Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg.png"/>
 </div>
+
 <center>引用元: https://en.wikipedia.org/wiki/Sudoku</center>
+
 <p>コンピュータを使って数独を解く方法として、深さ優先探索、確率的な方法、制約充足問題、exact cover problemなど用いた<a href="https://en.wikipedia.org/wiki/Sudoku_solving_algorithms">様々なアルゴリズム</a>が考案されています。これらのアルゴリズムに従って、機械的に数独を解くことができます。</p>
 <p>このチュートリアルでは、組み合わせ最適化問題に特化したイジングマシンを使って数独を解く方法を紹介します。上記の数独のルールを制約条件として解釈し、それに伴ったコスト関数を定義し、コストが最も低い数字の組み合わせを見つけることで数独の解を見つけることができる仕組みになっています。よって、ここで行うべきことは数独のルールをどのような制約条件によって表すことができるかを考えることです。そのような制約条件を見つけてコスト関数を定義することができれば、あとは初期配置を与えるだけで、複雑なアルゴリズムを用いることなく、イジングマシンによって解が見つけることができます。</p>
 <p>それでは次に、Amplifyを使って、数独を解くコードがどのように実装されるのか具体的に見てみましょう。</p>
@@ -15155,7 +15266,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </ol>
 <p>まず、$9\times9=81$ 個の各マスに、$0$ と $1$ に値を取る変数を与えることを考えます。行と列を表すインデックスを $i,j=0,\cdots,8$ とし、$1,\cdots, 9$ 番目の行と列に対応させます。</p>
 <p>1～3の制約を課さずに、数字のあらゆる重複を許す場合を考えると、全 $9\times9 = 81$ マスには9個の数字が入り得ます。そこで、$9\times9=81$ 個の変数を $9$ セット考慮し、合計で $9\times9\times9=729$ 個の変数を取り扱うことを考えます。これは、$9\times9=81$ マスのレイヤを$9$枚重ねるようなイメージです。ここで、レイヤのインデックスを $k = 0\sim8$ とし、それぞれ数字の $1\sim9$ に対応させます。行、列、レイヤのインデックスをそれぞれ $i,j,k=0,\cdots,8$ とし、変数を $q_{i,j,k}$ で表すと、例えば、$3$ 行 $5$ 列のマスに $7$ が入る状態は $q_{2,4,6}=1$、そうでない場合は $q_{2,4,6}=0$ と表現することができます。これらの変数を使うと、制約条件1～3はそれぞれ以下のone-hot制約として書き下すことができます。</p>
-$$
+<p>$$
 \left\{
     \begin{align}
         &amp;\begin{split}
@@ -15172,7 +15283,8 @@ $$
         \end{split}
     \end{align}
 \right.
-$$<p>制約条件$(a)$、$(b)$, $(c)$はそれぞれルール1、2、3に対応します。$(d)$の制約条件は各マスには一つの数字しか入らないという基本的な条件に対応します。</p>
+$$</p>
+<p>制約条件$(a)$、$(b)$, $(c)$はそれぞれルール1、2、3に対応します。$(d)$の制約条件は各マスには一つの数字しか入らないという基本的な条件に対応します。</p>
 
 </div>
 </div>

@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15114,9 +15223,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <p>タクシーマッチング問題とは、複数名の顧客と複数台のタクシーの位置がそれぞれ与えられている場合に、配車コストを最小化する問題です。</p>
 <p>配車コストには様々な定義が考えられますが、ここでは簡単のためタクシーと顧客間の総距離とします。タクシーと顧客のマッチングを行い、それぞれのタクシーと向かう先の顧客との距離の合計を最小化するように配車先の決定を行います。</p>
 <h2 id="%E5%95%8F%E9%A1%8C%E3%81%AE%E5%AE%9A%E5%BC%8F%E5%8C%96">&#21839;&#38988;&#12398;&#23450;&#24335;&#21270;<a class="anchor-link" href="#%E5%95%8F%E9%A1%8C%E3%81%AE%E5%AE%9A%E5%BC%8F%E5%8C%96">&#182;</a></h2><p>まず、ここでの問題の前提条件として、$N$人の顧客と、それと同じ数$N$台のタクシーがあるとします。インデックス $i, j = 0, 1, \cdots, N -1$ の顧客の座標 $(c_{i,x}, c_{i,y})$ とタクシーの座標 $(t_{j,x}, t_{j,y})$ が与えられているとします。これらの座標から、顧客 $i$ とタクシー $j$ の距離を</p>
-$$
+<p>$$
 d_{ij} = \sqrt{(c_{i,x} - t_{j,x})^2 + (c_{i,y} - t_{j,y})^2}
-$$<p>とします。</p>
+$$</p>
+<p>とします。</p>
 <h3 id="%E6%B1%BA%E5%AE%9A%E5%A4%89%E6%95%B0">&#27770;&#23450;&#22793;&#25968;<a class="anchor-link" href="#%E6%B1%BA%E5%AE%9A%E5%A4%89%E6%95%B0">&#182;</a></h3><p>顧客 $i$ とタクシー $j$ の関係は以下の二つのパターンに分けられます。</p>
 <ul>
 <li>顧客 $i$ にタクシー $j$ が割り当てられる</li>
@@ -15170,17 +15280,20 @@ $$<p>とします。</p>
 </table>
 <h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">&#30446;&#30340;&#38306;&#25968;<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">&#182;</a></h3><p>上記の バイナリ変数を用いて、マッチングされた顧客とタクシーの合計の距離である目的関数は以下のように与えられます。<br />
 変数 $q_{ij}$ は $1$ の場合に顧客 $i$ とタクシー $j$ がマッチングしているという意味なので、結果として $q_{ij} = 1$ となっている距離だけを足し上げています。</p>
-$$
+<p>$$
 \sum_{i, j=0}^{N-1}d_{ij}q_{ij}
-$$<h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#21046;&#32004;&#26465;&#20214;<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#182;</a></h3><p>次に制約条件を定めます。</p>
+$$</p>
+<h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#21046;&#32004;&#26465;&#20214;<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#182;</a></h3><p>次に制約条件を定めます。</p>
 <p>まず、一人の顧客に必ず一台のタクシーを割り当てるので、顧客 $i$ に対して</p>
-$$
+<p>$$
 \sum_{j=0}^{N -1}q_{ij} = 1 
-$$<p>という制約条件が必要となります。</p>
+$$</p>
+<p>という制約条件が必要となります。</p>
 <p>さらに、一台のタクシーは必ず一人の顧客に割り当てられるので、タクシー $j$ に対して、</p>
-$$
+<p>$$
 \sum_{i=0}^{N -1}q_{ij} = 1 
-$$<p>という制約条件も必要となります。</p>
+$$</p>
+<p>という制約条件も必要となります。</p>
 <h2 id="%E5%95%8F%E9%A1%8C%E3%81%AE%E5%AE%9F%E8%A3%85">&#21839;&#38988;&#12398;&#23455;&#35013;<a class="anchor-link" href="#%E5%95%8F%E9%A1%8C%E3%81%AE%E5%AE%9F%E8%A3%85">&#182;</a></h2><p>顧客とタクシーの位置座標が入力データとして必要となるので、顧客とタクシーの座標をランダムに生成して、顧客とタクシー全ての組み合わせの距離を計算する関数を作ります。</p>
 
 </div>
@@ -15599,9 +15712,10 @@ $$<p>という制約条件も必要となります。</p>
 このような制約条件は不等式制約条件を用いて定式化できます。</p>
 <p>$N_c$人の顧客と$N_t$台のタクシー($N_c &lt; N_t$)とそれらの座標が与えられ、これまで通り顧客 $i$ と タクシー $j$ の距離を $d_{ij}$ とします。</p>
 <h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">&#30446;&#30340;&#38306;&#25968;<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">&#182;</a></h3><p>目的関数はこれまでと同様ですが、$N_c$ と $N_t$ が異なる値であることを考慮します。</p>
-$$
+<p>$$
 \sum_{i=0}^{N_c-1}\sum_{j=0}^{N_t - 1}d_{ij}q_{ij}
-$$<h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#21046;&#32004;&#26465;&#20214;<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#182;</a></h3><p>顧客よりもタクシーの台数が多いため、すべての顧客に対してタクシーが1台割り当てられます。
+$$</p>
+<h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#21046;&#32004;&#26465;&#20214;<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">&#182;</a></h3><p>顧客よりもタクシーの台数が多いため、すべての顧客に対してタクシーが1台割り当てられます。
 そのため、顧客$i$に対して、
 $$
 \sum_{j=0}^{N_{\rm t}-1}q_{ij} = 1 

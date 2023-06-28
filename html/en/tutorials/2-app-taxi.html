@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15114,9 +15223,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <p>The taxi matching problem is the problem of minimizing the cost of dispatching a taxi given multiple customers and multiple taxi locations respectively.</p>
 <p>The cost of dispatching a taxi can be defined in various ways, but for simplicity, we will assume that it is the total distance between the taxi and the customer. By matching taxis and customers, we can decide where to dispatch the taxi so as to minimize the total distance between each taxi and the destination customer.</p>
 <h2 id="Formulation-of-the-Problem">Formulation of the Problem<a class="anchor-link" href="#Formulation-of-the-Problem">&#182;</a></h2><p>First of all, the assumption of the problem here is that there are $N$ customers and the same number of $N$ taxis. Suppose that we are given the coordinates $(c_{i,x}, c_{i,y})$ of the customers and $(t_{j,x}, t_{j,y})$ of the taxis with indices $i, j = 0, 1, \cdots, N -1$. From these coordinates, let the distance between customer $i$ and taxi $j$ be the following:</p>
-$$
+<p>$$
 d_{ij} = \sqrt{(c_{i,x} - t_{j,x})^2 + (c_{i,y} - t_{j,y})^2}
-$$<h3 id="Decision-Variable">Decision Variable<a class="anchor-link" href="#Decision-Variable">&#182;</a></h3><p>The relation between customer $i$ and taxi $j$ can be divided into the following two patterns:</p>
+$$</p>
+<h3 id="Decision-Variable">Decision Variable<a class="anchor-link" href="#Decision-Variable">&#182;</a></h3><p>The relation between customer $i$ and taxi $j$ can be divided into the following two patterns:</p>
 <ul>
 <li>Customer $i$ is assigned a taxi $j$</li>
 <li>Taxi $j$ is not assigned to customer $i$</li>
@@ -15169,16 +15279,19 @@ $$<h3 id="Decision-Variable">Decision Variable<a class="anchor-link" href="#Deci
 </table>
 <h3 id="Objective-Function">Objective Function<a class="anchor-link" href="#Objective-Function">&#182;</a></h3><p>Using the above binary variables, the objective function, which is the total distance between the matched customer and the taxi, is given by following:<br />
 Since the variable $q_{ij}$ means that customer $i$ and taxi $j$ are matched when $1$, we only add up the distances that result in $q_{ij} = 1$.</p>
-$$
+<p>$$
 \sum_{i, j=0}^{N-1}d_{ij}q_{ij}
-$$<h3 id="Constraint">Constraint<a class="anchor-link" href="#Constraint">&#182;</a></h3><p>The next step is to define the constraints.</p>
+$$</p>
+<h3 id="Constraint">Constraint<a class="anchor-link" href="#Constraint">&#182;</a></h3><p>The next step is to define the constraints.</p>
 <p>First, since we always assign one taxi to one customer, we need the following constraint for customer $i$.</p>
-$$
+<p>$$
 \sum_{j=0}^{N -1}q_{ij} = 1 
-$$<p>In addition, since one taxi is always assigned to one customer, we also need the following constraint for taxi $j$:</p>
-$$
+$$</p>
+<p>In addition, since one taxi is always assigned to one customer, we also need the following constraint for taxi $j$:</p>
+<p>$$
 \sum_{i=0}^{N -1}q_{ij} = 1 
-$$<h2 id="Implementing-the-Problem">Implementing the Problem<a class="anchor-link" href="#Implementing-the-Problem">&#182;</a></h2><p>Since we need the coordinates of the customers and the taxies as input data, we will create a function that randomly generates the coordinates of the customers and the taxies and calculates the distances for all combinations of customers and taxies.</p>
+$$</p>
+<h2 id="Implementing-the-Problem">Implementing the Problem<a class="anchor-link" href="#Implementing-the-Problem">&#182;</a></h2><p>Since we need the coordinates of the customers and the taxies as input data, we will create a function that randomly generates the coordinates of the customers and the taxies and calculates the distances for all combinations of customers and taxies.</p>
 
 </div>
 </div>
@@ -15604,9 +15717,10 @@ In this case, we need to formulate constraints that take into account both the c
 Such constraints can be formulated using inequality constraints.</p>
 <p>Given $N_c$ customers and $N_t$ taxis ($N_c &lt; N_t$) and their coordinates, let $d_{ij}$ be the distance between customer $i$ and taxi $j$ as before.</p>
 <h3 id="Objective-Function">Objective Function<a class="anchor-link" href="#Objective-Function">&#182;</a></h3><p>The objective function is the same as before, but we consider that $N_c$ and $N_t$ are different values.</p>
-$$
+<p>$$
 \sum_{i=0}^{N_c-1}\sum_{j=0}^{N_t - 1}d_{ij}q_{ij}
-$$<h3 id="Constraint">Constraint<a class="anchor-link" href="#Constraint">&#182;</a></h3><p>Since there are more taxis than customers, every customer can be matched with one taxi.
+$$</p>
+<h3 id="Constraint">Constraint<a class="anchor-link" href="#Constraint">&#182;</a></h3><p>Since there are more taxis than customers, every customer can be matched with one taxi.
 Therefore, for customer $i$, the following holds.
 $$
 \sum_{j=0}^{N_{\rm t}-1}q_{ij} = 1 

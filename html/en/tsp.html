@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15113,6 +15222,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <h1 id="Travelling-Salesman-Problem">Travelling Salesman Problem<a class="anchor-link" href="#Travelling-Salesman-Problem">&#182;</a></h1><p>This section describes how to solve the traveling salesman problem using Amplify.</p>
 <h2 id="Formulation-of-the-Traveling-Salesman-Problem">Formulation of the Traveling Salesman Problem<a class="anchor-link" href="#Formulation-of-the-Traveling-Salesman-Problem">&#182;</a></h2><p><a href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">The Traveling Salesman Problem</a> is a combinatorial optimization problem to find the shortest route that visits all cities exactly once, given a set of cities and the distances between each pair of cities.</p>
 <!-- ![240px-GLPK_solution_of_a_travelling_salesman_problem.svg.png](attachment:3d4196f6-b79c-4fc1-b924-1668e1f7f543.png) -->
+
 <p>In order to use the Ising machine, the combinations of paths need to be represented by polynomials with respect to binary or Ising variables.
 Every combination of paths can be represented by a table of variables that shows which city is visited in which order.
 For example, the following table for four cities will represent the route $A \rightarrow C \rightarrow B \rightarrow D$.</p>
@@ -15161,29 +15271,35 @@ For example, the following table for four cities will represent the route $A \ri
 We interpret a path by following the cities where $1$ is assigned in the right order from 1st to 4th.
 That is, for a traveling salesman problem in $N$ cities, it suffices to have $N^2$ variables.</p>
 <p>We denote each variable in the above table as $q_{n,i}$ using the route order $n$ and the city index $i$. Then all the distances of the travel routes are represented as follows:</p>
-$$
+<p>$$
  \sum_{n=0}^{N-1}{\sum_{i=0}^{N-1}{\sum_{j=0}^{N-1}{ d_{ij} q_{n, i} q_{n+1, j} }}}
-$$<p>$d_{ij}$ is the distance traveled between cities labeled by $i$ and $j$. Since $d_{ij} q_{n, i} q_{n+1, j}$ adds $d_{ij}$ when both variables equal $1$, the problem is to minimize the total distance traveled. Note that the indices start at $0$ for convenience in later programmatic coding. Also, the end of $n+1$ ( $N$ ) returns to the starting point, so we will take the remainder in $N$.</p>
+$$</p>
+<p>$d_{ij}$ is the distance traveled between cities labeled by $i$ and $j$. Since $d_{ij} q_{n, i} q_{n+1, j}$ adds $d_{ij}$ when both variables equal $1$, the problem is to minimize the total distance traveled. Note that the indices start at $0$ for convenience in later programmatic coding. Also, the end of $n+1$ ( $N$ ) returns to the starting point, so we will take the remainder in $N$.</p>
 <p>However, this is not a sufficient formulation. This is because the above variable table does not take into account the constraints of &quot;visiting all cities&quot; and &quot;visiting only one city at a time&quot;. As an extreme example, the combination of not moving from the first city is allowed. We thus need to impose the following constraints on all the rows and columns of the variables table.</p>
-$$
+<p>$$
     \sum_{i=0}^{N-1}{q_{n, i}} = 1 \quad n \in \left\{0, 1, \cdots, N - 1 \right\}
-$$$$
+$$
+$$
     \sum_{n=0}^{N-1}{q_{n, i}} = 1 \quad i \in \left\{0, 1, \cdots, N - 1 \right\}
-$$<p>These imply the constraints that $1$ can appear only once in each row and each column of the variable table.</p>
+$$</p>
+<p>These imply the constraints that $1$ can appear only once in each row and each column of the variable table.</p>
 <p>Summarizing the above, it turns out that we need to find the minimum value of the following polynomial:</p>
 <ul>
-<li>Objective function</li>
-</ul>
+<li><p>Objective function
 $$
 \sum_{n=0}^{N-1}{\sum_{i=0}^{N-1}{\sum_{j=0}^{N-1}{ d_{ij} q_{n, i} q_{n+1, j} }}}
-$$<ul>
-<li>Constraints</li>
-</ul>
+$$</p>
+</li>
+<li><p>Constraints
 $$
-    \sum_{i=0}^{N-1}{q_{n, i}} = 1 \quad n \in \left\{0, 1, \cdots, N - 1 \right\}
-$$$$
-    \sum_{n=0}^{N-1}{q_{n, i}} = 1 \quad i \in \left\{0, 1, \cdots, N - 1 \right\}
-$$<h2 id="Creating-a-problem">Creating a problem<a class="anchor-link" href="#Creating-a-problem">&#182;</a></h2><p>First, we create the distances between each city, which will be the input for the Traveling Salesman Problem. Here we use <code>numpy</code> to generate the distance matrix by placing the cities at random locations on a two-dimensional plane. The following function was created to generate a random Traveling Salesman Problem by giving the number of cities.</p>
+  \sum_{i=0}^{N-1}{q_{n, i}} = 1 \quad n \in \left\{0, 1, \cdots, N - 1 \right\}
+$$
+$$
+  \sum_{n=0}^{N-1}{q_{n, i}} = 1 \quad i \in \left\{0, 1, \cdots, N - 1 \right\}
+$$</p>
+</li>
+</ul>
+<h2 id="Creating-a-problem">Creating a problem<a class="anchor-link" href="#Creating-a-problem">&#182;</a></h2><p>First, we create the distances between each city, which will be the input for the Traveling Salesman Problem. Here we use <code>numpy</code> to generate the distance matrix by placing the cities at random locations on a two-dimensional plane. The following function was created to generate a random Traveling Salesman Problem by giving the number of cities.</p>
 
 </div>
 </div>
@@ -15824,13 +15940,15 @@ However, making the strength of the constraints as small as possible tends to im
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Reducing-the-objective-function">Reducing the objective function<a class="anchor-link" href="#Reducing-the-objective-function">&#182;</a></h3><p>The lower bound on the strength of the constraint term depends on the objective function term, whose value corresponds to the longest distance between cities in the optimal solution path. This can also be interpreted that this dependency is related to the size of the coefficient $d_{ij}$ in the objective function. If we can reduce the size of $d_{ij}$, we can further reduce the strength of the constraint term relatively to the cost terms, which may lead to a higher quality solution.</p>
 <p>We thus modify the distances for city $i$ and city $j$ by</p>
-$$
+<p>$$
 d_{ij}' = d_{ij} - \min_{j \ne i} d_{ij}
-$$<p>When we look at the city $i$, we shrink all the distances from the city $i$ by the distance between the city $i$ and its closest city. This allows us to reduce $d_{ij}$ in its entirety. The off-diagonal terms in the distance matrix are $d_{ij}'\ne d_{ji}'$, making it an asymmetric Traveling Salesman Problem.</p>
+$$</p>
+<p>When we look at the city $i$, we shrink all the distances from the city $i$ by the distance between the city $i$ and its closest city. This allows us to reduce $d_{ij}$ in its entirety. The off-diagonal terms in the distance matrix are $d_{ij}'\ne d_{ji}'$, making it an asymmetric Traveling Salesman Problem.</p>
 <p>Therefore, the objective function is changed as follows:</p>
-$$
+<p>$$
 \sum_{n=0}^{N-1}{\sum_{i=0}^{N-1}{\sum_{j=0}^{N-1}{ d_{ij}' q_{n, i} q_{n+1, j} }}} + \sum_{i=0}^{N-1}{\min_{j \ne i} d_{ij}}
-$$<p>We add a constant term which compensates for the modified distances for each city. Since the path always goes through one city only once, this gives the same value as the original objective function.</p>
+$$</p>
+<p>We add a constant term which compensates for the modified distances for each city. Since the path always goes through one city only once, this gives the same value as the original objective function.</p>
 <p>The code will be modified as follows:</p>
 
 </div>
@@ -15945,11 +16063,12 @@ $$<p>We add a constant term which compensates for the modified distances for eac
 <p>More specifically, it has rotational symmetry because it does not define a starting point for a path. It also has inversion symmetry for rightward and leftward paths, which we will discuss later. As a result, there are $2 N$ possible solution states for the same path. First, we will try to reduce the number of variables required by fixing the starting point to contract the problem.</p>
 <p>To fix the starting point, we can put the appropriate values in the variables beforehand, which is the minimal change from the previous formulations.</p>
 <p>It is possible to assign values to the variable table. For example, we can fix the first city to visit to $i = 0$. In other words, we can make substitutions for some variables in the following way:</p>
-$$
+<p>$$
     q_{0, 0} = 1 \\
     q_{0, i} = 0 \quad \left( i \ne 0 \right) \\
     q_{n, 0} = 0 \quad \left( n \ne 0 \right)
-$$<p>This can be done as follows:</p>
+$$</p>
+<p>This can be done as follows:</p>
 
 </div>
 </div>
@@ -16019,9 +16138,10 @@ By reducing the number of variables, we can expect some improvement in the quali
 <p>Suppose we fix the starting point to $i = 0$ and obtain the path <code>[0 2 4 3 6 5 1 7]</code>. In the current formulation, its inversion <code>[0 7 1 5 6 3 4 2]</code> is also the same solution. To break this symmetry, we focus on the indices of the next and previous cities of the starting point. In the former solution, $i = 2 \left(n=1 \right) &lt; 7 \left(n=7 \right)$, but in the latter, the inequality is inverted to $i = 7 \left(n=1 \right) &gt; 2 \left(n=7 \right)$.</p>
 <p>If we fix this inequality, we can break the inversion symmetry. To make the former so that $n = 1, N - 1$ is in ascending order, add the following constraint:</p>
 <p><strong>Constraints (additional)</strong></p>
-$$
+<p>$$
 q_{N-1,i} q_{1,j} = 0 \quad \left( i &lt; j \right)
-$$<p>This expression prohibits $q_{N-1,i}, q_{1,j}$ from both being $1$ for $i &lt; j$. For such constraints with the minimum value of 0, we can use the <code>constraint.penalty</code> function and write as below:</p>
+$$</p>
+<p>This expression prohibits $q_{N-1,i}, q_{1,j}$ from both being $1$ for $i &lt; j$. For such constraints with the minimum value of 0, we can use the <code>constraint.penalty</code> function and write as below:</p>
 
 </div>
 </div>

@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15157,30 +15266,36 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </table>
 <p>表の各要素に変数 ${0,1}$ を割り当て、ある経路の順番について $1$ となる変数に対応する都市を通ると解釈します。すなわち、$N$ 都市の巡回セールスマン問題については $N^2$ の変数を用意すれば良いです。</p>
 <p>上記の表における各変数を経路の順番 $n$ と都市のインデックス $i$ を用いて、$q_{n,i}$ と表すことにします。すると全移動経路は、</p>
-$$
+<p>$$
  \sum_{n=0}^{N-1}{\sum_{i=0}^{N-1}{\sum_{j=0}^{N-1}{ d_{ij} q_{n, i} q_{n+1, j} }}}
-$$<p>で表されます。ここで $d_{ij}$ は都市 $i$ と都市 $j$ の間の移動距離です。</p>
+$$</p>
+<p>で表されます。ここで $d_{ij}$ は都市 $i$ と都市 $j$ の間の移動距離です。</p>
 <p>$d_{ij} q_{n, i} q_{n+1, j}$ は両方の変数が $1$ になる時に $d_{ij}$ を加算するので、移動距離の合計を最小化する問題になっています。後でプログラムコード化する都合により、インデックスは $0$ からスタートしていることに注意してください。また、$n+1$ の最後 ( $N$ ) は始点に戻るため $N$ で剰余を取る事にします。</p>
 <p>しかしこれだけでは定式化として不十分です。なぜなら、上記の変数テーブルは「全ての都市を通る」という制約と「同時に一つだけ通る」という制約が考慮されていないためです。極端な例として、最初の都市から動かないという組合せも許されています。そこで変数テーブルの全ての行と列に対して次のような制約を課します。</p>
-$$
+<p>$$
     \sum_{i=0}^{N-1}{q_{n, i}} = 1 \quad n \in \left\{0, 1, \cdots, N - 1 \right\}
-$$$$
+$$
+$$
     \sum_{n=0}^{N-1}{q_{n, i}} = 1 \quad i \in \left\{0, 1, \cdots, N - 1 \right\}
-$$<p>これは変数テーブルの取り得る値のうち、各行と各列に $1$ が一回しか現れない制約を意味します。</p>
+$$</p>
+<p>これは変数テーブルの取り得る値のうち、各行と各列に $1$ が一回しか現れない制約を意味します。</p>
 <p>上記をまとめると、次の二値多変数多項式の最小値を求めれば良いことがわかりました。</p>
 <ul>
-<li>コスト関数</li>
-</ul>
+<li><p>コスト関数
 $$
 \sum_{n=0}^{N-1}{\sum_{i=0}^{N-1}{\sum_{j=0}^{N-1}{ d_{ij} q_{n, i} q_{n+1, j} }}}
-$$<ul>
-<li>制約条件</li>
+$$</p>
+</li>
+<li><p>制約条件
+$$
+  \sum_{i=0}^{N-1}{q_{n, i}} = 1 \quad n \in \left\{0, 1, \cdots, N - 1 \right\}
+$$
+$$
+  \sum_{n=0}^{N-1}{q_{n, i}} = 1 \quad i \in \left\{0, 1, \cdots, N - 1 \right\}
+$$</p>
+</li>
 </ul>
-$$
-    \sum_{i=0}^{N-1}{q_{n, i}} = 1 \quad n \in \left\{0, 1, \cdots, N - 1 \right\}
-$$$$
-    \sum_{n=0}^{N-1}{q_{n, i}} = 1 \quad i \in \left\{0, 1, \cdots, N - 1 \right\}
-$$
+
 </div>
 </div>
 </div>
@@ -15839,13 +15954,15 @@ $$
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="%E3%82%B3%E3%82%B9%E3%83%88%E9%96%A2%E6%95%B0%E3%81%AE%E7%B8%AE%E5%B0%8F">&#12467;&#12473;&#12488;&#38306;&#25968;&#12398;&#32302;&#23567;<a class="anchor-link" href="#%E3%82%B3%E3%82%B9%E3%83%88%E9%96%A2%E6%95%B0%E3%81%AE%E7%B8%AE%E5%B0%8F">&#182;</a></h3><p>制約項の強さの下限値はコスト関数項に依存し、その値は最適解の経路に含まれる都市間の最長距離が対応します。これはコスト関数における係数 $d_{ij}$ の大きさに依存していると解釈することも出来ます。もし、$d_{ij}$ の大きさを縮小することが出来れば、相対的に制約項をさらに小さくすることが可能になり、より品質の高い解が得られることを期待できます。</p>
 <p>そこで都市 $i$ と 都市 $j$ の距離の定義を改変します。</p>
-$$
+<p>$$
 d_{ij}' = d_{ij} - \min_{j \ne i} d_{ij}
-$$<p>都市 $i$ に着目したときに、最も近い別の都市の距離だけ縮めています。これにより $d_{ij}$ を全体的に縮小できます。距離行列の非対角項は $d_{ij} \ne d_{ji}$ となるため非対称巡回セールスマン問題となっています。</p>
+$$</p>
+<p>都市 $i$ に着目したときに、最も近い別の都市の距離だけ縮めています。これにより $d_{ij}$ を全体的に縮小できます。距離行列の非対角項は $d_{ij} \ne d_{ji}$ となるため非対称巡回セールスマン問題となっています。</p>
 <p>よってコスト関数は次のように変更されます。</p>
-$$
+<p>$$
 \sum_{n=0}^{N-1}{\sum_{i=0}^{N-1}{\sum_{j=0}^{N-1}{ d_{ij}' q_{n, i} q_{n+1, j} }}} + \sum_{i=0}^{N-1}{\min_{j \ne i} d_{ij}}
-$$<p>定数項を追加し各都市において差し引いた分を全て足しています。経路は必ず1カ所を1回だけ通るので、これにより元のコスト関数と同一の値を取ります。</p>
+$$</p>
+<p>定数項を追加し各都市において差し引いた分を全て足しています。経路は必ず1カ所を1回だけ通るので、これにより元のコスト関数と同一の値を取ります。</p>
 <p>コードは次のように改変されます。</p>
 
 </div>
@@ -15959,11 +16076,12 @@ $$<p>定数項を追加し各都市において差し引いた分を全て足し
 <p>具体的にはある経路に対して始点を定めていないために回転対称性を持ちます。また後述する右回り・左回り経路の反転対称性も持ちます。結果として、同一の経路に対し $2N$ 通りの解の状態が存在します。まずは始点を固定することで問題を縮約化し必要となる変数の数が少なくなるように試みます。</p>
 <p>始点を固定化するには、あらかじめそのような状況を考慮して定式化することも出来ますが、事前に変数に値を入れておくことで、これまでの定式化から最小限の変更で行う事が可能です。</p>
 <p>変数テーブルには値を代入することが可能なので、例えば最初に訪れる都市を $i=0$ に固定化します。つまり、</p>
-$$
+<p>$$
     q_{0, 0} = 1 \\
     q_{0, i} = 0 \quad \left( i \ne 0 \right) \\
     q_{n, 0} = 0 \quad \left( n \ne 0 \right)
-$$<p>を設定すれば良いです。これは次のようにします。</p>
+$$</p>
+<p>を設定すれば良いです。これは次のようにします。</p>
 
 </div>
 </div>
@@ -16033,9 +16151,10 @@ $$<p>を設定すれば良いです。これは次のようにします。</p>
 <p>始点を $i = 0$ に固定化した上で、例えば経路 <code>[0 2 4 3 6 5 1 7]</code> が得られたとします。現在の定式化では、これを反転した <code>[0 7 1 5 6 3 4 2]</code> もまた同一の解です。この対称性を破るには、始点の次と前の都市のインデックスに着目します。前者の解では、$i = 2 \left(n=1 \right) &lt; 7 \left(n=7 \right)$  ですが、後者では $i = 7 \left(n=1 \right) &gt; 2 \left(n=7 \right)$ と不等号が反転しています。</p>
 <p>この不等号を固定化すれば反転対称性を破ることが出来ます。前者のように $n = 1, N - 1$ で昇順になるようにするには、次の制約条件を追加します。</p>
 <p><strong>制約条件 (追加)</strong></p>
-$$
+<p>$$
 q_{N-1,i} q_{1,j} = 0 \quad \left( i &lt; j \right)
-$$<p>この式は $i &lt; j$ において $q_{N-1,i}, q_{1,j}$ が共に $1$ となることを禁止しています。このように最小値0をとる制約については、 <code>amplify.constraint.penalty</code> 関数を用いて次のように書けます。</p>
+$$</p>
+<p>この式は $i &lt; j$ において $q_{N-1,i}, q_{1,j}$ が共に $1$ となることを禁止しています。このように最小値0をとる制約については、 <code>amplify.constraint.penalty</code> 関数を用いて次のように書けます。</p>
 
 </div>
 </div>

@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15135,9 +15244,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Number-Division-Problem">Number Division Problem<a class="anchor-link" href="#Number-Division-Problem">&#182;</a></h2><p>As a concrete example of a combinatorial optimization problem, let's consider the number partitioning problem.</p>
 <p>Suppose that the set of $n$ integers $A$ is given as follows.</p>
-$$
+<p>$$
 A = \{a_0, a_1, \cdots, a_{n-1} \}
-$$<p>Consider the division of $A$ into two sets $A_0$ and $A_1$. The following problems are considered to be the number division problem:</p>
+$$</p>
+<p>Consider the division of $A$ into two sets $A_0$ and $A_1$. The following problems are considered to be the number division problem:</p>
 <ul>
 <li>Decision problem: Determine if there exists a partition of a set such that the sum of the elements of $A_0$ is equal to the sum of the elements of $A_1$.</li>
 <li>Optimization problem: Find the partition of the set that minimizes the difference between the sum of the elements of $A_0$ and the sum of the elements of $A_1$.</li>
@@ -15165,14 +15275,15 @@ $$</p>
 The objective function is a function of the above binary or Ising variables, such that it takes the minimum value if the conditions to be sought are satisfied.
 Here, in order to find a partition that satisfies the condition $S_0 = S_1$, we set the objective function as $(S_1 - S_0)^2$. When this condition is satisfied, the objective function becomes $0$ and takes the minimum value.
 Thus, using binary or Ising variables, the objective function $f$ can be expressed as follows:</p>
-$$
+<p>$$
 \begin{align}
 f &amp;= \left(S_1 - S_0\right)^2
 = \left(\sum_{a_i\in A_1}a_i - \sum_{a_i\in A_0}a_i\right)^2\\
 &amp;= \left(\sum_{i=0}^{n-1}(2q_i -1)a_i\right)^2 \quad \text{(Binary)}\\
 &amp;= \left(\sum_{i=0}^{n-1} a_i s_i \right)^2\quad \text{(Ising)}
 \end{align}
-$$<p>The conversion from line 1 to line 2 (line 3) used the fact that $a_i$ is assigned to $A_0$ or $A_1$ when $q_i=1$ ($s_i=1$) or $q_i=0$ ($s_i=-1$), respectively.
+$$</p>
+<p>The conversion from line 1 to line 2 (line 3) used the fact that $a_i$ is assigned to $A_0$ or $A_1$ when $q_i=1$ ($s_i=1$) or $q_i=0$ ($s_i=-1$), respectively.
 By checking whether the value of $f$ is $0$ or not, we can check whether the resulting partition satisfies the condition or not.</p>
 
 </div>
@@ -15187,9 +15298,10 @@ By checking whether the value of $f$ is $0$ or not, we can check whether the res
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Implementation-with-Amplify">Implementation with Amplify<a class="anchor-link" href="#Implementation-with-Amplify">&#182;</a></h2><h3 id="Implementation-with-Ising-Variables">Implementation with Ising Variables<a class="anchor-link" href="#Implementation-with-Ising-Variables">&#182;</a></h3><p>Ising variables are binary variables in $s_i\in\{1, -1\in\}$. You can generate an array of Ising variables by giving <code>IsingPoly</code> as an argument to <code>gen_symbols</code>.</p>
 <p>The objective function using the Ising variable is given by:</p>
-$$
+<p>$$
 f = \left(\sum_{i=0}^{N-1}s_ia_i\right)^2
-$$<p>Let's implement this in Amplify.</p>
+$$</p>
+<p>Let's implement this in Amplify.</p>
 
 </div>
 </div>
@@ -15539,9 +15651,10 @@ $$<p>Let's implement this in Amplify.</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Implementation-with-Binary-Variables">Implementation with Binary Variables<a class="anchor-link" href="#Implementation-with-Binary-Variables">&#182;</a></h3><p>Binary variables are binary variables of $q_i\in\{1, 0\}$. You can generate an array of binary variables by giving <code>BinaryPoly</code> as an argument to <code>gen_symbols</code>.</p>
 <p>The objective function with binary variables is given as follows:</p>
-$$
+<p>$$
 f = \left(\sum_{i=0}^{N-1}(2q_i -1)a_i\right)^2
-$$<p>Let's implement this in Amplify.</p>
+$$</p>
+<p>Let's implement this in Amplify.</p>
 
 </div>
 </div>

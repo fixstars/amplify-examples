@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15127,12 +15236,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li>The original image and the image with noise have relatively large overlaps.</li>
 <li>In the original image, neighboring pixels often have the same color.</li>
 </ul>
-<p>We use black and white images here as a simple example. 
+<p>We use black and white images here as a simple example.
 Since the data of a pixel can be represented by a binary value of black and white, the value of each pixel can be expressed a binary variable.
 By formulating an objective function which represents the interaction between pixels expressing the above assumptions, the original image can be estimated by finding the optimal value of this function.</p>
 <h2 id="Constructing-the-Objective-Function">Constructing the Objective Function<a class="anchor-link" href="#Constructing-the-Objective-Function">&#182;</a></h2><p>We let $V$ be the set of pixels, and let $i\in V$ be the index representing each pixel.
 We then let the binary valued data representing the input pixels with noise be $y$, where the value of each pixel is expressed as follows:</p>
-$$
+<p>$$
 y_{i} = \left\{
 \begin{align}
 &amp;+1 \quad\text{(white)}\\
@@ -15140,8 +15249,9 @@ y_{i} = \left\{
 \end{align}
 \right. \quad
 i\in V\\
-$$<p>Also, the binary Ising variables corresponding to the output pixels are represented as follows:</p>
-$$
+$$</p>
+<p>Also, the binary Ising variables corresponding to the output pixels are represented as follows:</p>
+<p>$$
 s_{i} = \left\{
 \begin{align}
 &amp;+1 \quad\text{(White)}\\
@@ -15149,22 +15259,26 @@ s_{i} = \left\{
 \end{align}
 \right. \quad
 i\in V\\
-$$<p>Based on the assumption that the input and output images are are relatively close (i.e., there is not much noise), we need the effect that the input and output pixels have the same values. In other words, we introduce an objective function such that $s_i$ and $y_i$ become smaller when they have the same value. For example, it is given as follows:</p>
-$$
+$$</p>
+<p>Based on the assumption that the input and output images are are relatively close (i.e., there is not much noise), we need the effect that the input and output pixels have the same values. In other words, we introduce an objective function such that $s_i$ and $y_i$ become smaller when they have the same value. For example, it is given as follows:</p>
+<p>$$
 f_1 = - \sum_{i\in V} y_{i} s_{i}
-$$<p>Since the value of the above objective function decreases when $y_{i}$ and $s_{i}$ have the same value and increases when they have different values, $f_1$ takes the minimum value when $y_{i} = s_{i}$ for all $i\in V$. However, since the input image has noise on it, the noise cannot be reduced if the output image is the same as the input image.</p>
+$$</p>
+<p>Since the value of the above objective function decreases when $y_{i}$ and $s_{i}$ have the same value and increases when they have different values, $f_1$ takes the minimum value when $y_{i} = s_{i}$ for all $i\in V$. However, since the input image has noise on it, the noise cannot be reduced if the output image is the same as the input image.</p>
 <p>We thus consider the assumption that neighboring pixels tend to be the same color.
 In other words, we introduce an objective function that reduces the value when neighboring output pixels have the same value. For example, it is given as follows:</p>
-$$
+<p>$$
 f_2 = -\sum_{(i,j)\in E} s_i s_j
-$$<p>Here, the set of adjacent pixel pairs is defined as $E$. If all the output pixels have the same value, $f_2$ takes the smallest value. However, if all pixels have the same value, every pixel will turn out to be white or black, and the information in the original image will be lost.</p>
+$$</p>
+<p>Here, the set of adjacent pixel pairs is defined as $E$. If all the output pixels have the same value, $f_2$ takes the smallest value. However, if all pixels have the same value, every pixel will turn out to be white or black, and the information in the original image will be lost.</p>
 <p>Therefore, by appropriately adding $f_1$ and $f_2$ together, we try to remove the pixels that are considered to be noise while making the output image close to the input image.</p>
-$$
+<p>$$
 \begin{align}
 f &amp; = f_1 + \eta f_2\\
 &amp;=- \sum_{i\in V}y_is_i - \eta \sum_{(i,j)\in E}s_i s_j
 \end{align}
-$$<p>Here, we have introduced the parameter $\eta&gt;0$. This allows us to adjust the relative strength of $f_1$ and $f_2$. The larger the value of $\eta$ is, the stronger the effect of the noise reduction term is.</p>
+$$</p>
+<p>Here, we have introduced the parameter $\eta&gt;0$. This allows us to adjust the relative strength of $f_1$ and $f_2$. The larger the value of $\eta$ is, the stronger the effect of the noise reduction term is.</p>
 <p>By minimizing this objective function and interpreting the values of the Ising variables $s$ as the values of the pixels, we can obtain an image with reduced noise.</p>
 <h2 id="Reference">Reference<a class="anchor-link" href="#Reference">&#182;</a></h2><ul>
 <li><a href="https://annealing-cloud.com/ja/play/demoapp/noise.html">Annealing Cloud Web: Demo App</a></li>

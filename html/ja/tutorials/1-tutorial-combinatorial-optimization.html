@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15136,9 +15245,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="%E6%95%B0%E3%81%AE%E5%88%86%E5%89%B2%E5%95%8F%E9%A1%8C">&#25968;&#12398;&#20998;&#21106;&#21839;&#38988;<a class="anchor-link" href="#%E6%95%B0%E3%81%AE%E5%88%86%E5%89%B2%E5%95%8F%E9%A1%8C">&#182;</a></h2><p>組合せ最適化問題の具体例として、数の分割問題について考えてみます。</p>
 <p>$n$ 個の整数の集合 $A$ が</p>
-$$
+<p>$$
 A = \{a_0, a_1, \cdots, a_{n-1} \}
-$$<p>で与えられているとします。 $A$ を二つの集合 $A_0$ と $A_1$ に分割することを考えます。以下のような問題が数の分割問題です。</p>
+$$</p>
+<p>で与えられているとします。 $A$ を二つの集合 $A_0$ と $A_1$ に分割することを考えます。以下のような問題が数の分割問題です。</p>
 <ul>
 <li>判定問題: 「$A_0$ の要素の和」と「$A_1$ の要素の和」が等しくなるような集合の分割が存在するか判定する</li>
 <li>最適化問題: 「$A_0$ の要素の和」と 「$A_1$ の要素の和」の差が最小となる集合の分割を求める</li>
@@ -15166,14 +15276,15 @@ $$</p>
 目的関数は上記のバイナリ変数、もしくはイジング変数の関数であり、求めるべき条件が満たされた場合に最小値をとるような関数です。
 ここでは、 $S_0 = S_1$ の条件を満たす分割を探すため、目的関数を $(S_1 - S_0)^2$ とすると、条件が満たされた時に $0$ となり最小値をとります。
 したがって、バイナリ変数、またはイジング変数を使うと、目的関数 $f$ は以下のように書き下すことができます。</p>
-$$
+<p>$$
 \begin{align}
 f &amp;= \left(S_1 - S_0\right)^2
 = \left(\sum_{a_i\in A_1}a_i - \sum_{a_i\in A_0}a_i\right)^2\\
 &amp;= \left(\sum_{i=0}^{n-1}(2q_i -1)a_i\right)^2 \quad \text{(Binary)}\\
 &amp;= \left(\sum_{i=0}^{n-1} a_i s_i \right)^2\quad \text{(Ising)}
 \end{align}
-$$<p>1行目から2行目（3行目）への変換は、$q_i=1$ ($s_i=1$) または $q_i=0$ ($s_i=-1$) によって、$a_i$ は $A_0$ または $A_1$ に割り当てられることを使いました。
+$$</p>
+<p>1行目から2行目（3行目）への変換は、$q_i=1$ ($s_i=1$) または $q_i=0$ ($s_i=-1$) によって、$a_i$ は $A_0$ または $A_1$ に割り当てられることを使いました。
 $f$ の値が $0$ かどうか確認することで、条件を満たす分割がなされたかどうかを確かめることができます。</p>
 
 </div>
@@ -15189,9 +15300,10 @@ $f$ の値が $0$ かどうか確認することで、条件を満たす分割�
 <h2 id="Amplify%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85">Amplify&#12395;&#12424;&#12427;&#23455;&#35013;<a class="anchor-link" href="#Amplify%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85">&#182;</a></h2><h3 id="%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E5%A4%89%E6%95%B0%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85">&#12452;&#12472;&#12531;&#12464;&#22793;&#25968;&#12395;&#12424;&#12427;&#23455;&#35013;<a class="anchor-link" href="#%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E5%A4%89%E6%95%B0%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85">&#182;</a></h3><p>イジング変数は $s_i\in\{1, -1\}$ の二値変数です。
 <code>IsingSymbolGenerator</code> を用いてイジング変数の配列を生成することができます。</p>
 <p>イジング変数を用いた目的関数は次のように与えられます。</p>
-$$
+<p>$$
 f = \left(\sum_{i=0}^{N-1}s_ia_i\right)^2
-$$<p>これをAmplifyで実装してみます。</p>
+$$</p>
+<p>これをAmplifyで実装してみます。</p>
 
 </div>
 </div>
@@ -15538,9 +15650,10 @@ $$<p>これをAmplifyで実装してみます。</p>
 <h3 id="%E3%83%90%E3%82%A4%E3%83%8A%E3%83%AA%E5%A4%89%E6%95%B0%E3%81%A7%E3%81%AE%E5%AE%9F%E8%A3%85">&#12496;&#12452;&#12490;&#12522;&#22793;&#25968;&#12391;&#12398;&#23455;&#35013;<a class="anchor-link" href="#%E3%83%90%E3%82%A4%E3%83%8A%E3%83%AA%E5%A4%89%E6%95%B0%E3%81%A7%E3%81%AE%E5%AE%9F%E8%A3%85">&#182;</a></h3><p>バイナリ変数は $q_i\in\{1, 0\}$ の二値変数です。
 <code>BinarySymbolGenerator</code> を用いてバイナリ変数の配列を生成することができます。</p>
 <p>バイナリ変数を用いた目的関数は次のように与えられます。</p>
-$$
+<p>$$
 f = \left(\sum_{i=0}^{N-1}(2q_i -1)a_i\right)^2
-$$<p>これをAmplifyで実装してみます。</p>
+$$</p>
+<p>これをAmplifyで実装してみます。</p>
 
 </div>
 </div>

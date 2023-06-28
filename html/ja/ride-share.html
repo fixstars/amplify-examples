@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15149,23 +15258,25 @@ $\sum_{i=1}^Nq_{ik}\leq C(\forall k\in\{1,\dots,M\})$</li>
 <li>利用者がなるべく無駄な移動をしない<br />
 $\text{minimize}\quad\sum_{i,k}d_{ik}q_{ik}$</li>
 <li>車の使用台数をなるべく少なく抑えたい$\space\Rightarrow\space$一台あたりの乗車率を最大化する<br />
-   $\text{maximize}\quad\sum_{k}\left(\sum_i\frac{q_{ik}}{C}\right)^2$</li>
+$\text{maximize}\quad\sum_{k}\left(\sum_i\frac{q_{ik}}{C}\right)^2$</li>
 </ul>
 <p>これら二項目を考慮すると、以下の目的関数が考えられます。</p>
-$$\sum_{i,k}d_{ik}q_{ik}-\alpha\sum_{k}\left(\sum_i\frac{q_{ik}}{C}\right)^2$$<h4 id="Note">Note<a class="anchor-link" href="#Note">&#182;</a></h4><p>$\alpha$は車の使用台数をどのくらい重視するかを決定するパラメーターで、$\alpha&gt;0$を満たすとします。<br />
+<p>$$\sum_{i,k}d_{ik}q_{ik}-\alpha\sum_{k}\left(\sum_i\frac{q_{ik}}{C}\right)^2$$</p>
+<h4 id="Note">Note<a class="anchor-link" href="#Note">&#182;</a></h4><p>$\alpha$は車の使用台数をどのくらい重視するかを決定するパラメーターで、$\alpha&gt;0$を満たすとします。<br />
 $\alpha$が0に近いほど移動距離を小さくするように最適化が行われ、$\alpha$の値が大きいほど車の使用台数を小さくするように最適化が行われます。<br />
 $\alpha$が大きい場合には移動距離に関する項が軽視されることにもなるため、可視化結果は$\alpha$が小さい方が綺麗なものになります。</p>
 <h3 id="%E3%81%BE%E3%81%A8%E3%82%81">&#12414;&#12392;&#12417;<a class="anchor-link" href="#%E3%81%BE%E3%81%A8%E3%82%81">&#182;</a></h3><p>以上から、集合型ライドシェア問題は以下のようなQUBOとして定式化することができます。</p>
-$$
+<p>$$
 \begin{align}
 H&amp;=H_{\rm cost}+H_{\rm costraint}\\
 H_{\rm cost}&amp;= \sum_{i,k}d_{ik}q_{ik}-\alpha\sum_{k}\left(\sum_i\frac{q_{ik}}{C}\right)^2\\
 H_{\rm constraint} &amp;= k_1\sum_{i=1}^N\left(\sum_{k=1}^Mq_{ik}-1\right)^2+k_2\sum_{k=1}^M\left(\sum_{i=1}^Nq_{ik}-\sum_{l=0}^Cy_{lk}\right)^2
 \end{align}
-$$<p>ここで、$k_1, k_2$は制約の強さを決定する定数です。<br />
+$$</p>
+<p>ここで、$k_1, k_2$は制約の強さを決定する定数です。<br />
 解の実行可能性を担保するために、制約を破ることによって目的関数が改善しないように定数の大きさを設定する必要があります。<br />
 今回は少なくとも以下の不等式が成り立てば良いです。導出の詳細については省略します。</p>
-$$
+<p>$$
 \begin{align}
 k_1&amp;&gt;{\rm max}\left(− {\rm min\space}d_{ik}+
 \frac{2C − 1}{C^2}\alpha,\space
@@ -15173,7 +15284,8 @@ k_1&amp;&gt;{\rm max}\left(− {\rm min\space}d_{ik}+
 \right)\\
 k_2&amp;&gt;\frac{2C − 1}{C^2}\alpha
 \end{align}
-$$
+$$</p>
+
 </div>
 </div>
 </div>
@@ -15852,13 +15964,14 @@ $\sum_{k=M+1}^{M+N}q_k=\frac{N}{2}$</li>
 </li>
 </ul>
 <p>以上から、2クラスのクラスタリングは以下のようなQUBOとして定式化することができます。</p>
-$$
+<p>$$
 \begin{align}
 H&amp;=H_{\rm cost}+H_{\rm constraint}\\
 H_{\rm cost}&amp;=\sum_{i,j}d_{ij}(2q_i-1)(2q_j-1)\\
 H_{\rm constraint}&amp;=k_1\left(\sum_{k=1}^Mq_k-\frac{M}{2}\right)^2+k_1\left(\sum_{k=M+1}^{M+N}q_k-\frac{N}{2}\right)^2
 \end{align}
-$$<p>解の実行可能性を保証するために、定数$k_1$は不等式$k_1&gt;2{\space\rm max}\sum_jd_{ij}$を満たす必要があります。</p>
+$$
+解の実行可能性を保証するために、定数$k_1$は不等式$k_1&gt;2{\space\rm max}\sum_jd_{ij}$を満たす必要があります。</p>
 <h3 id="%E5%AE%9F%E8%A3%85">&#23455;&#35013;<a class="anchor-link" href="#%E5%AE%9F%E8%A3%85">&#182;</a></h3><p>以上の定式化を元に、amplifyを用いて実装していきます。<br />
 まずは変数を定義します。</p>
 

@@ -15101,7 +15101,116 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     }
     init_mathjax();
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script type="module">
+  document.addEventListener("DOMContentLoaded", async () => {
+    const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+    // do not load mermaidjs if not needed
+    if (!diagrams.length) {
+      return;
+    }
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.esm.min.mjs")).default;
+
+    mermaid.initialize({
+      maxTextSize: 100000,
+      startOnLoad: false,
+      fontFamily: window
+        .getComputedStyle(document.body)
+        .getPropertyValue("--jp-ui-font-family"),
+      theme: document.querySelector("body[data-jp-theme-light='true']")
+        ? "default"
+        : "dark",
+    });
+
+    let _nextMermaidId = 0;
+
+    function makeMermaidImage(svg) {
+      const img = document.createElement('img');
+      const maxWidth = svg.match(/max-width: (\d+)/);
+      if (maxWidth && maxWidth[1]) {
+        const width = parseInt(maxWidth[1]);
+        if (width && !Number.isNaN(width) && Number.isFinite(width)) {
+          img.width = width;
+        }
+      }
+      img.setAttribute('src', `data:image/svg+xml,${encodeURIComponent(svg)}`);
+      return img;
+    }
+
+    async function makeMermaidError(text) {
+      let errorMessage = '';
+      try {
+        await mermaid.parse(text);
+      } catch (err) {
+        errorMessage = `${err}`;
+      }
+
+      const result = document.createElement('details');
+      const summary = document.createElement('summary');
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.innerText = text;
+      pre.appendChild(code);
+      summary.appendChild(pre);
+      result.appendChild(summary);
+
+      const warning = document.createElement('pre');
+      warning.innerText = errorMessage;
+      result.appendChild(warning);
+      return result;
+    }
+
+    async function renderOneMarmaid(src) {
+      const id = `jp-mermaid-${_nextMermaidId++}`;
+      const parent = src.parentNode;
+      let raw = src.textContent.trim();
+      const el = document.createElement("div");
+      el.style.visibility = "hidden";
+      document.body.appendChild(el);
+      let result = null;
+      try {
+        const { svg } = await mermaid.render(id, raw, el);
+        result = makeMermaidImage(svg);
+      } catch (err) {
+        parent.classList.add("jp-mod-warning");
+        result = await makeMermaidError(raw);
+      } finally {
+        el.remove();
+      }
+      parent.classList.add("jp-RenderedMermaid");
+      parent.appendChild(result);
+    }
+
+    void Promise.all([...diagrams].map(renderOneMarmaid));
+  });
+</script>
+<style>
+  .jp-RenderedMarkdown .jp-Mermaid:not(.jp-RenderedMermaid) {
+    display: none;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning {
+    width: auto;
+    padding: 10px;
+    border: var(--jp-border-width) solid var(--jp-warn-color2);
+    border-radius: var(--jp-border-radius);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning details > pre {
+    margin-top: 1em;
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary {
+    color: var(--jp-warn-color2);
+  }
+  .jp-RenderedMarkdown .jp-RenderedMermaid.jp-mod-warning summary > pre {
+    display: inline-block;
+  }
+  .jp-RenderedMermaid > .mermaid {
+    display: none;
+  }
+</style>
+<!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -15441,22 +15550,26 @@ The penalty function $g_{\mathrm{OR}}$ expressing the OR constraint satisfies th
 <h2 id="Equality-Constraint">Equality Constraint<a class="anchor-link" href="#Equality-Constraint">&#182;</a></h2><h3 id="Representing-Equality-Constraints-with-Penalty-Functions">Representing Equality Constraints with Penalty Functions<a class="anchor-link" href="#Representing-Equality-Constraints-with-Penalty-Functions">&#182;</a></h3><p>In this section, we explain equality constraints.</p>
 <p>Given a function $k(\mathbf{x})$ with variables $\mathbf{x}=x_0, x_1,\cdots$, it may be necessary to constrain the value of this function to a constant value $c$, as in $k(\mathbf{x}) = c$.</p>
 <p>Such an equality constraint can be expressed by a penalty function $g$ as follows:</p>
-$$
+<p>$$
 g(\mathbf{x}) = \left(k(\mathbf{x}) - c\right)^2
-$$<p>If $\mathbf{x}$ satisfies the constraint, the penalty function is $g(\mathbf{x})=0$ and takes the minimum value. If $\mathbf{x}$ does not satisfy the constraint condition, the penalty function will be greater than $0$ and a penalty will be imposed. Therefore, if the penalty function has a minimum value of $0$, the equality constraint is satisfied, and if it takes other values, the constraint is not satisfied.</p>
+$$</p>
+<p>If $\mathbf{x}$ satisfies the constraint, the penalty function is $g(\mathbf{x})=0$ and takes the minimum value. If $\mathbf{x}$ does not satisfy the constraint condition, the penalty function will be greater than $0$ and a penalty will be imposed. Therefore, if the penalty function has a minimum value of $0$, the equality constraint is satisfied, and if it takes other values, the constraint is not satisfied.</p>
 <h3 id="One-hot-Constraints">One-hot Constraints<a class="anchor-link" href="#One-hot-Constraints">&#182;</a></h3><p>As an example of equality constraints, we introduce the one-hot constraint.</p>
 <p>Given $N$ binary variables $q_0, q_1, \cdots, q_{N-1}$, we may want to impose a constraint such that only one of these variables will be $1$ and all others will be $0$.
 Such a constraint is called a one-hot constraint and can be expressed as the following equation:</p>
-$$
+<p>$$
 \sum_{i=0}^{N-1}q_i = q_0 + q_1 + \cdots + q_{N-1} = 1
-$$<p>The penalty function for this constraint is the following, which takes a minimum value of $0$ if the constraint condition is satisfied, and a positive value otherwise.</p>
-$$
+$$</p>
+<p>The penalty function for this constraint is the following, which takes a minimum value of $0$ if the constraint condition is satisfied, and a positive value otherwise.</p>
+<p>$$
 g(\mathbf{q}) = \left(\sum_{i=0}^{N-1}q_i - 1\right)^2
-$$<p>In the following, we will show how to implement and check the penalty function for the one-hot constraint when there are three binary variables.</p>
+$$</p>
+<p>In the following, we will show how to implement and check the penalty function for the one-hot constraint when there are three binary variables.</p>
 <p>By running a program that imposes the constraint $q_0 + q_1 + q_2 = 1$ on the three binary variables $q_0, q_1, q_2$, we can confirm the following:</p>
-$$
+<p>$$
 (q_0, q_1, q_2) = (0, 0, 1),\, (0, 1, 0),\, (1, 0, 0)
-$$
+$$</p>
+
 </div>
 </div>
 </div>
@@ -15504,13 +15617,15 @@ $$
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Handling-Equality-Constraints-in-Amplify">Handling Equality Constraints in Amplify<a class="anchor-link" href="#Handling-Equality-Constraints-in-Amplify">&#182;</a></h3><p>Consider creating three binary variables $\mathbf{q} = (q_0, q_1, q_2)$ and imposing the following equality constraint between these variables:</p>
-$$
+<p>$$
 q_0  q_1 + q_2 = 1
-$$<p>Amplify can create objects for equality constraints using the <code>equal_to</code> function. Unlike <code>penalty</code>, the <code>equal_to</code> function has no restrictions on the range or minimum value of the function in question (we recommend using the <code>penalty</code> function when available, due to the complexity of the formulation).</p>
+$$</p>
+<p>Amplify can create objects for equality constraints using the <code>equal_to</code> function. Unlike <code>penalty</code>, the <code>equal_to</code> function has no restrictions on the range or minimum value of the function in question (we recommend using the <code>penalty</code> function when available, due to the complexity of the formulation).</p>
 <p>With this constraint, we can confirm that we get the following four solutions by running the following source code:</p>
-$$
+<p>$$
 (q_0, q_1, q_2) = (1, 1, 0),\, (1, 0, 1),\, (0, 0, 1),\, (0, 1, 1)
-$$<p>Here, it is useful to use the <code>sum_poly</code> function provided by Amplify to sum the variables.</p>
+$$</p>
+<p>Here, it is useful to use the <code>sum_poly</code> function provided by Amplify to sum the variables.</p>
 
 </div>
 </div>
