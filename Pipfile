@@ -20,5 +20,8 @@ numpy = "*"
 torch = "*"
 scikit-learn = "*"
 mypy = "*"
+ipympl = "*"
+sigfig = "*"
+
 [requires]
 python_version = "3"
