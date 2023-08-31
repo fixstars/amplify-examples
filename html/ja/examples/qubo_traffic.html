@@ -7482,7 +7482,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E4%BA%A4%E9%80%9A%E4%BF%A1%E5%8F%B7%E3%81%AE%E6%9C%80%E9%81%A9%E5%8C%96%EF%BC%8DQUBO-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AB%E5%9F%BA%E3%81%A5%E3%81%8F%E5%AE%9F%E8%A3%85">交通信号の最適化－QUBO 定式化に基づく実装<a class="anchor-link" href="#%E4%BA%A4%E9%80%9A%E4%BF%A1%E5%8F%B7%E3%81%AE%E6%9C%80%E9%81%A9%E5%8C%96%EF%BC%8DQUBO-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AB%E5%9F%BA%E3%81%A5%E3%81%8F%E5%AE%9F%E8%A3%85">¶</a></h1><p>交通渋滞は経済及び環境保全の観点から重要な社会問題であると考えられます。本サンプルコードでは、都市において渋滞がなるべき起きないように、刻一刻と変化する交通状況に応じ、組合せ最適化を用いてリアルタイムに信号機を制御することを考えます。その様な信号制御を <a href="https://amplify.fixstars.com/ja/demo/1-tutorial-combinatorial-optimization">QUBO 定式化</a>に基づく組合せ最適化問題として考慮し、交通量をシミュレーションします。</p>
+<h1 id="%E4%BA%A4%E9%80%9A%E4%BF%A1%E5%8F%B7%E3%81%AE%E6%9C%80%E9%81%A9%E5%8C%96%EF%BC%8DQUBO-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AB%E5%9F%BA%E3%81%A5%E3%81%8F%E5%AE%9F%E8%A3%85">交通信号の最適化－QUBO 定式化に基づく実装<a class="anchor-link" href="#%E4%BA%A4%E9%80%9A%E4%BF%A1%E5%8F%B7%E3%81%AE%E6%9C%80%E9%81%A9%E5%8C%96%EF%BC%8DQUBO-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AB%E5%9F%BA%E3%81%A5%E3%81%8F%E5%AE%9F%E8%A3%85">¶</a></h1><p>交通渋滞は経済及び環境保全の観点から重要な社会問題であると考えられます。本サンプルコードでは、都市において渋滞がなるべき起きないように、刻一刻と変化する交通状況に応じてリアルタイムに信号機制御することを考えます。その様な信号制御を <a href="https://amplify.fixstars.com/ja/demo/1-tutorial-combinatorial-optimization">QUBO 定式化</a>に基づく組合せ最適化問題として考慮し、交通量をシミュレーションします。</p>
 <p>同様の信号機制御への取り組みとして、ブラックボックス最適化（機械学習と組合せ最適化の融合）とマルチ・エージェント・シミュレーションによる応用例を<a href="https://amplify.fixstars.com/ja/demo/fmqa_4_traffic">こちら</a>で紹介していますので、合わせてご覧ください。</p>
 <p>QUBO 式に基づいて信号制御を行う、本サンプルプログラムの問題設定、信号機制御に関する定式化及び実装は次の順番で行います。</p>
 <ul>
@@ -8770,7 +8770,7 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="4"></a></p>
 <h2 id="4.-%E3%81%BE%E3%81%A8%E3%82%81">4. まとめ<a class="anchor-link" href="#4.-%E3%81%BE%E3%81%A8%E3%82%81">¶</a></h2><p>本サンプルコードでは、単純化された都市交通に対して、組合せ最適化に基づくリアルタイムな信号機制御を導入し、そのような制御を行った場合の交通シミュレーションを実施しました。単純化には、全ての交差点において、直進・右左折する車の割合を定数に置く、という仮定がありますが、過去の交通データに基づき、本割合を各交差点ごと・各時刻ごとに設定にすることで、より現実的な交通における信号機制御が可能になると考えられます。</p>
-<p>本サンプルコードでは、刻一刻と変化する交通状態に応じたリアルタイムな信号機制御を実施しましたが、過去の交通状況の観測データ（又はシミュレーション結果）に基づき、統計的に最適な信号機制御をブラックボックス最適化を用いて実現することも可能です。そのようなブラックボックス最適化に関するサンプルコードは<a href="XXX">こちら</a>に紹介しています。</p>
+<p>本サンプルコードでは、刻一刻と変化する交通状態に応じたリアルタイムな信号機制御を実施しましたが、過去の交通状況の観測データ（又はシミュレーション結果）に基づき、統計的に最適な信号機制御をブラックボックス最適化を用いて実現することも可能です。そのようなブラックボックス最適化に関するサンプルコードは<a href="https://amplify.fixstars.com/ja/demo/fmqa_4_traffic">こちら</a>に紹介しています。</p>
 </div>
 </div>
 </div>
