@@ -7692,16 +7692,18 @@ $$
  $$</p>
 </li>
 </ol>
-<p>これらの関数を足し合わせることで、最終的な目的関数 $\text{cost}$ を得ることができます。</p>
+<p>これらの関数を足し合わせることで、最終的な目的関数 $\text{cost}$ を得ることができます。
+$$
+\text{car\_bias\_cost} = \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2
+$$</p>
 <p>$$
-\begin{align*}
-\text{car\_bias\_cost} &amp;= \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2\\
-
-\text{signal\_cost} &amp;= \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2\\
-
-\text{car\_flow\_cost} &amp;= \sum_{i}^{N^2}-\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)\\[20pt]  
-\text{cost} &amp;= \alpha \times \text{car\_bias\_cost} + \beta \times \text{signal\_cost} + \gamma \times \text{car\_flow\_cost}
-\end{align*}
+\text{signal\_cost} = \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2
+$$</p>
+<p>$$
+\text{car\_flow\_cost} = \sum_{i}^{N^2}-\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)
+$$</p>
+<p>$$
+\text{cost} = \alpha \times \text{car\_bias\_cost} + \beta \times \text{signal\_cost} + \gamma \times \text{car\_flow\_cost}
 $$</p>
 <p>ここで、$\alpha$、$\beta$、$\gamma$ はそれぞれの目的関数の項の重みであり、これらを調整することでより良い結果を得ることができます。
 ここで、$\alpha,\beta,\gamma &gt; 0$ です。</p>
@@ -7719,16 +7721,19 @@ $$</p>
 <p><a id="2_3"></a></p>
 <h3 id="2_3.-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81">2_3. 定式化のまとめ<a class="anchor-link" href="#2_3.-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81">¶</a></h3><p>以上から、交通信号最適化問題は以下のように定式化できます。制約条件はありません。</p>
 <p>$$
-\begin{align*}
-\text{minimize}\quad \text{cost} &amp;= \alpha \times \text{car\_bias\_cost} + \beta \times \text{signal\_cost} + \gamma \times \text{car\_flow\_cost}\\[10pt]
-\text{car\_bias\_cost} &amp;= \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2\\
-
-\text{signal\_cost} &amp;= \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2\\
-
-\text{car\_flow\_cost} &amp;= \sum_{i}^{N^2}-\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)\\
-
-s_i(t) &amp;\in \{-1, 1\}
-\end{align*}
+\text{minimize}\quad \text{cost} = \alpha \times \text{car\_bias\_cost} + \beta \times \text{signal\_cost} + \gamma \times \text{car\_flow\_cost}
+$$</p>
+<p>$$
+\text{car\_bias\_cost} = \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2
+$$</p>
+<p>$$
+\text{signal\_cost} = \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2
+$$</p>
+<p>$$
+\text{car\_flow\_cost} = \sum_{i}^{N^2}-\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)
+$$</p>
+<p>$$
+s_i(t) \in \{-1, 1\}
 $$</p>
 </div>
 </div>
