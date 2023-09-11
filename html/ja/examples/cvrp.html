@@ -7482,7 +7482,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E5%AE%B9%E9%87%8F%E5%88%B6%E7%B4%84%E3%81%A4%E3%81%8D%E9%81%8B%E6%90%AC%E7%B5%8C%E8%B7%AF%E5%95%8F%E9%A1%8C(Capacitated-Vehicle-Routing-Problem,-CVRP)">容量制約つき運搬経路問題(Capacitated Vehicle Routing Problem, CVRP)<a class="anchor-link" href="#%E5%AE%B9%E9%87%8F%E5%88%B6%E7%B4%84%E3%81%A4%E3%81%8D%E9%81%8B%E6%90%AC%E7%B5%8C%E8%B7%AF%E5%95%8F%E9%A1%8C(Capacitated-Vehicle-Routing-Problem,-CVRP)">¶</a></h1><p>このチュートリアルでは、運搬経路問題 (VRP) の一種である容量制約つき運搬経路問題を扱います。</p>
+<h1 id="%E5%AE%B9%E9%87%8F%E5%88%B6%E7%B4%84%E3%81%A4%E3%81%8D%E9%81%8B%E6%90%AC%E7%B5%8C%E8%B7%AF%E5%95%8F%E9%A1%8C-(Capacitated-Vehicle-Routing-Problem,-CVRP)">容量制約つき運搬経路問題 (Capacitated Vehicle Routing Problem, CVRP)<a class="anchor-link" href="#%E5%AE%B9%E9%87%8F%E5%88%B6%E7%B4%84%E3%81%A4%E3%81%8D%E9%81%8B%E6%90%AC%E7%B5%8C%E8%B7%AF%E5%95%8F%E9%A1%8C-(Capacitated-Vehicle-Routing-Problem,-CVRP)">¶</a></h1><p>このチュートリアルでは、運搬経路問題 (VRP) の一種である容量制約つき運搬経路問題を扱います。</p>
 <p>具体的な応用先として、</p>
 <ul>
 <li>郵便などの運送業における効率的な配送計画の策定</li>
@@ -8720,6 +8720,10 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="%E7%B5%90%E6%9E%9C%E5%8F%96%E5%BE%97%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">結果取得・可視化<a class="anchor-link" href="#%E7%B5%90%E6%9E%9C%E5%8F%96%E5%BE%97%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">¶</a></h3><p>続いて結果の取り出し・可視化を行います。</p>
 <p>得られた解を整形する関数 <code>onehot2_sequence</code>、<a href="#post_process"></a>冒頭で述べた後処理を行う関数 <code>process_sequence</code> を定義します。三角不等式を用いることで後処理後の移動距離が後処理前の距離以下になることが証明できます。<code>Solver</code> から返却された One-hot バイナリベクトルから、訪問順に番号が入ったリストを作成する <code>onehot2_sequence</code> 関数を次のように実装します。</p>
+<p>※以下の型ヒントの書き方は、Python3.9 以上に対応しています。ローカル環境で実施される場合などで、Python3.6 以上 3.9 未満の環境の場合、<code>Dict</code> をインポートし、関数の <code>def</code> 文を次のように書き換えてください。</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="k">def</span> <span class="nf">onehot2_sequence</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+</pre></div>
 </div>
 </div>
 </div>
