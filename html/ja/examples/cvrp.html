@@ -8720,10 +8720,7 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="%E7%B5%90%E6%9E%9C%E5%8F%96%E5%BE%97%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">結果取得・可視化<a class="anchor-link" href="#%E7%B5%90%E6%9E%9C%E5%8F%96%E5%BE%97%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">¶</a></h3><p>続いて結果の取り出し・可視化を行います。</p>
 <p>得られた解を整形する関数 <code>onehot2_sequence</code>、<a href="#post_process"></a>冒頭で述べた後処理を行う関数 <code>process_sequence</code> を定義します。三角不等式を用いることで後処理後の移動距離が後処理前の距離以下になることが証明できます。<code>Solver</code> から返却された One-hot バイナリベクトルから、訪問順に番号が入ったリストを作成する <code>onehot2_sequence</code> 関数を次のように実装します。</p>
-<p>※以下の型ヒントの書き方は、Python3.9 以上に対応しています。ローカル環境で実施される場合などで、Python3.6 以上 3.9 未満の環境の場合、<code>Dict</code> をインポートし、関数の <code>def</code> 文を次のように書き換えてください。</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
-<span class="k">def</span> <span class="nf">onehot2_sequence</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-</pre></div>
+<p>※以下の型ヒントの書き方は、Python3.9 以上に対応しています。ローカル環境で実施される場合などで、これより古い環境 (Python3.8) の場合、<code>from __future__ import annotations</code> を追加インポートしてください。</p>
 </div>
 </div>
 </div>
@@ -8735,7 +8732,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">onehot2_sequence</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># from __future__ import annotations # Python3.8 の場合はこちらのコメントアウトを外してください。</span>
+
+
+<span class="k">def</span> <span class="nf">onehot2_sequence</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
     <span class="n">nvehicle</span> <span class="o">=</span> <span class="n">x_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">sequence</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvehicle</span><span class="p">):</span>
