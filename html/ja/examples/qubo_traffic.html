@@ -7692,19 +7692,19 @@ $$
  $$</p>
 </li>
 </ol>
-<p>これらの関数を足し合わせることで、最終的な目的関数 $\text{cost}$ を得ることができます。
-$$
-\text{car\_bias\_cost} = \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2
-$$</p>
-<p>$$
-\text{signal\_cost} = \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2
-$$</p>
-<p>$$
-\text{car\_flow\_cost} = \sum_{i}^{N^2}-\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)
-$$</p>
-<p>$$
-\text{cost} = \alpha \times \text{car\_bias\_cost} + \beta \times \text{signal\_cost} + \gamma \times \text{car\_flow\_cost}
-$$</p>
+<p>これらの関数を足し合わせることで、最終的な目的関数 $\text{cost}$ を得ることができます。</p>
+<ul>
+<li><p><code>car_bias_cost</code> $\displaystyle= \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2$</p>
+</li>
+<li><p><code>car_bias_cost</code> $\displaystyle= \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2$</p>
+</li>
+<li><p><code>signal_cost</code> $\displaystyle= \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2$</p>
+</li>
+<li><p><code>car_flow_cost</code> $\displaystyle= -\sum_{i}^{N^2}\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)$</p>
+</li>
+<li><p><code>cost</code> $\displaystyle= \alpha \times$ <code>car_bias_cost</code> $\displaystyle+ \beta \times$ <code>signal_cost</code> $\displaystyle+ \gamma \times$ <code>car_flow_cost</code></p>
+</li>
+</ul>
 <p>ここで、$\alpha$、$\beta$、$\gamma$ はそれぞれの目的関数の項の重みであり、これらを調整することでより良い結果を得ることができます。
 ここで、$\alpha,\beta,\gamma &gt; 0$ です。</p>
 <p>本サンプルコードでは、この目的関数 $\text{cost}$ を最小化するような現在の時刻 $t$ での信号の状態 $s(t)$ を組合せ最適化により求める、という操作を各時刻で繰り返します。</p>
@@ -7719,22 +7719,19 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="2_3"></a></p>
-<h3 id="2_3.-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81">2_3. 定式化のまとめ<a class="anchor-link" href="#2_3.-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81">¶</a></h3><p>以上から、交通信号最適化問題は以下のように定式化できます。制約条件はありません。</p>
-<p>$$
-\text{minimize}\quad \text{cost} = \alpha \times \text{car\_bias\_cost} + \beta \times \text{signal\_cost} + \gamma \times \text{car\_flow\_cost}
-$$</p>
-<p>$$
-\text{car\_bias\_cost} = \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2
-$$</p>
-<p>$$
-\text{signal\_cost} = \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2
-$$</p>
-<p>$$
-\text{car\_flow\_cost} = \sum_{i}^{N^2}-\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)
-$$</p>
-<p>$$
-s_i(t) \in \{-1, 1\}
-$$</p>
+<h3 id="2.3.-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81">2.3. 定式化のまとめ<a class="anchor-link" href="#2.3.-%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E3%81%BE%E3%81%A8%E3%82%81">¶</a></h3><p>以上から、交通信号最適化問題は以下のように定式化できます。制約条件はありません。</p>
+<ul>
+<li><p>minimize <code>cost</code> $= \alpha\: \times$ <code>car_bias_cost</code> $+ \beta\: \times$ <code>signal_cost</code> $+ \gamma\: \times$ <code>car_flow_cost</code></p>
+</li>
+<li><p><code>car_bias_cost</code> $\displaystyle= \sum_{i}^{N^2}\Bigl(\bigl(q_i^n(t+1)+q_i^s(t+1)\bigr)-\bigl(q_i^e(t+1)+q_i^w(t+1)\bigr)\Bigr)^2$</p>
+</li>
+<li><p><code>signal_cost</code> $\displaystyle= \sum_{i}^{N^2}\left(\frac{s_i(t)-s_i(t-1)}{2}\right)^2$</p>
+</li>
+<li><p><code>car_flow_cost</code> $\displaystyle= \sum_{i}^{N^2}-\left(\frac{1+s_i(t)}{2}\bigl(q_i^n(t)+q_i^s(t)\bigr)-\frac{1-s_i(t)}{2}\bigl(q_i^e(t)+q_i^w(t)\bigr)\right)$</p>
+</li>
+<li><p>$s_i(t) \in \{-1, 1\}$</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
