@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Lucas2014_9_graph_isomorphisms</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>lucas2014_6_3_job_sequencing_with_integer_lengths</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7476,13 +7476,13 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f134bea6">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=18d29b19">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="A.-Lucas,-Front.-Phys.-(2014)-%E6%8E%B2%E8%BC%89%E4%BE%8B%E9%A1%8C%E3%81%AE%E5%AE%9F%E8%A3%85%E3%81%A8%E8%A7%A3%E8%AA%AC-%E3%83%BC-%E3%82%B0%E3%83%A9%E3%83%95%E5%90%8C%E5%9E%8B%E6%80%A7%E5%88%A4%E5%AE%9A%E5%95%8F%E9%A1%8C">A. Lucas, Front. Phys. (2014) 掲載例題の実装と解説 ー グラフ同型性判定問題<a class="anchor-link" href="#A.-Lucas,-Front.-Phys.-(2014)-%E6%8E%B2%E8%BC%89%E4%BE%8B%E9%A1%8C%E3%81%AE%E5%AE%9F%E8%A3%85%E3%81%A8%E8%A7%A3%E8%AA%AC-%E3%83%BC-%E3%82%B0%E3%83%A9%E3%83%95%E5%90%8C%E5%9E%8B%E6%80%A7%E5%88%A4%E5%AE%9A%E5%95%8F%E9%A1%8C">¶</a></h1><p>本サンプルコードでは、論文 <a href="https://www.frontiersin.org/articles/10.3389/fphy.2014.00005/full">A. Lucas, Front. Phys. (2014)</a> で紹介されている『グラフ同型性判定問題』に Fixstars Amplify を用いて取り組みます。同論文に紹介されている他の NP 完全・NP 困難な問題も以下で解説しています（カッコ内は論文内で問題に対応する節番号）。</p>
+<h1 id="A.-Lucas,-Front.-Phys.-(2014)-%E6%8E%B2%E8%BC%89%E4%BE%8B%E9%A1%8C%E3%81%AE%E5%AE%9F%E8%A3%85%E3%81%A8%E8%A7%A3%E8%AA%AC-%E3%83%BC-%E6%95%B4%E6%95%B0%E9%95%B7%E3%82%B8%E3%83%A7%E3%83%96%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E5%95%8F%E9%A1%8C">A. Lucas, Front. Phys. (2014) 掲載例題の実装と解説 ー 整数長ジョブスケジューリング問題<a class="anchor-link" href="#A.-Lucas,-Front.-Phys.-(2014)-%E6%8E%B2%E8%BC%89%E4%BE%8B%E9%A1%8C%E3%81%AE%E5%AE%9F%E8%A3%85%E3%81%A8%E8%A7%A3%E8%AA%AC-%E3%83%BC-%E6%95%B4%E6%95%B0%E9%95%B7%E3%82%B8%E3%83%A7%E3%83%96%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E5%95%8F%E9%A1%8C">¶</a></h1><p>本サンプルコードでは、論文 <a href="https://www.frontiersin.org/articles/10.3389/fphy.2014.00005/full">A. Lucas, "Ising formulations of many NP problems", <em>Front. Phys.</em> (2014)</a> で紹介されている『整数長ジョブスケジューリング問題』に Fixstars Amplify を用いて取り組みます。同論文に紹介されている他の NP 完全・NP 困難な問題も以下で解説しています（カッコ内は論文内で問題に対応する節番号）。</p>
 <ul>
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_2_2_graph_partitioning">グラフの分割問題</a>（2.2節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_2_3_cliques">最大クリーク問題</a>（2.3節）</li>
@@ -7493,40 +7493,41 @@ a.anchor-link {
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_4_5_minimal_maximal_matching">最小極大マッチング問題</a>（4.5節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_6_1_graph_coloring">グラフ彩色問題</a>（6.1節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_6_2_clique_cover">クリーク被覆問題</a>（6.2節）</li>
-<li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_6_3_job_sequencing_with_integer_lengths">整数長ジョブスケジューリング問題</a>（6.3節）</li>
+<li>数長ジョブスケジューリング問題（6.3節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_7_1_hamiltonian_cycles_and_paths">ハミルトン閉路問題</a>（7.1節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_8_3_directed_feedback_vertex_set">有向帰還頂点集合問題</a>（8.3節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_8_5_feedback_edge_set">最小帰還辺集合問題</a>（8.5節）</li>
-<li>グラフ同型性判定問題（9節）</li>
+<li><a href="https://amplify.fixstars.com/ja/demo/Lucas2014_9_graph_isomorphisms">グラフ同型性判定問題</a>（9節）</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=49c39025">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b2b767d0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E3%82%B0%E3%83%A9%E3%83%95%E5%90%8C%E5%9E%8B%E6%80%A7%E5%88%A4%E5%AE%9A%E5%95%8F%E9%A1%8C">グラフ同型性判定問題<a class="anchor-link" href="#%E3%82%B0%E3%83%A9%E3%83%95%E5%90%8C%E5%9E%8B%E6%80%A7%E5%88%A4%E5%AE%9A%E5%95%8F%E9%A1%8C">¶</a></h2><p>2 つの (単純) グラフが <strong>同型</strong> であるとは、それらの頂点同士の 1 対 1 対応 (同型写像) があって、片方のグラフの 2 つの頂点が辺で結ばれているならば、もう片方のグラフにおいてもそれらと対応する 2 つの頂点が辺で結ばれていることをいいます。
-別の言い方をすると、2 つのグラフを、それぞれ頂点をうまく並べて描画すると同じ絵になるとき、それらは同型となります。</p>
-<p>一般に、グラフのサイズが大きいとき、2 つのグラフが同型であるかどうかを現実的な時間で判定することは困難です。ここでは、Fixstars Amplify を用いて同型写像を探索するプログラムを作成します。本サンプルプログラムの定式化は <a href="https://www.frontiersin.org/articles/10.3389/fphy.2014.00005/full">A. Lucas, Front. Phys. (2014)</a> の 9 節のものに沿って行います。</p>
+<h2 id="%E3%82%B8%E3%83%A7%E3%83%96%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6%E5%95%8F%E9%A1%8C">ジョブ割り当て問題<a class="anchor-link" href="#%E3%82%B8%E3%83%A7%E3%83%96%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6%E5%95%8F%E9%A1%8C">¶</a></h2><p>$N$ 個のジョブがあり、それぞれのジョブにかかる時間が分かっているとします。それらのジョブを実行できるマシンが $M$ 台あり、$N$ 個のジョブそれぞれをいずれかのマシンに割り当てます。すべてのジョブが完了するまでの時間が最も早くなる割り当て方を求めることを考えます。</p>
+<p>ただし、それぞれのマシンは割り当てられたジョブを直列に実行します。つまり、1 つのマシンが複数のジョブを同時に行うことはできません。また、それぞれのジョブにかかる時間は整数であるものとしておきます。</p>
+<p>たとえば、それぞれ 1 時間ずつかかるジョブが 3 つあり、マシンが 2 台のとき、2 つのジョブを片方のマシンに、 1 つのジョブをもう片方のマシンに割り当てると、すべてのジョブが完了するまで 2 時間かかります。また、2 時間未満ですべてのジョブを完了することはできないので、これが最適解となります。</p>
+<p>ここでは、Fixstars Amplify を用いてこのジョブ割り当て問題を解くプログラムを作成します。定式化は <a href="https://www.frontiersin.org/articles/10.3389/fphy.2014.00005/full">A. Lucas, Front. Phys. (2014)</a> の 6.3 節のものに沿って行います。</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3eab0fa2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ba0333c8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E5%95%8F%E9%A1%8C%E3%81%AE%E4%BD%9C%E6%88%90">問題の作成<a class="anchor-link" href="#%E5%95%8F%E9%A1%8C%E3%81%AE%E4%BD%9C%E6%88%90">¶</a></h2><p>まず、NetworkX を用いて適当なグラフ $G_1$ と $G_2$ を作成します。このとき、 $G_1$ と $G_2$ が同型になるようにしておきます。</p>
+<h2 id="%E5%95%8F%E9%A1%8C%E3%81%AE%E4%BD%9C%E6%88%90">問題の作成<a class="anchor-link" href="#%E5%95%8F%E9%A1%8C%E3%81%AE%E4%BD%9C%E6%88%90">¶</a></h2><p>まず、例題として使用する問題を作成しておきます。ジョブの数とマシンの数、およびそれぞれのジョブにかかる時間を決定します。</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d5e02c98">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5729c9a1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7534,199 +7535,169 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># グラフの頂点の数</span>
+<span class="c1"># マシンの数</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mi">3</span>
 
-<span class="n">G1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="n">G1</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
-<span class="n">elist1</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
-<span class="n">G1</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">elist1</span><span class="p">)</span>
+<span class="c1"># ジョブの数</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">7</span>
 
-<span class="n">pos1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">(</span><span class="n">G1</span><span class="p">)</span>
+<span class="c1"># 各ジョブにかかる時間</span>
+<span class="n">job_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G1</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b3d2bca6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">G2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="n">G2</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
-<span class="n">elist2</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
-<span class="n">G2</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">elist2</span><span class="p">)</span>
-
-<span class="n">pos2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">circular_layout</span><span class="p">(</span><span class="n">G2</span><span class="p">)</span>
-
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G2</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos2</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">N</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">job_lengths</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2eea7b7b">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0f55eacb">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>これらの 2 つのグラフをたとえば以下の図のように対応させると同型写像となります。片方のグラフにおいて、 色 A の頂点と色 B の頂点が辺で結ばれているとき、もう片方のグラフにおいても 色 A の頂点と色 B の頂点が辺で結ばれていることを確認してください（ここでは各頂点に記載の番号は無視してください）。</p>
-<p><img alt="図" src="data:image/png;base64,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"/></p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=059a6b2c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E5%AE%9A%E5%BC%8F%E5%8C%96">定式化<a class="anchor-link" href="#%E5%AE%9A%E5%BC%8F%E5%8C%96">¶</a></h2><p>$G_1$ と $G_2$ の頂点数が異なる場合は明らかに同型ではないので、以下 $G_1$ と $G_2$ の頂点数が同じ場合のみ考えます。$G_1$ の頂点数を $N$ とします。次のように定式化を行います。</p>
-<h3 id="%E6%B1%BA%E5%AE%9A%E5%A4%89%E6%95%B0">決定変数<a class="anchor-link" href="#%E6%B1%BA%E5%AE%9A%E5%A4%89%E6%95%B0">¶</a></h3><p>2 つのグラフの対応付けを表すために、$N\times N$ のバイナリ変数テーブル $q$ を用意します。
-$G_1$ の $i$ 番目の頂点と $G_2$ の $j$ 番目の頂点が対応しているとき、$q$ の $i$ 行 $j$ 列が $1$ となるようにします。</p>
-<p>たとえば、上の図において、辺で結ばれている頂点の番号と色の対応を $G_1$, $G_2$ で比較すると、2 つのグラフは以下のように対応していました。</p>
+<h2 id="%E5%AE%9A%E5%BC%8F%E5%8C%96">定式化<a class="anchor-link" href="#%E5%AE%9A%E5%BC%8F%E5%8C%96">¶</a></h2><p>以下、$i$ 番目のジョブにかかる時間を $L_i$ とします。</p>
+<h3 id="%E6%96%B9%E9%87%9D">方針<a class="anchor-link" href="#%E6%96%B9%E9%87%9D">¶</a></h3><p>$N\times M$ のバイナリ変数テーブル $q$ を用意し、各ジョブをどのマシンで実行するかを表すことにします。
+$i$ 番目のジョブを マシン $j$ で行うとき、$q$ の $i$ 行 $j$ 列が $1$ となるようにします。</p>
+<p>たとえば、以下のような割り当て方に対応する $q$ は下の表のようになります。</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:center">G1 の頂点</th>
-<th style="text-align:center">G2 の頂点</th>
+<th>ジョブ</th>
+<th>マシン</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
+<td>ジョブ 0</td>
+<td>マシン 0</td>
 </tr>
 <tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
+<td>ジョブ 1</td>
+<td>マシン 2</td>
 </tr>
 <tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">4</td>
+<td>ジョブ 2</td>
+<td>マシン 2</td>
 </tr>
 <tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">1</td>
+<td>ジョブ 3</td>
+<td>マシン 1</td>
 </tr>
 <tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">3</td>
+<td>ジョブ 4</td>
+<td>マシン 1</td>
+</tr>
+<tr>
+<td>ジョブ 5</td>
+<td>マシン 1</td>
+</tr>
+<tr>
+<td>ジョブ 6</td>
+<td>マシン 1</td>
 </tr>
 </tbody>
 </table>
-<p>これをバイナリ変数 $q$ のテーブルで表すと、以下のようになります。</p>
+<br/>
 <table>
 <thead>
 <tr>
-<th style="text-align:center">G1 \ G2</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
+<th style="text-align:center">$q$</th>
+<th style="text-align:center">マシン 0</th>
+<th style="text-align:center">マシン 1</th>
+<th style="text-align:center">マシン 2</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
+<td style="text-align:center">ジョブ 0</td>
 <td style="text-align:center">1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
 </tr>
 <tr>
-<td style="text-align:center">2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
+<td style="text-align:center">ジョブ 1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
 </tr>
 <tr>
-<td style="text-align:center">3</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
+<td style="text-align:center">ジョブ 2</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
 </tr>
 <tr>
-<td style="text-align:center">4</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
+<td style="text-align:center">ジョブ 3</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">ジョブ 4</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">ジョブ 5</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">ジョブ 6</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
 </tr>
 </tbody>
 </table>
-<h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h3><p>グラフ同型性判定問題は条件をみたすものを見つける問題なので、目的関数は $0$（無し）で良いです。</p>
-<h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">制約条件<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">¶</a></h3><p>$q$ が同型写像を表すためには、以下が必要です。</p>
+<p>また、マシンの実行時間の最大値が何であるかを分かりやすくするために、
+マシン $0$ の実行時間が最も長くなるようにジョブを割り当てることにします。</p>
+<h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h3><p>マシン $0$ の実行時間が他のマシンの実行時間より長くなるようにジョブを割り当てるので、
+すべてのジョブを完了するまでにかかる時間はマシン $0$ の実行時間と等しくなります。
+したがって、目的関数はマシン $0$ の実行時間、つまりマシン $0$ に割り当てられたジョブにかかる時間の総和とすればよいです。
+これはジョブにかかる時間 $L$ を用いて</p>
+<p>$$
+\sum_{i = 0}^{N - 1} L_i q_{i, 0}
+$$</p>
+<p>と書けます。</p>
+<h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">制約条件<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">¶</a></h3><p>$q$ は以下をみたしている必要があります。</p>
 <ul>
-<li><p>条件 1： $G_1$ のそれぞれの頂点は、$G_2$ の頂点 $1$ つと対応している。つまり、$q$ の各行には $1$ つだけ $1$ がある。</p>
-</li>
-<li><p>条件 2： $G_2$ のそれぞれの頂点は、$G_1$ の頂点 $1$ つと対応している。つまり、$q$ の各列には $1$ つだけ $1$ がある。</p>
-</li>
-<li><p>条件 3： $G_1$ の頂点 $u$ と $v$ が辺で結ばれているならば、$u$, $v$ と対応する $G_2$ の $2$ つの頂点も辺で結ばれている。</p>
-</li>
-<li><p>条件 4： $G_2$ の頂点 $s$ と $t$ が辺で結ばれているならば、$s$, $t$ と対応する $G_1$ の $2$ つの頂点も辺で結ばれている。</p>
-</li>
+<li>条件 1 ： 各ジョブはちょうど 1 つのマシンに割り当てられる。つまり、$q$ の各行には $1$ が $1$ つだけある。</li>
+<li>条件 2 ： それぞれのマシンについて、そのマシンの実行時間はマシン $0$ の実行時間よりも短い。</li>
 </ul>
-<p>条件 1 と条件 2 は、</p>
-<p>\begin{align*}
-\sum_{j = 0}^{N-1} q_{i, j} = 1 \quad &amp; \text{for} \quad i \in \{0, 1, \ldots, N-1\} \\
-\sum_{i = 0}^{N-1} q_{i, j} = 1 \quad &amp; \text{for} \quad j \in \{0, 1, \ldots, N-1\}
-\end{align*}</p>
-<p>で表せます。</p>
-<p>条件 3 は、「$G_1$ の頂点 $u$ と $v$ が辺で結ばれていて、$G_2$ の頂点 $s$ と $t$ が辺で結ばれていないとき、
-$u$ と $s$ 、$v$ と $t$ がそれぞれ対応していることがあってはならない」と言い換えられるので、</p>
+<p>条件 1 は、</p>
 <p>$$
-q_{u, s} q_{v, t} = 0 \quad \text{for} \quad (u\rightarrow v) \in E_1, (s\rightarrow t) \notin E_2
-$$</p>
-<p>で表すことができます。ここで、$E_1$, $E_2$ はそれぞれ $G_1$, $G_2$ の辺集合です。</p>
-<p>同様に、条件 4 は</p>
-<p>$$
-q_{u, s} q_{v, t} = 0 \quad \text{for} \quad (u\rightarrow v) \notin E_1, (s\rightarrow t) \in E_2
+\sum_{j = 0}^{M-1} q_{i, j} = 1 \quad \text{for} \quad i \in \{0, 1, \ldots, N-1\} 
 $$</p>
 <p>で表せます。</p>
-<p>逆に、条件 1-4 が成り立っていれば、グラフ $G_1$ と $G_2$ は同型となります。</p>
-<p>以上で、グラフ同型性判定問題の定式化ができました。</p>
+<p>また、マシン $j$ の実行時間は $\sum_{i = 0}^{N - 1} L_i q_{i, j}$ で表せるので、条件 2 は</p>
+<p>$$
+\sum_{i = 0}^{N - 1} L_i q_{i, j} \leq \sum_{i = 0}^{N - 1} L_i q_{i, 0} \quad \text{for} \quad j \in \{1, 2, \ldots, M - 1\}
+$$</p>
+<p>と表現できます。</p>
+<p>逆に、条件 1 と条件 2 がみたされているとき、$q$ はジョブの割り当て方を表し、かつ目的関数はジョブが完了するまでの時間と等しくなります。</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ff0f3507">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7e3a34c4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E5%AE%9F%E8%A3%85">実装<a class="anchor-link" href="#%E5%AE%9F%E8%A3%85">¶</a></h2><p>上で作成した問題と定式化を使って、実際に問題を解いてみましょう。まず、<code>BinarySymbolGenerator</code> によりバイナリ決定変数 $q$ を作成します。</p>
+<h2 id="%E5%AE%9F%E8%A3%85">実装<a class="anchor-link" href="#%E5%AE%9F%E8%A3%85">¶</a></h2><p>上で作成した問題と定式化を使って、実際に問題を解いてみましょう。
+まず、Fixstars Amplify SDK の <code>BinarySymbolGenerator</code> を使って $N\times M$ 個のバイナリ変数 $q$ を作成します。</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b1dc3d83">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=643ae476">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7737,24 +7708,76 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">BinarySymbolGenerator</span>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">BinarySymbolGenerator</span><span class="p">()</span>
-<span class="n">q</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b1fdf571">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=16780eb5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>次に、条件 1 と 2 に対応する制約条件を作成します。これらは、$q$ のそれぞれの行と列にひとつだけ $1$ があるという条件でしたので、<code>one_hot</code> を使って書くことができます。</p>
+<p>次に、各マシンの総実行時間を計算する関数を作っておきます。マシン $j$ の総実行時間は、$\displaystyle \sum_{i = 0}^{N - 1} L_i q_{i, j}$ で表されます。この式の $L$ は各ジョブにかかる時間を表す配列であり、コード上では <code>job_lengths</code> という名前の numpy 配列です。<code>job_lengths</code> と $q$ の $j$ 列目との内積をとることで、総実行時間を計算することができます。</p>
+<p>この関数は、あとで目的関数と条件 2 の作成のために使用されます。</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6ab16a5a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cc061c67">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_execution_time</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">job_lengths</span> <span class="o">*</span> <span class="n">q</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=22d338aa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>次に、目的関数を作成します。先の説明の通り、目的関数はマシン $0$ の総実行時間です。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=91328d4d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">cost</span> <span class="o">=</span> <span class="n">calc_execution_time</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=35057f92">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>条件 1  に対応する制約条件を作成します。条件 1 は「それぞれのジョブはちょうど $1$ つのマシンに割り当てられる」ということを意味し、 $q$ の各行にひとつだけ $1$ があるという制約条件です。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0ae2ff11">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7765,24 +7788,23 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.constraint</span> <span class="kn">import</span> <span class="n">one_hot</span>
 
 <span class="n">constraint1</span> <span class="o">=</span> <span class="p">[</span><span class="n">one_hot</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
-<span class="n">constraint2</span> <span class="o">=</span> <span class="p">[</span><span class="n">one_hot</span><span class="p">(</span><span class="n">q</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4ffcac70">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f0b909de">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>条件 3 と 4 に対応する制約条件を作成します。条件 3 は、$q_{u, s} q_{v, t} = 0 \bigl((u\rightarrow v) \in E_1, (s\rightarrow t) \notin E_2 \bigr)$ という制約で、条件 4 は条件 3 の $G_1$ と $G_2$ を入れ替えたものです。</p>
+<p>条件 2 に対応する制約条件を作成します。条件 2 はマシン $0$ の実行時間は他のマシンの実行時間以上であるという条件でした。<code>less_equal</code> 等の不等式制約は、整数値をとる関数に対してしか使えないので注意してください。</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=455e4e3c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=de7b47d4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7790,18 +7812,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.constraint</span> <span class="kn">import</span> <span class="n">equal_to</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.constraint</span> <span class="kn">import</span> <span class="n">less_equal</span>
 
-<span class="n">G1_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G1</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span> <span class="o">+</span> <span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G1</span><span class="o">.</span><span class="n">edges</span><span class="p">]</span>  <span class="c1"># u --&gt; v に加え、v --&gt; u の辺も考慮</span>
-<span class="n">G1_not_edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G1_edges</span><span class="p">]</span>
-<span class="n">G2_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G2</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span> <span class="o">+</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G2</span><span class="o">.</span><span class="n">edges</span><span class="p">]</span>  <span class="c1"># u --&gt; v に加え、v --&gt; u の辺も考慮</span>
-<span class="n">G2_not_edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G2_edges</span><span class="p">]</span>
-
-<span class="n">constraint3</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">equal_to</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G1_edges</span> <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G2_not_edges</span>
-<span class="p">]</span>
-<span class="n">constraint4</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">equal_to</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G1_not_edges</span> <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G2_edges</span>
+<span class="n">constraint2</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">less_equal</span><span class="p">(</span><span class="n">calc_execution_time</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">-</span> <span class="n">calc_execution_time</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -7809,20 +7823,25 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7b90c6c1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d777f299">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>作成した制約条件をまとめて、論理模型に変換します。<code>BinaryQuadraticModel</code> を用いて明示的に論理模型に変換しなくても、後述のソルバークラス <code>Solver</code> にて暗黙的に実施されますので、</p>
-<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint3</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint4</span><span class="p">)</span>
+<p>作成した目的関数と制約条件をまとめて、論理模型に変換します。</p>
+<p>今回は、目的関数と制約条件を、<code>BinaryQuadraticModel</code> を使って明示的に論理模型に変換します。こうすることで、例えば、論理模型変換時に発行される補助変数を含めた論理変数の数を調べる、というような便利な機能を使うことが可能です。</p>
+<p>他のサンプルプログラムの多くでは、<code>BinaryQuadraticModel</code> を明示的に使わずに、目的関数と制約条件の和を次のように直接ソルバーに渡しています。ただし、この場合でも、ソルバーが内部的に <code>BinaryQuadraticModel</code> と同様の論理模型への変換を行っています。</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">cost</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint2</span><span class="p">)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="c1"># ← 内部的に論理模型へ変換</span>
 </pre></div>
-<p>としてもかまいません。ただし、明示的に論理模型に変換すると、求解前に論理模型の内部表現や内部状態の取得が可能です。</p>
+</blockquote>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4a828d5e">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=73a5344f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7832,26 +7851,49 @@ $$</p>
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">BinaryQuadraticModel</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">BinaryQuadraticModel</span><span class="p">(</span>
-    <span class="nb">sum</span><span class="p">(</span><span class="n">constraint1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint3</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint4</span><span class="p">)</span>
-<span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">BinaryQuadraticModel</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">constraint2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a4bd3bd3">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9ad2ce85">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>クライアントを設定して、Amplify Annealing Engine で実行します。</p>
+<p>また、今回使用している入力変数の数は $N \times M = 21$ ですが、作成した <code>model</code> には不等式制約が含まれるため、論理模型に変換される際に<a href="https://amplify.fixstars.com/ja/docs/constraint.html#constraint-inequality-method">補助変数が発行</a>されます。その結果、論理変数の数は $q$ に含まれるバイナリ決定変数の数よりも多くなります。実際に考慮される論理変数の数を確認してみましょう。</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a5c916d3">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=947f4279">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">num_logical_vars</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4c3d8cfb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>クライアントを設定し、Fixstars Amplify Annealing Engine (AE) で実行します。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d6e91305">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7875,17 +7917,17 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ec3dbb0a">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9813d8f8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>同型写像が見つかったかどうかを確認します。Solver は制約条件をみたす解を自動でフィルターするので、<code>result</code> が空でなければ同型写像が見つかったと分かります。</p>
+<p>解が見つかったかどうかを確認します。<code>Solver</code> は制約条件をみたす解を自動でフィルターするので、<code>result</code> が空でなければ、制約条件をみたす解が見つかったと分かります。</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7f3d42cf">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6005a9a7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7894,26 +7936,51 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"同型写像が見つかりませんでした。"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"解が見つかりませんでした。"</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"同型写像が見つかりました。"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"解が見つかりました。"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0d2623c3">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=478eb657">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>最後に、同型写像である 2 つのグラフの対応する頂点同士を同じ色で表示します。</p>
+<p>すべてのジョブが完了するまでの時間は目的関数の値と等しいので、以下のようにして確認できます。</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=db79d372">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=39ade096">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=29fb8873">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>最後に、結果を可視化します。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0f15952a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7924,26 +7991,17 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">values</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">assigned_machines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="c1"># G1 の頂点 i と G2 の頂点 vertex_map[i] が対応する</span>
-<span class="n">vertex_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="sa">f</span><span class="s2">"C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
-
-<span class="c1"># G2 の i 番目の頂点を i 番目の色で塗ることにする</span>
-<span class="n">colors2</span> <span class="o">=</span> <span class="n">colors</span>
-<span class="c1"># G1 の i 番目の頂点は G2 の vertex_map[i] 番目の頂点と同じ色で塗る</span>
-<span class="n">colors1</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">vertex_map</span><span class="p">]</span>
+<span class="c1"># x軸を描画</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"machine </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)])</span>
 
 <span class="c1"># 描画</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span>
-    <span class="n">G1</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">colors1</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span>
-    <span class="n">G2</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">colors2</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="p">)</span>
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>  <span class="c1"># 現在の棒グラフの上端</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">assigned_machines</span><span class="p">):</span>
+    <span class="n">bar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">job_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">bar_label</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">"job </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span> <span class="n">label_type</span><span class="o">=</span><span class="s2">"center"</span><span class="p">)</span>
+    <span class="n">bottom</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">job_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
