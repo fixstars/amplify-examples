@@ -4,6 +4,7 @@ channels:
 dependencies:
   - python=3.10
   - appmode
+  - traitlets<5.10.0
   - pip
   - pip:
       - amplify>=0.10.4, <1.0.0
@@ -19,5 +20,5 @@ dependencies:
       - sklearn
       - torch
       - scikit-learn
-      - ipympl
       - sigfig
+      - ipympl
