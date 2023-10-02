@@ -7704,10 +7704,10 @@ $$</p>
 
 <span class="n">df_req</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_req</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"各店舗の要求従業員数"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_req</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_req</span><span class="p">)</span>
 <span class="n">df_worker_loc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_worker_loc</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">各従業員の勤務希望度"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_worker_loc</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_worker_loc</span><span class="p">)</span>
 
 <span class="n">workers</span> <span class="o">=</span> <span class="n">df_worker_loc</span><span class="p">[</span><span class="s2">"worker_id"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">locations</span> <span class="o">=</span> <span class="n">df_req</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
@@ -8132,7 +8132,7 @@ $$</p>
 <span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_df</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"従業員ごとの割り当て先店舗"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8166,7 +8166,7 @@ $$</p>
 <span class="p">]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"店舗ごとの充足率"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">fill_rate</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fill_rate</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8371,7 +8371,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"店舗ごとの役職別の要求人数"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_req</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_req</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8397,7 +8397,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"従業員ごとの各店舗に対する勤務希望度"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_worker_loc</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_worker_loc</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8424,7 +8424,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"従業員ごとの役職別の資格情報"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_worker_skill</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_worker_skill</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8859,7 +8859,7 @@ $$</p>
 <span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_df</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"従業員ごとの店舗と役職の割当て"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8942,7 +8942,7 @@ $$</p>
 <span class="n">df_result_fill_rate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_result_fill_rate</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"店舗ごとの役職別の充足率"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_result_fill_rate</span><span class="o">.</span><span class="n">style</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result_fill_rate</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9192,7 +9192,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"店舗ごとの役職別の要求人数"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_req</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_req</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9218,7 +9218,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"従業員ごとの各店舗に対する勤務希望度"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_worker_loc</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_worker_loc</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9244,7 +9244,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"従業員ごとの役職別のスキル情報"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_worker_skill</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_worker_skill</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9734,7 +9734,7 @@ $$</p>
 <span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_df</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"従業員ごとの店舗と役職の割当て"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9799,7 +9799,7 @@ $$</p>
 <span class="n">df_result_skills</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_result</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"店舗ごとの要求スキル量に対する充足率"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_result_skills</span><span class="o">.</span><span class="n">style</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result_skills</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9877,7 +9877,7 @@ $$</p>
 <span class="n">df_result_fill_rate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_result_fill_rate</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"店舗ごとの役職別の充足率"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_result_fill_rate</span><span class="o">.</span><span class="n">style</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result_fill_rate</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
