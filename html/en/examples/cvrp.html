@@ -7331,7 +7331,7 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.5.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7482,16 +7482,15 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E5%AE%B9%E9%87%8F%E5%88%B6%E7%B4%84%E3%81%A4%E3%81%8D%E9%81%8B%E6%90%AC%E7%B5%8C%E8%B7%AF%E5%95%8F%E9%A1%8C-(Capacitated-Vehicle-Routing-Problem,-CVRP)">容量制約つき運搬経路問題 (Capacitated Vehicle Routing Problem, CVRP)<a class="anchor-link" href="#%E5%AE%B9%E9%87%8F%E5%88%B6%E7%B4%84%E3%81%A4%E3%81%8D%E9%81%8B%E6%90%AC%E7%B5%8C%E8%B7%AF%E5%95%8F%E9%A1%8C-(Capacitated-Vehicle-Routing-Problem,-CVRP)">¶</a></h1><p>このチュートリアルでは、運搬経路問題 (VRP) の一種である容量制約つき運搬経路問題を扱います。</p>
-<p>具体的な応用先として、</p>
+<h1 id="Capacitated-Vehicle-Routing-Problem-(CVRP)">Capacitated Vehicle Routing Problem (CVRP)<a class="anchor-link" href="#Capacitated-Vehicle-Routing-Problem-(CVRP)">¶</a></h1><p>In this tutorial, we consider the capacitated vehicle routing problem (CVRP), a type of vehicle routing problem (VRP).</p>
+<p>Specific applications include</p>
 <ul>
-<li>郵便などの運送業における効率的な配送計画の策定</li>
-<li>ごみ収集や道路清掃における訪問順序の決定</li>
+<li>Delivery scheduling in the postal and other transportation industries</li>
+<li>Scheduling in garbage collection and street cleaning</li>
 </ul>
-<p>などがあります。</p>
-<p>運搬経路問題とは、配送拠点 (depot) から複数の都市への配送を効率的に行おうとする配送ルート決定問題です。より具体的には、配送車両の総移動距離や総コストなどが最小になるような配送車両と都市の割り当て、都市の訪問順序を決定します。運搬経路問題は<a href="https://amplify.fixstars.com/ja/demo/tsp">巡回セールスマン問題</a>の一般化だと解釈することもできます。</p>
-<p>本チュートリアルで取り扱う容量制約付き運搬経路問題は、上記運搬経路問題に各車両の積載上限が追加された問題です。つまり、各配送車両は積載量制約を満たした上で配送を行う必要があります。この問題は「巡回セールスマン問題＋ナップサック問題」のように解釈することもできます。</p>
-<p>今回は配送拠点（デポ）が一つかつ、各都市の需要と車の容量が整数値のみを取るような場合を考えます。</p>
+<p>A vehicle routing problem is a problem of determining efficient delivery routes from a depot to multiple cities. More specifically, the problem determines the allocation of delivery vehicles and cities, and the order in which the cities are visited, to minimize the total distance traveled by the delivery vehicles, the total cost, and so on. The routing problem can be interpreted as a generalization of the <a href="https://amplify.fixstars.com/en/demo/tsp">traveling salesperson problem</a>.</p>
+<p>The capacitated vehicle routing problem addressed in this tutorial is the above routing problem with an additional load constraint on each vehicle. In other words, each delivery vehicle must satisfy the load constraints while making deliveries --- they cannot carry loads heavier than their payload. This problem can be interpreted as a "traveling salesperson problem + knapsack problem".</p>
+<p>Here, we consider the case where there is only one delivery location (depot), and the demand in each city and the vehicle capacity take only integer values.</p>
 </div>
 </div>
 </div>
@@ -7502,7 +7501,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E5%AE%9A%E5%BC%8F%E5%8C%96">定式化<a class="anchor-link" href="#%E5%AE%9A%E5%BC%8F%E5%8C%96">¶</a></h2>
+<h2 id="Formulation">Formulation<a class="anchor-link" href="#Formulation">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7513,63 +7512,64 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>まずは定式化に必要な定数・変数を定義します。</p>
-<h3 id="%E5%AE%9A%E6%95%B0">定数<a class="anchor-link" href="#%E5%AE%9A%E6%95%B0">¶</a></h3><ul>
-<li>$N$：都市の数</li>
-<li>$L$：積載可能量を超えない範囲で巡回可能な都市の最大数+2（出発点+到着点）</li>
-<li>$K$：車両の数</li>
-<li>$Q$：各車両の積載可能量、整数値</li>
-<li>$w_i$：都市 $i$ に配送する荷物の重さを表す整数</li>
-<li>$D_{i\to j}$：都市 $i$ から都市 $j$ までの距離を表現する実数（都市 $0$ = デポ）($i, j \in \{0,1,\dots,N \}$)</li>
+<p>First, define the constants and variables needed for the formulation.</p>
+<h3 id="Constants">Constants<a class="anchor-link" href="#Constants">¶</a></h3><ul>
+<li>$N$: Number of cities</li>
+<li>$L$: Maximum number of cities that can be visited without exceeding the carrying capacity + 2 (origin + destination)</li>
+<li>$K$: Number of vehicles</li>
+<li>$Q$: Maximum payload of each vehicle, integer</li>
+<li>$W_i$: Integer representing the weight of the load to be delivered to city $i$.</li>
+<li>$D_{i\to j}$: Real number representing the distance from city $i$ to city $j$ (city $0$ = depot) ($i, j \in \{0,1,\dots,N \}$)</li>
 </ul>
-<h3 id="%E5%A4%89%E6%95%B0">変数<a class="anchor-link" href="#%E5%A4%89%E6%95%B0">¶</a></h3><ul>
-<li>$x_{i,j,k} \in \{0, 1\} \quad (i \in \{1, \dots , L\}, j \in \{0, \dots, N\}, k \in \{1, \dots, K\})$<br/>
-車両$k$が、$i$番目に訪れる都市として都市 $j$ を選択するかどうかを表すバイナリ変数（$x_{i,j,k}=1\Leftrightarrow$ 車両 $k$ が、$i$ 番目に訪れる都市として都市 $j$ を選択する）</li>
+<h3 id="Variables">Variables<a class="anchor-link" href="#Variables">¶</a></h3><ul>
+<li><p>$x_{i,j,k} \in \{0, 1\} \quad (i \in \{1, \dots , L\}, j \in \{0, \dots, N\}, k \in \{1, \dots, K\})$<br/>
+Binary variable indicating whether vehicle $k$ chooses city $j$ as $i$th city to visit ($x_{i,j,k}=1\Leftrightarrow$ vehicle $k$ chooses city $j$ as $i$-th city to visit)</p>
+<p>We then consider the constraints that the variables must satisfy.</p>
+</li>
 </ul>
-<p>続いて、変数が満たすべき制約を考えます。</p>
-<h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">制約条件<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">¶</a></h3><p>必要な制約は以下の4つです。</p>
+<h3 id="Constraints">Constraints<a class="anchor-link" href="#Constraints">¶</a></h3><p>We need the following four constraints.</p>
 <ol>
-<li>全ての車両はデポ（都市 $0$）から出発し、デポに到着する</li>
-<li>車両 $k$ が $i$ 番目に訪問する場所は一箇所だけ</li>
-<li>都市 $j$（デポを除く）はいずれかの車両によってちょうど一回だけ訪問される</li>
-<li>車両 $k$ が運ぶ荷物の総重量は $Q$ 以下</li>
+<li>All vehicles start from and end at the depot (city $0$)</li>
+<li>Vehicle $k$ visits only one $i$-th location</li>
+<li>City $j$ (excluding the depot) is visited exactly once by any vehicle</li>
+<li>The total weight of the loads carried by vehicle $k$ is less than or equal to $Q$</li>
 </ol>
-<p>これらの条件を式にすると以下のようになります。</p>
+<p>These conditions can be expressed as follows:</p>
 <ol>
-<li><p>全ての車両はデポ（都市 $0$）から出発し、デポに到着する<br/>
-$
-\begin{align}
+<li><p>All vehicles start from and end at the depot (city $0$)<br/>
+$$
    x_{1,j,k} = 
    \begin{cases}
       1 \quad (j = 0) \\
       0 \quad (j \neq 0)
    \end{cases} \\
+$$
+$$
    x_{L,j,k} = 
    \begin{cases}
       1 \quad (j = 0) \\
       0 \quad (j \neq 0)
    \end{cases}
-\end{align}
-$</p>
+$$</p>
 </li>
-<li><p>車両 $k$ が $i$ 番目に訪問する場所は一箇所だけ<br/>
+<li><p>Vehicle $k$ visits only one $i$-th location<br/>
 $$
 \sum_{j=0}^N x_{i,j,k} = 1 \quad (i \in \{1, \dots, L\}, k \in \{1, \dots, K\})
 $$</p>
 </li>
-<li><p>都市 $j$（デポを除く）はいずれかの車両によってちょうど一回だけ訪問される<br/>
+<li><p>City $j$ (excluding the depot) is visited exactly once by any vehicle<br/>
 $$
 \sum_{i=1}^L \sum_{k=1}^K x_{i,j,k}=1 \quad (j \in \{1, \dots, N\})
 $$</p>
 </li>
-<li><p>車両 $k$ が運ぶ荷物の総重量は $Q$ 以下<br/>
+<li><p>The total weight of the loads carried by the vehicle $k$ is less than or equal to $Q$<br/>
 $$
 \sum_{i=1}^L \sum_{j=1}^N w_j x_{i,j,k} \leq Q \quad (k \in \{1, \dots, K\})
 $$</p>
 </li>
 </ol>
-<h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h3><p>今回は車両の総移動距離を最小化することを目指します。車両の総移動距離を数式で表現すると以下のようになります。
-$$
+<h3 id="Objective-Function">Objective Function<a class="anchor-link" href="#Objective-Function">¶</a></h3><p>In this CVRP, we minimize the total distance traveled by the vehicle. The total distance traveled by a vehicle can be expressed in the following equation.</p>
+<p>$$
 \sum_{k=1}^K\sum_{i=1}^L\sum_{j_1=0}^N\sum_{j_2=0}^N D_{j_1\to j_2}x_{i,j_1,k}x_{i+1,j_2,k}
 $$</p>
 </div>
@@ -7582,10 +7582,10 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E5%85%B7%E4%BD%93%E4%BE%8B%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E5%88%B6%E7%B4%84%E5%BC%8F%E3%81%AE%E8%AA%AC%E6%98%8E">具体例を使った制約式の説明<a class="anchor-link" href="#%E5%85%B7%E4%BD%93%E4%BE%8B%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E5%88%B6%E7%B4%84%E5%BC%8F%E3%81%AE%E8%AA%AC%E6%98%8E">¶</a></h3><p>ここでは具体例を使ってより感覚的な説明を行います。</p>
-<p>以下は、制約条件を満たす変数の割当ての一例を、車両ごとの表にまとめたものです。横軸はアルファベットの都市名（depot は出発地）、縦軸はその都市を何番目に訪問するか（0 は depot を出発、9 は depot に到着）を表します。表のマスが $1$ のとき、その車両は都市に訪れることを意味します。</p>
+<h3 id="Explanation-of-Constraint-Expressions">Explanation of Constraint Expressions<a class="anchor-link" href="#Explanation-of-Constraint-Expressions">¶</a></h3><p>This section provides a more intuitive explanation using concrete examples.</p>
+<p>The following is an example of a variable assignment that satisfies the constraint conditions, summarized in a table for each vehicle. The horizontal axis represents the alphabetical name of the city (the depot is the starting point), and the vertical axis represents the order of the cities to be visited (0 means departing from the depot, 9 means arriving at the depot at the end). If a square in the table is $1$, it means that the vehicle will visit the city.</p>
 <ul>
-<li><strong>車両1</strong> ($k=1$)</li>
+<li><strong>Vehicle 1</strong> ($k=1$)</li>
 </ul>
 <div align="center">
 </div>
@@ -7607,7 +7607,7 @@ $$</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>0(出発)</strong></td>
+<td><strong>0 (start)</strong></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
@@ -7724,7 +7724,7 @@ $$</p>
 <td>0</td>
 </tr>
 <tr>
-<td><strong>9(到着)</strong></td>
+<td><strong>9 (end)</strong></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
@@ -7739,7 +7739,7 @@ $$</p>
 </tbody>
 </table>
 <ul>
-<li><strong>車両2</strong> ($k=2$)</li>
+<li><strong>Vehicle 2</strong> ($k=2$)</li>
 </ul>
 <div align="center">
 </div>
@@ -7761,7 +7761,7 @@ $$</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>0(出発)</strong></td>
+<td><strong>0 (start)</strong></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
@@ -7878,7 +7878,7 @@ $$</p>
 <td>0</td>
 </tr>
 <tr>
-<td><strong>9(到着)</strong></td>
+<td><strong>9 (end)</strong></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
@@ -7893,7 +7893,7 @@ $$</p>
 </tbody>
 </table>
 <ul>
-<li><strong>車両3</strong> ($k=3$)</li>
+<li><strong>Vehicle 3</strong> ($k=3$)</li>
 </ul>
 <div align="center">
 </div>
@@ -7915,7 +7915,7 @@ $$</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>0(出発)</strong></td>
+<td><strong>0 (start)</strong></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
@@ -8032,7 +8032,7 @@ $$</p>
 <td>0</td>
 </tr>
 <tr>
-<td><strong>9(到着)</strong></td>
+<td><strong>9 (end)</strong></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
@@ -8046,16 +8046,16 @@ $$</p>
 </tr>
 </tbody>
 </table>
-<p>先の『制約条件2: 車両 $k$ が $i$ 番目に訪問する場所は一箇所だけ』は、各行（横のライン）に現れる $1$ が一つだけになることと対応しており、次式で表現することができます。</p>
+<p>The above-mentioned constraint "2: Vehicle $k$ visits only one $i$th location" corresponds to a single "$1$" appearing in each row (horizontal line) of the above decision variable table and can be expressed by the following equation:</p>
 <p>$$
 \sum_{j=0}^N x_{i,j,k} = 1 \quad (i \in \{1, \dots, L\}, k \in \{1, \dots, K\})
 $$</p>
-<p>また、『制約条件3: 都市 $j$ はいずれかの車両によってちょうど一回だけ訪問される』は、全ての車両を合わせた、depot を除く各列（縦のライン）に現れる $1$ が一つだけになることと対応しており、次式で表現することができます。</p>
+<p>Also, the constraint "3: City $j$ (excluding the depot) is visited exactly once by any vehicle" corresponds to a single "$1$" appearing in each column (vertical line) except the depot for all vehicles combined, and can be expressed as follows:</p>
 <p>$$
 \sum_{i=1}^L \sum_{k=1}^K x_{i,j,k}=1 \quad (j \in \{1, \dots, N\})
 $$</p>
 <p><a id="post_process"></a>
-これらの制約によって全ての都市がいずれかの車両によってちょうど一回だけ訪問されることが保証されますが、配送拠点 (depot) は何回でも訪問可能な定式化になっています。そのため、各車両が配送開始時と配送終了時の二回だけ配送拠点を訪問するように後処理を行います。具体的には、表中の0行目と9行目以外で depot の列に $1$ が立っている場合、それを無視する($0$ だとみなす)という操作です。この操作によって得られる運搬経路に対応する移動距離が操作前のものと同じ、もしくは短くなるということが三角不等式を用いて証明できます。</p>
+While these constraints ensure that each city is visited exactly once by any vehicle, the formulation allows that the delivery depot to be visited any number of times. Therefore, post-processing is performed so that each vehicle visits a depot only twice, once at the start of the delivery and once at the end of the delivery. Specifically, if $1$ appears in the "depot" column except for rows 0 and 9 in the table, it is ignored (considered as $0$). The travel distance for the route obtained after this post-processing is equal to or shorter than that before the post-processing, which can be proven by using the triangular inequality.</p>
 </div>
 </div>
 </div>
@@ -8066,8 +8066,8 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E5%AE%9F%E8%A3%85">実装<a class="anchor-link" href="#%E5%AE%9F%E8%A3%85">¶</a></h2><p>それでは、前述の問題や定式を Fixstars Amplify を使って実装します。</p>
-<h3 id="%E5%95%8F%E9%A1%8C%E3%81%AE%E4%BD%9C%E6%88%90%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">問題の作成・可視化<a class="anchor-link" href="#%E5%95%8F%E9%A1%8C%E3%81%AE%E4%BD%9C%E6%88%90%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">¶</a></h3><p>まずは、最適化対象の問題を作成するのに必要な変数を定義します。車両数を 2、都市の数を 10 とし、各都市の需要はランダムに生成します。また、<code>capacity</code> は求解可能な条件となるように調整します。<code>dimension</code> は、[都市の数+デポの数=都市の数+1] です。</p>
+<h2 id="Implementation">Implementation<a class="anchor-link" href="#Implementation">¶</a></h2><p>We will now implement the above formulation and constraints using Fixstars Amplify.</p>
+<h3 id="Problem-definition-and-visualization">Problem definition and visualization<a class="anchor-link" href="#Problem-definition-and-visualization">¶</a></h3><p>First, let us define the variables needed to optimize the present problem. The number of vehicles is set to 2, the number of cities to 10, and the transportation demand for each city is randomly generated. Also, adjust <code>capacity</code> to be a solvable condition. The <code>dimension</code> is [number of cities + number of depots = number of cities + 1].</p>
 </div>
 </div>
 </div>
@@ -8082,22 +8082,22 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">geopy.distance</span> <span class="kn">import</span> <span class="n">geodesic</span>
 
-<span class="c1"># 車両数</span>
+<span class="c1"># The number of vehicles</span>
 <span class="n">nvehicle</span> <span class="o">=</span> <span class="mi">2</span>
 
-<span class="c1"># 都市の数</span>
+<span class="c1"># The number of cities to visit</span>
 <span class="n">ncity</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="n">dimension</span> <span class="o">=</span> <span class="n">ncity</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="n">avg_cities_per_vehicle</span> <span class="o">=</span> <span class="n">dimension</span> <span class="o">//</span> <span class="n">nvehicle</span>
 
-<span class="c1"># 各都市における配送需要（重量）を乱数で決定</span>
+<span class="c1"># Randomly determin the delivery demand (weight) in each city</span>
 <span class="n">demand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">dimension</span><span class="p">)</span>
 <span class="n">demand</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">demand_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">demand</span><span class="p">)</span>
 <span class="n">demand_mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">demand</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">demand</span><span class="p">)</span>
 
-<span class="c1"># 全体的な需要に合わせ、車両の積載可能量 Q を設定する。</span>
+<span class="c1"># Set an appropriate vehicle payload Q for the above problem setting</span>
 <span class="n">capacity</span> <span class="o">=</span> <span class="n">demand_max</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">demand_mean</span><span class="p">)</span> <span class="o">*</span> <span class="n">avg_cities_per_vehicle</span>
 </pre></div>
 </div>
@@ -8111,7 +8111,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>次にそれぞれの都市の座標を乱数を使って生成します。全ての都市 $i,j$ 間の座標距離を計算することによって $D_{i \to j}$ を生成します。</p>
+<p>Next, the coordinates of each city are randomly generated. Generate $D_{i \to j}$ by computing the coordinate distances between all cities $i,j$.</p>
 </div>
 </div>
 </div>
@@ -8123,11 +8123,11 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 座標の取り得る範囲を設定</span>
-<span class="n">lat_range</span> <span class="o">=</span> <span class="p">[</span><span class="mf">35.7014</span><span class="p">,</span> <span class="mf">35.968</span><span class="p">]</span>
-<span class="n">lon_range</span> <span class="o">=</span> <span class="p">[</span><span class="mf">139.34</span><span class="p">,</span> <span class="mf">140.04</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Ranges of the coordinate</span>
+<span class="n">lat_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">51</span><span class="p">,</span> <span class="mi">53</span><span class="p">]</span>
+<span class="n">lon_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
-<span class="c1"># 各都市の座標</span>
+<span class="c1"># Coordinates of each city</span>
 <span class="n">ind2coord</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">i</span><span class="p">:</span> <span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">lon_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lon_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
@@ -8136,7 +8136,7 @@ $$</p>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dimension</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="c1"># 2都市間の座標距離行列 D</span>
+<span class="c1"># Coordinate distance matrix between two cities</span>
 <span class="n">distance_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
     <span class="p">[</span>
         <span class="p">[</span><span class="n">geodesic</span><span class="p">(</span><span class="n">coord_i</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">coord_j</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">m</span> <span class="k">for</span> <span class="n">coord_j</span> <span class="ow">in</span> <span class="n">ind2coord</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
@@ -8155,7 +8155,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>問題のプロット時に使用する色のリストを作成します。</p>
+<p>Create a list of colors to be used when plotting the problem.</p>
 </div>
 </div>
 </div>
@@ -8195,7 +8195,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>都市の座標をプロットする関数 <code>plot_solution</code> を定義します。</p>
+<p>Define the function <code>plot_solution</code> to plot the coordinates of the cities.</p>
 </div>
 </div>
 </div>
@@ -8216,7 +8216,7 @@ $$</p>
         <span class="nb">sum</span><span class="p">(</span><span class="n">lat</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">lat</span> <span class="ow">in</span> <span class="n">coord</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span>
         <span class="nb">sum</span><span class="p">(</span><span class="n">lon</span> <span class="k">for</span> <span class="n">lon</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">coord</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span>
     <span class="p">]</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="s2">"OpenStreetMap"</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mf">10.5</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="s2">"OpenStreetMap"</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
     <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
         <span class="n">location</span><span class="o">=</span><span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
         <span class="n">popup</span><span class="o">=</span><span class="sa">f</span><span class="s2">"depot"</span><span class="p">,</span>
@@ -8269,7 +8269,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>作成した問題を <code>plot_solution</code> 関数で表示します。車型のピンは depot の位置（出発点＆到着点）、人型のピンは通るべき地点を表します。</p>
+<p>The <code>plot_solution</code> function displays the defined problem. The car-shaped pins represent the location of the depot (start and end points), and the human-shaped pins represent the points to be visited.</p>
 </div>
 </div>
 </div>
@@ -8281,22 +8281,11 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 埼玉・千葉・東京近辺</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># England, UK</span>
 <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"capacity=</span><span class="si">{</span><span class="n">capacity</span><span class="si">}</span><span class="s2">, ncity=</span><span class="si">{</span><span class="n">ncity</span><span class="si">}</span><span class="s2">, nvehicle=</span><span class="si">{</span><span class="n">nvehicle</span><span class="si">}</span><span class="s2">"</span>
 <span class="n">plot_solution</span><span class="p">(</span><span class="n">ind2coord</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=afraid-halifax">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E8%A8%AA%E5%95%8F%E9%83%BD%E5%B8%82%E3%81%AE%E4%B8%8A%E9%99%90%E3%81%AE%E8%A8%88%E7%AE%97">訪問都市の上限の計算<a class="anchor-link" href="#%E8%A8%AA%E5%95%8F%E9%83%BD%E5%B8%82%E3%81%AE%E4%B8%8A%E9%99%90%E3%81%AE%E8%A8%88%E7%AE%97">¶</a></h3>
 </div>
 </div>
 </div>
@@ -8307,11 +8296,11 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>決定変数のサイズを削減するための工夫として、一台の車が訪問できる都市の数の上限をあらかじめ計算しておきます。</p>
-<p>以下の <code>upperbound_of_tour</code> 関数は、積載可能量を超えない範囲で最大いくつの都市を巡回できるかを計算する関数です。具体的には次のステップ計算します。</p>
+<h3 id="Upper-bound-of-cities-to-visit">Upper bound of cities to visit<a class="anchor-link" href="#Upper-bound-of-cities-to-visit">¶</a></h3><p>To reduce the size of the decision variable, an upper bound on the number of cities that can be visited by a single car is estimated in advance.</p>
+<p>The following <code>upperbound_of_tour</code> function estimates the maximum number of cities that can be visited without exceeding the load capacity by the following steps:</p>
 <ol>
-<li>まだ選んでいない都市の中で最も配送需要（重量）が少ない都市を選び、最大積載量からその都市の需要を減算する</li>
-<li>最大積載量が0未満になるまでステップを繰り返し、繰り返した回数を戻り値とする</li>
+<li>Selecting the city with the lowest delivery demand (weight) among the cities not yet selected, and subtracting that city's demand from the maximum load capacity</li>
+<li>Repeating step 1 until the maximum load capacity becomes negative, and the number of iterations is the upper limit of the number of cities to visit</li>
 </ol>
 </div>
 </div>
@@ -8345,7 +8334,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E4%BA%8C%E6%AC%A1%E5%A4%9A%E9%A0%85%E5%BC%8F%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%A7%8B%E7%AF%89">二次多項式モデルの構築<a class="anchor-link" href="#%E4%BA%8C%E6%AC%A1%E5%A4%9A%E9%A0%85%E5%BC%8F%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E6%A7%8B%E7%AF%89">¶</a></h3><p>次に、必要な決定変数を定義します。Amplify の <code>BinarySymbolGenerator</code> を用います。合計$N+1$ 個の都市及びデポに対して、最大 $L$ 都市の訪問を、$K$ 台の車両で行うので、$L \times (N+1) \times K$ の三次元配列としてQUBO変数を次のように定義します。</p>
+<h3 id="Constructing-QUBO-formulation">Constructing QUBO formulation<a class="anchor-link" href="#Constructing-QUBO-formulation">¶</a></h3><p>Next, we define the necessary decision variables, using Amplify's <code>BinarySymbolGenerator</code>. For a total of $N+1$ cities and depots, we will visit at most $L$ cities with $K$ vehicles, so we define the QUBO variable as a three-dimensional array of $L \times (N+1) \times K$ as follows (see the definitions of constants in the Formulation section).</p>
 </div>
 </div>
 </div>
@@ -8361,7 +8350,7 @@ $$</p>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">BinarySymbolGenerator</span><span class="p">()</span>
 
-<span class="c1"># 積載可能量から1台の車両が訪問できる都市の最大数</span>
+<span class="c1"># Maximum number of cities one vehicle can visit based on payload capacity</span>
 <span class="n">max_tourable_cities</span> <span class="o">=</span> <span class="n">upperbound_of_tour</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">demand</span><span class="p">)</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">max_tourable_cities</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">nvehicle</span><span class="p">)</span>
@@ -8377,14 +8366,14 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>前述の通り、制約条件は、</p>
+<p>As mentioned in the section, Formulation, the constraints are:</p>
 <ol>
-<li>全ての車両はデポ（都市 $0$）から出発し、デポに到着する</li>
-<li>車両 $k$ が $i$ 番目に訪問する場所は一箇所だけ</li>
-<li>都市 $j$（デポを除く）はいずれかの車両によってちょうど一回だけ訪問される</li>
-<li>車両 $k$ が運ぶ荷物の総重量は $Q$ 以下</li>
+<li>All vehicles start from and end at the depot (city $0$)</li>
+<li>Vehicle $k$ visits only one $i$-th location</li>
+<li>City $j$ (excluding the depot) is visited exactly once by any vehicle</li>
+<li>The total weight of the loads carried by vehicle $k$ is less than or equal to $Q$</li>
 </ol>
-<p>つまり、</p>
+<p>In other words,</p>
 <p>$$
 \begin{align*}
 (1) \quad &amp;
@@ -8401,11 +8390,10 @@ $$</p>
 (2)\quad &amp; \sum_{j=0}^N x_{i,j,k} = 1 \quad (i \in \{1, \dots, L\}, k \in \{1, \dots, K\})\\
 (3)\quad &amp; \sum_{i=1}^L \sum_{k=1}^K x_{i,j,k}=1 \quad (j \in \{1, \dots, N\})\\
 (4)\quad &amp; \sum_{i=1}^L \sum_{j=1}^N w_j x_{i,j,k} \leq Q \quad (k \in \{1, \dots, K\})\\
-\end{align*}
-$$
-です。</p>
-<p>ここで、決定変数 $x_{i,j,k}$ は、車両$k$が、$i$番目に訪れる都市として都市 $j$ を選択するかどうかを表すバイナリ変数でした。</p>
-<p>今回は <code>less_equal</code> 関数を用いて不等式制約を表現し、 <code>equal_to</code> 関数で等式制約を表現します。また、制約項の強さを決定する係数は、$\max d_{ij}$ として実装しています。これにより、少なくとも制約項より目的関数が優先される事態を避けることができます。</p>
+\end{align*}.
+$$</p>
+<p>Note that $x_{i,j,k}$ corresponds to vehicle $k$ visits city $j$ as $i$-th location.</p>
+<p>We will use the <code>less_equal</code> function to express inequality constraints and the <code>equal_to</code> function to express equality constraints. Also, the coefficient that determines the weight of the constraint term is implemented as $\max (d_{ij})$. This at least avoids the situation where the objective function is favored over the constraint term.</p>
 </div>
 </div>
 </div>
@@ -8416,7 +8404,7 @@ $$
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A0%EF%BC%9A-%E5%85%A8%E3%81%A6%E3%81%AE%E8%BB%8A%E4%B8%A1%E3%81%AF%E3%83%87%E3%83%9D%EF%BC%88%E9%83%BD%E5%B8%82-0%EF%BC%89%E3%81%8B%E3%82%89%E5%87%BA%E7%99%BA%E3%81%97%E3%80%81%E3%83%87%E3%83%9D%E3%81%AB%E5%88%B0%E7%9D%80%E3%81%99%E3%82%8B"><strong>制約条件①：</strong> 全ての車両はデポ（都市 0）から出発し、デポに到着する<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A0%EF%BC%9A-%E5%85%A8%E3%81%A6%E3%81%AE%E8%BB%8A%E4%B8%A1%E3%81%AF%E3%83%87%E3%83%9D%EF%BC%88%E9%83%BD%E5%B8%82-0%EF%BC%89%E3%81%8B%E3%82%89%E5%87%BA%E7%99%BA%E3%81%97%E3%80%81%E3%83%87%E3%83%9D%E3%81%AB%E5%88%B0%E7%9D%80%E3%81%99%E3%82%8B">¶</a></h4><p>制約式は以下で表されます。</p>
+<h4 id="Constraint-(1):-all-vehicles-start-from-and-end-at-the-depot-(city-0)"><strong>Constraint (1):</strong> all vehicles start from and end at the depot (city 0)<a class="anchor-link" href="#Constraint-(1):-all-vehicles-start-from-and-end-at-the-depot-(city-0)">¶</a></h4><p>The constraint equation is expressed as follows.</p>
 <p>$$
 \begin{align*}
     x_{1,j,k} = 
@@ -8431,8 +8419,8 @@ $$
     \end{cases}
 \end{align*}
 $$</p>
-<p>この制約については代入によって実現します。代入することで求解の対象となる変数を節約することが出来ます。次のように直接値を代入する関数を作成します。</p>
-<p>変数の値を事前に固定するには、<code>x[i][j][k] = 1</code> のようにします。決定変数への代入操作は目的関数や制約式を定義する前に行う必要があります。</p>
+<p>We achieve this constraint by prefixing. Prefixing allows us to reduce the number of variables to be solved. Create a function that directly assigns values as follows.</p>
+<p>To prefix the values of the variables, do <code>x[i][j][k] = 1</code> or <code>x[i][j][k] = 0</code>. The assignment operation to the decision variables must be performed before defining the objective functions or constraint equations.</p>
 </div>
 </div>
 </div>
@@ -8461,9 +8449,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A1%EF%BC%9A-%E8%BB%8A%E4%B8%A1$k$%E3%81%8C$i$%E7%95%AA%E7%9B%AE%E3%81%AB%E8%A8%AA%E5%95%8F%E3%81%99%E3%82%8B%E5%A0%B4%E6%89%80%E3%81%AF%E4%B8%80%E7%AE%87%E6%89%80%E3%81%A0%E3%81%91"><strong>制約条件②：</strong> 車両$k$が$i$番目に訪問する場所は一箇所だけ<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A1%EF%BC%9A-%E8%BB%8A%E4%B8%A1$k$%E3%81%8C$i$%E7%95%AA%E7%9B%AE%E3%81%AB%E8%A8%AA%E5%95%8F%E3%81%99%E3%82%8B%E5%A0%B4%E6%89%80%E3%81%AF%E4%B8%80%E7%AE%87%E6%89%80%E3%81%A0%E3%81%91">¶</a></h4><p>本制約条件は、次式で表されます。</p>
+<h4 id="Constraint-(2):-vehicle-$k$-visits-only-one-$i$-th-location"><strong>Constraint (2):</strong> vehicle $k$ visits only one $i$-th location<a class="anchor-link" href="#Constraint-(2):-vehicle-$k$-visits-only-one-$i$-th-location">¶</a></h4><p>This constraint is already expressed by the following equation in the Formulation section.</p>
 <p>$$ \sum_{j=0}^N x_{i,j,k} = 1 \quad (i \in \{1, \dots, L\}, k \in \{1, \dots, K\}) $$</p>
-<p>本制約式を次のように実装します。</p>
+<p>This constraint equation is implemented as follows.</p>
 </div>
 </div>
 </div>
@@ -8502,9 +8490,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A2%EF%BC%9A-%E9%83%BD%E5%B8%82$j$%E3%81%AF%E3%81%84%E3%81%9A%E3%82%8C%E3%81%8B%E3%81%AE%E8%BB%8A%E4%B8%A1%E3%81%AB%E3%82%88%E3%81%A3%E3%81%A6%E3%81%A1%E3%82%87%E3%81%86%E3%81%A9%E4%B8%80%E5%9B%9E%E3%81%A0%E3%81%91%E8%A8%AA%E5%95%8F%E3%81%95%E3%82%8C%E3%82%8B"><strong>制約条件③：</strong> 都市$j$はいずれかの車両によってちょうど一回だけ訪問される<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A2%EF%BC%9A-%E9%83%BD%E5%B8%82$j$%E3%81%AF%E3%81%84%E3%81%9A%E3%82%8C%E3%81%8B%E3%81%AE%E8%BB%8A%E4%B8%A1%E3%81%AB%E3%82%88%E3%81%A3%E3%81%A6%E3%81%A1%E3%82%87%E3%81%86%E3%81%A9%E4%B8%80%E5%9B%9E%E3%81%A0%E3%81%91%E8%A8%AA%E5%95%8F%E3%81%95%E3%82%8C%E3%82%8B">¶</a></h4><p>本制約条件は次式で表されます。</p>
-<p>$$ \sum_{i=1}^L \sum_{k=1}^K x_{i,j,k}=1 \quad (j \in \{1, \dots, N\}) $$</p>
-<p>これを実装すると、次のようになります。</p>
+<h4 id="Constraint-(3):-city-$j$-(excluding-the-depot)-is-visited-exactly-once-by-any-vehicle"><strong>Constraint (3):</strong> city $j$ (excluding the depot) is visited exactly once by any vehicle<a class="anchor-link" href="#Constraint-(3):-city-$j$-(excluding-the-depot)-is-visited-exactly-once-by-any-vehicle">¶</a></h4><p>As already mentioned in the Formulation section, this constraint is expressed as:</p>
+<p>$$ \sum_{i=1}^L \sum_{k=1}^K x_{i,j,k}=1 \quad (j \in \{1, \dots, N\}).$$</p>
+<p>This equation is implemented as follows:</p>
 </div>
 </div>
 </div>
@@ -8542,10 +8530,10 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A3%EF%BC%9A-%E8%BB%8A%E4%B8%A1-$k$-%E3%81%8C%E9%81%8B%E3%81%B6%E8%8D%B7%E7%89%A9%E3%81%AE%E7%B7%8F%E9%87%8D%E9%87%8F%E3%81%AF-$Q$-%E4%BB%A5%E4%B8%8B"><strong>制約条件④：</strong> 車両 $k$ が運ぶ荷物の総重量は $Q$ 以下<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6%E2%91%A3%EF%BC%9A-%E8%BB%8A%E4%B8%A1-$k$-%E3%81%8C%E9%81%8B%E3%81%B6%E8%8D%B7%E7%89%A9%E3%81%AE%E7%B7%8F%E9%87%8D%E9%87%8F%E3%81%AF-$Q$-%E4%BB%A5%E4%B8%8B">¶</a></h4><p>本制約条件は次式で表されます。</p>
+<h4 id="Constraint-(4):-the-total-weight-of-the-loads-carried-by-vehicle-$k$-is-less-than-or-equal-to-$Q$"><strong>Constraint (4):</strong> the total weight of the loads carried by vehicle $k$ is less than or equal to $Q$<a class="anchor-link" href="#Constraint-(4):-the-total-weight-of-the-loads-carried-by-vehicle-$k$-is-less-than-or-equal-to-$Q$">¶</a></h4><p>This constraint is expressed by the following equation.</p>
 <p>$$ \sum_{i=1}^L \sum_{j=1}^N w_j x_{i,j,k} \leq Q \quad (k \in \{1, \dots, K\}) $$</p>
-<p>この制約式は、<code>less_equal</code> を使って実装することができます。また、今回の問題設定では必ずしも必要ではありませんが、<code>less_equal</code> の <code>method</code> 引数に <code>InequalityFormulation.RelaxationQuadra</code> を指定します。制約式に対する厳密なペナルティ関数ではなくなりますが、多くの補助変数を節約するとともに、実数係数にも対応でき、問題サイズが大きい条件における求解可能性を上げることができます。</p>
-<p>詳しくは <a href="https://amplify.fixstars.com/ja/docs/constraint.html#constraint-inequality-relaxation">https://amplify.fixstars.com/ja/docs/constraint.html#constraint-inequality-relaxation</a> を参照してください。</p>
+<p>This constraint expression can be implemented using <code>less_equal</code>. Also, although not necessary in the present problem setup, we will specify <code>InequalityFormulation.RelaxationQuadra</code> as the <code>method</code> argument to <code>less_equal</code>. While this method is not a strict penalty function for this constraint, it keeps from generating many auxiliary variables internally, can handle real number coefficients, and thus increases solvability under large problem size conditions.</p>
+<p>See <a href="https://amplify.fixstars.com/en/docs/constraint.html#constraint-inequality-relaxation">https://amplify.fixstars.com/en/docs/constraint.html#constraint-inequality-relaxation</a> for further information.</p>
 </div>
 </div>
 </div>
@@ -8590,11 +8578,11 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0"><strong>目的関数</strong><a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h4><p>今回の目的は車両の総移動距離の最小化であり、目的関数は</p>
+<h4 id="Objective-function"><strong>Objective function</strong><a class="anchor-link" href="#Objective-function">¶</a></h4><p>The objective this time is to minimize the total distance traveled by the vehicles, and the objective function may be written as follows:</p>
 <p>$$
 \sum_{k=1}^K\sum_{i=1}^L\sum_{j_1=0}^N\sum_{j_2=0}^N D_{j_1\to j_2}x_{i,j_1,k}x_{i+1,j_2,k}
 $$</p>
-<p>のように表現されます。目的関数の計算には <code>einsum</code> 関数を利用します。<code>einsum</code> 関数の詳細は、<a href="https://amplify.fixstars.com/ja/docs/array.html#polynomial-array-einsum">こちら</a>をご覧ください。</p>
+<p>The <code>einsum</code> function is used to compute the objective function. More information about the <code>einsum</code> function can be found <a href="https://amplify.fixstars.com/en/docs/array.html#polynomial-array-einsum">here</a>.</p>
 </div>
 </div>
 </div>
@@ -8613,7 +8601,7 @@ $$</p>
 <span class="n">nvehicle</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="n">xr</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="c1"># 経路の総距離</span>
+<span class="c1"># Total distance of the route</span>
 <span class="n">objective</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s2">"pq,ipk,iqk"</span><span class="p">,</span> <span class="n">distance_matrix</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xr</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8627,7 +8615,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>ここまでに実装した代入に基づく1つの制約条件、制約式に基づく3つの制約条件及び目的関数に基づき、次のように CVRP の QUBO モデルを構築することができます。ここで、<code>np.max(distance_matrix)</code> 制約式に対する重みを設定しています。</p>
+<p>Based on the pre-assignment-based constraint, the three constraint equations, and the objective function implemented so far, we can now construct a QUBO model for CVRP as follows. Here, we set the weight for the constraint equations as <code>np.max(distance_matrix)</code>.</p>
 </div>
 </div>
 </div>
@@ -8657,7 +8645,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Amplify-%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A">Amplify クライアントの設定<a class="anchor-link" href="#Amplify-%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A">¶</a></h3><p>Amplify のイジングマシン・量子アニーリングのクライアントを作成します。</p>
+<h3 id="Setting-up-Amplify-client">Setting up Amplify client<a class="anchor-link" href="#Setting-up-Amplify-client">¶</a></h3><p>Let us use the Amplify Annealing Engine (AE) client.</p>
 </div>
 </div>
 </div>
@@ -8672,8 +8660,8 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify.client</span> <span class="kn">import</span> <span class="n">FixstarsClient</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2000</span>  <span class="c1"># タイムアウト2秒</span>
-<span class="c1"># client.token = "API トークンを入力してください"</span>
+<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2000</span>  <span class="c1"># Timeout is set to be 2 seconds</span>
+<span class="c1"># client.token = "Please put your Amplify API Token"</span>
 </pre></div>
 </div>
 </div>
@@ -8686,7 +8674,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>作成したクライアントで <code>Solver</code> をインスタンス化し、QUBOモデルに基づき求解を行います。</p>
+<p>Then we will instantiate the <code>Solver</code> class with the client we just created, and we will execute the solution based on the QUBO model.</p>
 </div>
 </div>
 </div>
@@ -8706,7 +8694,7 @@ $$</p>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Some of the constraints are not satisfied."</span><span class="p">)</span>
 
-<span class="n">x_values</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># 変数値の取り出し</span>
+<span class="n">x_values</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># solution</span>
 </pre></div>
 </div>
 </div>
@@ -8719,9 +8707,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E7%B5%90%E6%9E%9C%E5%8F%96%E5%BE%97%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">結果取得・可視化<a class="anchor-link" href="#%E7%B5%90%E6%9E%9C%E5%8F%96%E5%BE%97%E3%83%BB%E5%8F%AF%E8%A6%96%E5%8C%96">¶</a></h3><p>続いて結果の取り出し・可視化を行います。</p>
-<p>得られた解を整形する関数 <code>onehot2_sequence</code>、<a href="#post_process"></a>冒頭で述べた後処理を行う関数 <code>process_sequence</code> を定義します。三角不等式を用いることで後処理後の移動距離が後処理前の距離以下になることが証明できます。<code>Solver</code> から返却された One-hot バイナリベクトルから、訪問順に番号が入ったリストを作成する <code>onehot2_sequence</code> 関数を次のように実装します。</p>
-<p>※以下の型ヒントの書き方は、Python3.9 以上に対応しています。ローカル環境で実施される場合などで、これより古い環境 (Python3.8) の場合、<code>from __future__ import annotations</code> を追加インポートしてください。</p>
+<h3 id="Post-processing-and-solution-visualization">Post-processing and solution visualization<a class="anchor-link" href="#Post-processing-and-solution-visualization">¶</a></h3><p>The next step is to post-process and visualize the results.</p>
+<p>In the following we define the function <code>onehot2_sequence</code> to format the obtained solution and the function <code>process_sequence</code> to perform post-processing as described <a href="#post_process"></a>above. The <code>onehot2_sequence</code> function creates a numbered list in visit order from the one-hot binary vector returned by <code>Solver</code> as follows.</p>
+<p>Note that the following type hints are compatible with Python 3.9 or later. If you are using an older environment (Python 3.8), such as in a local environment, run <code>from __future__ import annotations</code> additionally.</p>
 </div>
 </div>
 </div>
@@ -8733,10 +8721,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># from __future__ import annotations # Python3.8 の場合はこちらのコメントアウトを外してください。</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># from __future__ import annotations # For Python 3.8, uncomment this</span>
 
 
-<span class="c1"># one-hot な変数テーブルを辞書に変換。key：車両インデックス, value：各車両が訪問した都市の順番が入ったリスト</span>
+<span class="c1"># Converting one-hot variable table to a dictionary. key: vehicle index, value: list containing the order of cities visited by each vehicle</span>
 <span class="k">def</span> <span class="nf">onehot2_sequence</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
     <span class="n">nvehicle</span> <span class="o">=</span> <span class="n">x_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">sequence</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -8755,7 +8743,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><code>onehot2_sequence</code> 関数で作ったリストからデポへの余計な訪問を取り除いたリストを返す <code>process_sequence</code> 関数を作成します。</p>
+<p>Create the <code>process_sequence</code> function, which will return the list created by the <code>onehot2_sequence</code> function with the extra visits to the depot removed as described in <a href="#post_process"></a>described. Using the triangular inequality, we can prove that the distance traveled after post-processing is less than or equal to the distance traveled before post-processing.</p>
 </div>
 </div>
 </div>
@@ -8786,9 +8774,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>それでは、実際に結果を取り出し、可視化してみましょう。</p>
-<p>変数配列 <code>x</code> の <code>decode</code> メンバ関数に解である <code>x_values</code> を与え、変数配列に結果を代入します。<br/>
-その後、先程定義した関数 <code>onehot2_sequence</code>、<code>process_sequence</code> を使って後処理を行います。</p>
+<p>Now let's extract and visualize the result.</p>
+<p>We pass the solution <code>x_values</code> to the <code>decode</code> method of the decision variable array <code>x</code> and assign the result to the variable array.</p>
+<p>Then, post-process the result using <code>onehot2_sequence</code> and <code>process_sequence</code> that we defined earlier.</p>
 </div>
 </div>
 </div>
@@ -8803,10 +8791,12 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">solution</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span>
 <span class="n">sequence</span> <span class="o">=</span> <span class="n">onehot2_sequence</span><span class="p">(</span>
     <span class="n">solution</span>
-<span class="p">)</span>  <span class="c1"># one-hot な変数テーブルを辞書に変換。key：車両インデックス, value：各車両が訪問した都市の順番が入ったリスト</span>
-<span class="n">best_tour</span> <span class="o">=</span> <span class="n">process_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>  <span class="c1"># 上の辞書からデポへの余計な訪問を取り除く</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>  <span class="c1"># 目的関数値を表示</span>
-<span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">best_tour</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># 求めた解を表示</span>
+<span class="p">)</span>  <span class="c1"># Converting one-hot variable table to a dictionary. key: vehicle index, value: list containing the order of cities visited by each vehicle</span>
+<span class="n">best_tour</span> <span class="o">=</span> <span class="n">process_sequence</span><span class="p">(</span>
+    <span class="n">sequence</span>
+<span class="p">)</span>  <span class="c1"># Remove extra visits to the depot from the dictionary above.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>  <span class="c1"># Print objective function value</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">best_tour</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>  <span class="c1"># Print the obtained route</span>
 </pre></div>
 </div>
 </div>
@@ -8819,7 +8809,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><code>plot_solution</code> 関数で結果の可視化を行います。地図上にそれぞれの車両が通るべき経路が表示されます。</p>
+<p>The <code>plot_solution</code> function, defined earlier in the Implementation section, visualizes the post-processed solution. The optimized route that each vehicle should take is displayed on the map.</p>
 </div>
 </div>
 </div>
