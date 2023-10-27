@@ -7331,7 +7331,7 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.5.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7527,22 +7527,22 @@ For a sushi chain restaurant considered in <a href="#step3">Step 3</a>:<ul>
 <p>Here, we attempt to assign all employees to stores based on the above requirements and attributes. In addition, employee assignments are made to minimize the variation in fill rate among the stores.</p>
 <p>Since it is complex to consider all the requirements at once, we implement the solver following the steps below.</p>
 <ul>
-<li><p><a href="#step1"></a><strong>Step 1</strong><br/>
+<li><p><a href="#step1"><strong>Step 1</strong></a><br/>
 Employees are assigned to each store based on their work location preferences and the number of employees needed for each store, regardless of each employee's position, role, or skill level.</p>
 <ul>
-<li><a href="#1-formulation"></a>1.1. Formulation → <a href="#1-data"></a>1.2. Data creation → <a href="#1-implementation"></a>1.3. Implementation by Amplify → <a href="#1-solve"></a>1.4. Solve.</li>
+<li><a href="#1-formulation">1.1. Formulation</a> → <a href="#1-data">1.2. Data creation</a> → <a href="#1-implementation">1.3. Implementation by Amplify</a> → <a href="#1-solve">1.4. Solve</a>.</li>
 </ul>
 </li>
-<li><p><a href="#step2"></a><strong>Step 2</strong><br/>
+<li><p><a href="#step2"><strong>Step 2</strong></a><br/>
 In addition to the requirements addressed in Step 1, we consider the position requirements so that the required number of employees for each position is appropriately assigned to each store.</p>
 <ul>
-<li><a href="#2-formulation"></a>2.1. Formulation → <a href="#2-data"></a>2.2. Data creation → <a href="#2-implementation"></a>2.3. Implementation by Amplify → <a href="#2-solve"></a>2.4. Solve.</li>
+<li><a href="#2-formulation">2.1. Formulation</a> → <a href="#2-data">2.2. Data creation</a> → <a href="#2-implementation">2.3. Implementation by Amplify</a> → <a href="#2-solve">2.4. Solve</a>.</li>
 </ul>
 </li>
-<li><p><a href="#step3"></a><strong>Step 3</strong><br/>
+<li><p><a href="#step3"><strong>Step 3</strong></a><br/>
 Finally, we will look at the remaining requirements, which are the role and skill level of the employees, as well as the cooking skill requirements in each store.</p>
 <ul>
-<li><a href="#3-formulation"></a>3.1. Formulation → <a href="#3-data"></a>3.2. Data creation → <a href="#3-implementation"></a>3.3. Implementation by Amplify → <a href="#3-solve"></a>3.4. Solve.</li>
+<li><a href="#3-formulation">3.1. Formulation</a> → <a href="#3-data">3.2. Data creation</a> → <a href="#3-implementation">3.3. Implementation by Amplify</a> → <a href="#3-solve">3.4. Solve</a>.</li>
 </ul>
 </li>
 </ul>
@@ -9152,7 +9152,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><a id="2-data"></a></p>
+<p><a id="3-data"></a></p>
 <h3 id="3.2.-Data-creation"><strong>3.2. Data creation</strong><a class="anchor-link" href="#3.2.-Data-creation">¶</a></h3><p>Now, we will define the problem setting for the employee assignment problem for Step 3. As an example, we consider the following problem setting with 5 employees and 2 stores.</p>
 </div>
 </div>
@@ -9347,7 +9347,7 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3-implementation"></a></p>
-<h3 id="Implementation-with-Amplify"><strong>Implementation with Amplify</strong><a class="anchor-link" href="#Implementation-with-Amplify">¶</a></h3><p>Let us implement the formulations with Amplify.</p>
+<h3 id="3.3.-Implementation-with-Amplify"><strong>3.3. Implementation with Amplify</strong><a class="anchor-link" href="#3.3.-Implementation-with-Amplify">¶</a></h3><p>Let us implement the formulations with Amplify.</p>
 <p>First, we will create <code>position_variables</code> for the variable $M$ and <code>assign_variables</code> for the variable $P$ using <code>BinarySymbolGenerator</code>. These are 3-dimensional arrays of <code>[number of employees] x [number of positions] x [number of stores]</code> and <code>[number of employees] x [number of roles] x [number of stores]</code>, respectively.</p>
 </div>
 </div>

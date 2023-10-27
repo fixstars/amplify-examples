@@ -7331,7 +7331,7 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.5.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7524,19 +7524,19 @@ a.anchor-link {
 <p>以上を考慮した上で、各店舗、各役割に対する要求従業員数の充足率の最大化と分散の最小化を設定し、さらに、従業員割り当ての効率化と店舗間の偏りの平準化を狙います。</p>
 <p>一度に全ての条件を考慮するのは複雑なので、次のステップごとに、少しずつ条件を増やしながら定式化を行います。</p>
 <ul>
-<li><a href="#step1"></a><strong>ステップ1</strong><br/>
+<li><a href="#step1"><strong>ステップ1</strong></a><br/>
 役職や役割、スキル量を考慮せずに、各従業員の勤務先店舗の希望度及び各店舗の要求従業員数のみを考慮して、割り当てを実施します。<ul>
-<li><a href="#1-formulation"></a>1.1. 定式化 → <a href="#1-data"></a>1.2. データ作成 → <a href="#1-implementation"></a>1.3. Amplify による実装 → <a href="#1-solve"></a>1.4. 求解</li>
+<li><a href="#1-formulation">1.1. 定式化</a> → <a href="#1-data">1.2. データ作成</a> → <a href="#1-implementation">1.3. Amplify による実装</a> → <a href="#1-solve">1.4. 求解</a></li>
 </ul>
 </li>
-<li><a href="#step2"></a><strong>ステップ2</strong><br/>
+<li><a href="#step2"><strong>ステップ2</strong></a><br/>
 ステップ1 の設定条件に加え、各店舗の役職毎の要求人数を満たすような従業員割り当てを実施します。<ul>
-<li><a href="#2-formulation"></a>2.1. 定式化 → <a href="#2-data"></a>2.2. データ作成 → <a href="#2-implementation"></a>2.3. Amplify による実装 → <a href="#2-solve"></a>2.4. 求解</li>
+<li><a href="#2-formulation">2.1. 定式化</a> → <a href="#2-data">2.2. データ作成</a> → <a href="#2-implementation">2.3. Amplify による実装</a> → <a href="#2-solve">2.4. 求解</a></li>
 </ul>
 </li>
 <li><a href="#step3"></a><strong>ステップ3</strong><br/>
 ステップ2 の設定条件に加え、各従業員の役割及びスキル量、各店舗の各調理スキル要求を満たすように割り当てを実施します。<ul>
-<li><a href="#3-formulation"></a>3.1. 定式化 → <a href="#3-data"></a>3.2. データ作成 → <a href="#3-implementation"></a>3.3. Amplify による実装 → <a href="#3-solve"></a>3.4. 求解</li>
+<li><a href="#3-formulation">3.1. 定式化</a> → <a href="#3-data">3.2. データ作成</a> → <a href="#3-implementation">3.3. Amplify による実装</a> → <a href="#3-solve">3.4. 求解</a></li>
 </ul>
 </li>
 </ul>
@@ -9121,7 +9121,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><a id="2-data"></a></p>
+<p><a id="3-data"></a></p>
 <h3 id="3.2.-%E3%83%87%E3%83%BC%E3%82%BF%E4%BD%9C%E6%88%90"><strong>3.2. データ作成</strong><a class="anchor-link" href="#3.2.-%E3%83%87%E3%83%BC%E3%82%BF%E4%BD%9C%E6%88%90">¶</a></h3><p>それでは、実際に割り当て問題を実行するための条件設定を行います。例として、従業員数5名、店舗数2のデータを下記に作成します。</p>
 </div>
 </div>
@@ -9310,7 +9310,7 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3-implementation"></a></p>
-<h3 id="Amplify-%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85"><strong>Amplify による実装</strong><a class="anchor-link" href="#Amplify-%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85">¶</a></h3><p>それでは Amplify を用いて実装します。</p>
+<h3 id="3.3.-Amplify-%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85"><strong>3.3. Amplify による実装</strong><a class="anchor-link" href="#3.3.-Amplify-%E3%81%AB%E3%82%88%E3%82%8B%E5%AE%9F%E8%A3%85">¶</a></h3><p>それでは Amplify を用いて実装します。</p>
 <p>最初に変数 $M$ を表す <code>role_variables</code> と変数 $P$ を表す <code>assign_variables</code> を <code>BinarySymbolGenerator</code> で作成します。それぞれ、「従業員数×役職数×店舗数」及び「従業員数×役割数×店舗数」、の3次元配列です。</p>
 </div>
 </div>
