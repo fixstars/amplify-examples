@@ -7331,7 +7331,7 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.5.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7595,18 +7595,38 @@ Finally, we will look at the remaining requirements, which are the role and skil
 <thead>
 <tr>
 <th>Employee $i$</th>
-<th>Hakata $(l=0)$</th>
-<th>Tenjin $(l=1)$</th>
+<th>Hakata ($l=0$)</th>
+<th>Tenjin ($l=1$)</th>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>$0$</td>
+<td>$L_{0,0}$</td>
+<td>$L_{0,1}$</td>
+</tr>
+<tr>
+<td>$1$</td>
+<td>$L_{1,0}$</td>
+<td>$L_{1,1}$</td>
+</tr>
+<tr>
+<td>$2$</td>
+<td>$L_{2,0}$</td>
+<td>$L_{2,1}$</td>
+</tr>
+<tr>
+<td>$3$</td>
+<td>$L_{3,0}$</td>
+<td>$L_{3,1}$</td>
+</tr>
+<tr>
+<td>$4$</td>
+<td>$L_{4,0}$</td>
+<td>$L_{4,1}$</td>
+</tr>
 </tbody>
 </table>
-<p>| $0$|$L_{0,0}$|$L_{0,1}$
-| $1$|$L_{1,0}$|$L_{1,1}$
-| $2$|$L_{2,0}$|$L_{2,1}$
-| $3$|$L_{3,0}$|$L_{3,1}$
-| $4$|$L_{4,0}$|$L_{4,1}$</p>
 </div>
 </div>
 </div>
