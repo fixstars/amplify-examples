@@ -7488,7 +7488,7 @@ a.anchor-link {
 <li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_2_3_cliques">最大クリーク問題</a>（2.3節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_4_1_exact_cover">厳密被覆問題</a>（4.1節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_4_2_set_packing">集合パッキング問題</a>（4.2節）</li>
-<li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_4_3_vertex_cover">頂点被覆問題</a>（4.3節）</li>
+<li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_4_3_vertex_cover">最小頂点被覆問題</a>（4.3節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_4_4_satisfiability">充足可能性問題（SAT）</a>（4.4節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_4_5_minimal_maximal_matching">最小極大マッチング問題</a>（4.5節）</li>
 <li><a href="https://amplify.fixstars.com/ja/demo/lucas2014_6_1_graph_coloring">グラフ彩色問題</a>（6.1節）</li>
@@ -7601,28 +7601,34 @@ $G_1$ の $i$ 番目の頂点と $G_2$ の $j$ 番目の頂点が対応してい
 <tr>
 <th style="text-align:center">G1 の頂点</th>
 <th style="text-align:center">G2 の頂点</th>
+<th style="text-align:center">頂点の色</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:center">0</td>
 <td style="text-align:center">0</td>
+<td style="text-align:center">青</td>
 </tr>
 <tr>
 <td style="text-align:center">1</td>
 <td style="text-align:center">2</td>
+<td style="text-align:center">橙</td>
 </tr>
 <tr>
 <td style="text-align:center">2</td>
 <td style="text-align:center">4</td>
+<td style="text-align:center">緑</td>
 </tr>
 <tr>
 <td style="text-align:center">3</td>
 <td style="text-align:center">1</td>
+<td style="text-align:center">赤</td>
 </tr>
 <tr>
 <td style="text-align:center">4</td>
 <td style="text-align:center">3</td>
+<td style="text-align:center">紫</td>
 </tr>
 </tbody>
 </table>
@@ -7681,7 +7687,7 @@ $G_1$ の $i$ 番目の頂点と $G_2$ の $j$ 番目の頂点が対応してい
 </tr>
 </tbody>
 </table>
-<h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h3><p>グラフ同型性判定問題は条件をみたすものを見つける問題なので、目的関数は $0$（無し）で良いです。</p>
+<h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h3><p>グラフ同型性判定問題は条件をみたすものを見つける問題なので、目的関数を考慮する必要はありません。</p>
 <h3 id="%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">制約条件<a class="anchor-link" href="#%E5%88%B6%E7%B4%84%E6%9D%A1%E4%BB%B6">¶</a></h3><p>$q$ が同型写像を表すためには、以下が必要です。</p>
 <ul>
 <li><p>条件 1： $G_1$ のそれぞれの頂点は、$G_2$ の頂点 $1$ つと対応している。つまり、$q$ の各行には $1$ つだけ $1$ がある。</p>
