@@ -7331,7 +7331,7 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -8221,7 +8221,7 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3_1"></a></p>
 <h3 id="3.1.-FMQA-execution-example">3.1. FMQA execution example<a class="anchor-link" href="#3.1.-FMQA-execution-example">¶</a></h3><p>Now, with the fluid flow simulator introduced in <a href="#1">Section 1</a> as the objective function, the optimization to minimize the negative value of the lift-drag ratio is performed by FMQA implemented in <a href="#2">Section 2</a>.</p>
-<p>In the following code, the number of times $N$ the objective function can be evaluated is set to 4, of which $N_0=3$ is the number of evaluations to generate the initial training data. This setting is for a test purpose and you may need to use more appropriate $N$ and $N_0$ for meaningful optimization.</p>
+<p>In the following code, the number of times $N$ the objective function can be evaluated is set to 5, of which $N_0=3$ is the number of evaluations to generate the initial training data. This setting is for a test purpose and you may need to use more appropriate $N$ and $N_0$ for meaningful optimization.</p>
 <p>In the example output shown in "<a href="#3_3">3.3. Example output from this FMQA sample program</a>", $N=40$ and $N_0=20$ are used so that meaningful optimization can be achieved. Note that with this setup, it takes approximately 20 minutes to complete all FMQA cycles.</p>
 </div>
 </div>
@@ -8287,7 +8287,7 @@ $$</p>
     <span class="k">return</span> <span class="n">cost</span>
 
 
-<span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># 40 is used for Sec. 3.3.  # Number of times the objective function can be evaluated</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># 40 is used for Sec. 3.3.  # Number of times the objective function can be evaluated</span>
 <span class="n">N0</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># 20 is used for Sec. 3.3.  # Number of samples of initial training data</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Dimension of vector in FM (hyperparameters)</span>
 
@@ -8322,7 +8322,7 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3_2"></a></p>
-<h3 id="3.2.-Transition-of-objective-function-values-during-the-optimization-process">3.2. Transition of objective function values during the optimization process<a class="anchor-link" href="#3.2.-Transition-of-objective-function-values-during-the-optimization-process">¶</a></h3><p>The following line plots the evolution of the objective function values during the optimization process. The initial $N_0$​​ objective function values (blue line) are obtained from randomly generated input values during the initial training data generation. The following red line shows the objective function values during the $N−N_0$​​ FMQA optimization cycles. The blue and red lines show how the smallest objective function value is successively updated from the currently optimal input value (red line) obtained by the FMQA optimization cycle.</p>
+<h3 id="3.2.-Transition-of-objective-function-values-during-the-optimization-process">3.2. Transition of objective function values during the optimization process<a class="anchor-link" href="#3.2.-Transition-of-objective-function-values-during-the-optimization-process">¶</a></h3><p>The following line plots the evolution of the objective function values during the optimization process. The initial $N_0$​​ objective function values (blue line) are obtained from randomly generated input values during the initial training data generation. The following red line shows the objective function values during the $N−N_0$​​ FMQA optimization cycles. The blue and red lines show how the smallest objective function value is successively updated from the currently optimal input value (red line) obtained by the FMQA optimization cycle when large enough $N$ is considered.</p>
 <p>Here, input values $\hat{x}$ can sometimes be obtained that produce relatively large objective function values, even during the FMQA cycle. There are several reasons for this, but the main ones are</p>
 <ul>
 <li>If the current training data contains the same input value as the newly searched input value, the neighboring input value $\hat{x}$ is ramdomly searched and the objective function is evaluated (see <code>FMQA_NB.cycle</code>),</li>
