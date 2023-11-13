@@ -7331,7 +7331,7 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7516,11 +7516,11 @@ $$</p>
 </li>
 </ul>
 <p>$^*$ The execution time is limited to about 20 minutes in this online demo and tutorial environment. If necessary, please run the program with a smaller number of optimization cycles $N$ (see below) or copy this example program to your own environment. In this case, you should also download the following libraries related to airfoil generation and fluid flow simulation as well, save them in the following directory structure, and execute the example code.</p>
-<p>├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/fmqa_3_aerofoil.ipynb">fmqa_3_aerofoil.ipynb</a> (this sample program)<br/>
+<p>├ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/en/examples/fmqa_3_aerofoil.ipynb">fmqa_3_aerofoil.ipynb</a> (this sample program)<br/>
 └ utils/<br/>
-     ├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/__init__.py">__init__.py</a> (blank)<br/>
-     ├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/joukowski.py">joukowski.py</a><br/>
-     └ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/lbm.py">lbm.py</a></p>
+     ├ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/en/examples/utils/__init__.py">__init__.py</a> (blank)<br/>
+     ├ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/en/examples/utils/joukowski.py">joukowski.py</a><br/>
+     └ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/en/examples/utils/lbm.py">lbm.py</a></p>
 </div>
 </div>
 </div>
@@ -8090,12 +8090,12 @@ $$</p>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">lin</span> <span class="o">+</span> <span class="p">(</span><span class="n">out_1</span> <span class="o">-</span> <span class="n">out_2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
-<span class="w">    </span><span class="sd">"""The sum_poly used in __FM_as_QUBO above is inefficient in terms of computation speed and </span>
-<span class="sd">    memory. In the case of FM, where the interaction terms of the decision variables are generally </span>
-<span class="sd">    nonzero, the following implementation using BinaryMatrix is more efficient. Here, the quadratic </span>
-<span class="sd">    terms in BinaryMatrix correspond to the non-diagonal terms represented by the upper triangular </span>
-<span class="sd">    matrix, so x(1/2) for the quadratic terms in the FM formula is unnecessary. Also, although x is </span>
-<span class="sd">    taken as an argument just to match the function signature with __FM_as_QUBO above (implementation </span>
+<span class="w">    </span><span class="sd">"""The sum_poly used in __FM_as_QUBO above is inefficient in terms of computation speed and</span>
+<span class="sd">    memory. In the case of FM, where the interaction terms of the decision variables are generally</span>
+<span class="sd">    nonzero, the following implementation using BinaryMatrix is more efficient. Here, the quadratic</span>
+<span class="sd">    terms in BinaryMatrix correspond to the non-diagonal terms represented by the upper triangular</span>
+<span class="sd">    matrix, so x(1/2) for the quadratic terms in the FM formula is unnecessary. Also, although x is</span>
+<span class="sd">    taken as an argument just to match the function signature with __FM_as_QUBO above (implementation</span>
 <span class="sd">    using sum_poly), it is not needed in this implementation using BinaryMatrix.</span>
 <span class="sd">    def __FM_as_QUBO(self, x, w0, w, v):</span>
 <span class="sd">        out_1_matrix = v @ v.T</span>
@@ -8221,8 +8221,8 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3_1"></a></p>
 <h3 id="3.1.-FMQA-execution-example">3.1. FMQA execution example<a class="anchor-link" href="#3.1.-FMQA-execution-example">¶</a></h3><p>Now, with the fluid flow simulator introduced in <a href="#1">Section 1</a> as the objective function, the optimization to minimize the negative value of the lift-drag ratio is performed by FMQA implemented in <a href="#2">Section 2</a>.</p>
-<p>In the following, the number of times $N$ the objective function can be evaluated is set to 40, of which $N_0=20$ is the number of evaluations to generate the initial training data. Thus, in the example below, $N-N_0=20$ FMQA cycles (machine learning, search for the optimal solution with annealing, and evaluation of the objective function) are performed. Note that with this setup, it takes approximately 20 minutes to complete all FMQA cycles.</p>
-<p>An example output is shown in "<a href="#3_3">3.3. Example output from this FMQA sample program</a>".</p>
+<p>In the following code, the number of times $N$ the objective function can be evaluated is set to 4, of which $N_0=3$ is the number of evaluations to generate the initial training data. This setting is for a test purpose and you may need to use more appropriate $N$ and $N_0$ for meaningful optimization.</p>
+<p>In the example output shown in "<a href="#3_3">3.3. Example output from this FMQA sample program</a>", $N=40$ and $N_0=20$ are used so that meaningful optimization can be achieved. Note that with this setup, it takes approximately 20 minutes to complete all FMQA cycles.</p>
 </div>
 </div>
 </div>
@@ -8287,8 +8287,8 @@ $$</p>
     <span class="k">return</span> <span class="n">cost</span>
 
 
-<span class="n">N</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># Number of times the objective function can be evaluated</span>
-<span class="n">N0</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Number of samples of initial training data</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># 40 is used for Sec. 3.3.  # Number of times the objective function can be evaluated</span>
+<span class="n">N0</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># 20 is used for Sec. 3.3.  # Number of samples of initial training data</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Dimension of vector in FM (hyperparameters)</span>
 
 <span class="c1"># client: Amplify client created earlier</span>
@@ -8354,9 +8354,14 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3_3"></a></p>
-<h3 id="3.3.-Example-output-from-this-FMQA-sample-program">3.3. Example output from this FMQA sample program<a class="anchor-link" href="#3.3.-Example-output-from-this-FMQA-sample-program">¶</a></h3><p>In general, due to the principle of the heuristic algorithm used in <code>FixstarsClient</code>, the solutions obtained are not completely reproducible, but the following is a typical standard output and image output obtained when running this example code. The values obtained may vary.</p>
+<h3 id="3.3.-Example-output-from-this-FMQA-sample-program">3.3. Example output from this FMQA sample program<a class="anchor-link" href="#3.3.-Example-output-from-this-FMQA-sample-program">¶</a></h3><p>In general, due to the principle of the heuristic algorithm used in <code>FixstarsClient</code>, the solutions obtained are not completely reproducible, but the following is a typical standard output and image output obtained when running this example code with the following $N$ and $N_0$. The values obtained may vary.</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># Number of times the objective function can be evaluated</span>
+<span class="n">N0</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Number of samples of initial training data</span>
+</pre></div>
+</blockquote>
 <ul>
-<li><p>Without changing the conditions in "<a href="#3_1">FMQA execution example</a>", the following standard output will be output sequentially output as the FMQA cycle progresses.</p>
+<li><p>Executing "<a href="#3_1">FMQA execution example</a>" will output followings as the FMQA cycle progresses.</p>
 <ol>
 <li><p>First, the airfoil profiles constructed for the input values based on random numbers generated during the initial training data generation and their fluid flow simulation results are sequentially output ($N_0$ times).</p>
 <div class="highlight"><pre><span></span><span class="o">[</span>Index<span class="w"> </span>table<span class="o">]</span>

@@ -7331,7 +7331,7 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.3.1/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7517,11 +7517,11 @@ $$</p>
 </ul>
 <hr/>
 <p>※本オンラインデモ &amp; チュートリアル環境では、連続実行時間が20分程度に制限されています。必要に応じて、最適化サイクル回数 $N$ （後述）を小さくして実行したり、本サンプルプログラムをご自身の環境にコピーしていただき、実行してください。その場合、翼生成及び流体シミュレーションに関する以下のライブラリを適宜ダウンロードし、次のようなディレクトリ構成で保存し、サンプルコードを実行してください。</p>
-<p>├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/fmqa_3_aerofoil.ipynb">fmqa_3_aerofoil.ipynb</a>（本サンプルプログラム）<br/>
+<p>├ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/ja/examples/fmqa_3_aerofoil.ipynb">fmqa_3_aerofoil.ipynb</a>（本サンプルプログラム）<br/>
 └ utils/<br/>
-     ├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/__init__.py">__init__.py</a> （空ファイル）<br/>
-     ├ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/joukowski.py">joukowski.py</a><br/>
-     └ <a href="https://github.com/fixstars/amplify-examples/blob/6863d12f6a3728a46ab7b32ae11d37c0cea0fa38/notebooks/ja/examples/utils/lbm.py">lbm.py</a></p>
+     ├ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/ja/examples/utils/__init__.py">__init__.py</a> （空ファイル）<br/>
+     ├ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/ja/examples/utils/joukowski.py">joukowski.py</a><br/>
+     └ <a href="https://github.com/fixstars/amplify-examples/blob/main/notebooks/ja/examples/utils/lbm.py">lbm.py</a></p>
 </div>
 </div>
 </div>
@@ -8215,8 +8215,8 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3_1"></a></p>
 <h3 id="3.1.-FMQA%E3%81%AE%E5%AE%9F%E8%A1%8C">3.1. FMQAの実行<a class="anchor-link" href="#3.1.-FMQA%E3%81%AE%E5%AE%9F%E8%A1%8C">¶</a></h3><p>それでは、<a href="#1">1節</a>で紹介した流体シミュレーションソルバーを目的関数として、<a href="#2">2節</a>で実装した FMQA により、揚抗比の負値を最小化する最適化を実施します。</p>
-<p>以下では、目的関数を評価できる回数 $N$ を40回、そのうち初期データの生成のための評価回数 $N_0$​ を20回としています。従って、以下の例では、$N-N_0=20$ 回、FMQA のサイクル（機械学習、量子アニーリング・イジングマシンによる最適解の求解、目的関数の評価）を実施します。この設定では、全 FMQA サイクルの終了までおよそ15～20分程度の時間を要しますので、ご注意ください。</p>
-<p>出力例を、『<a href="#3_3">3.3. 本サンプルコードによる FMQA 実行例</a>』に紹介しています。</p>
+<p>以下のコードでは、目的関数を評価できる回数 $N$ を 4 回、そのうち初期データの生成のための評価回数 $N_0$​ を 3 回としています。これは、最低限の動作確認のための設定であり、本来のブラックボックス最適化の為の評価回数の一例は、出力例『<a href="#3_3">3.3. 本サンプルコードによる FMQA 実行例</a>』をご覧ください。</p>
+<p>出力例『<a href="#3_3">3.3. 本サンプルコードによる FMQA 実行例</a>』では、目的関数を評価できる回数 $N$ を40 回、そのうち初期データの生成のための評価回数 $N_0$​ を20回としています。従って、$N-N_0=20$ 回、FMQA のサイクル（機械学習、量子アニーリング・イジングマシンによる最適解の求解、目的関数の評価）を実施します。この設定では、全 FMQA サイクルの終了までおよそ15～20分程度の時間を要しますので、ご注意ください。</p>
 </div>
 </div>
 </div>
@@ -8281,8 +8281,8 @@ $$</p>
     <span class="k">return</span> <span class="n">cost</span>
 
 
-<span class="n">N</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># 関数を評価できる回数</span>
-<span class="n">N0</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># 初期教師データのサンプル数</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># 『3.3. 本サンプルコードによる FMQA 実行例』では 40 と設定  # 関数を評価できる回数</span>
+<span class="n">N0</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># 『3.3. 本サンプルコードによる FMQA 実行例』では 20 と設定  # 初期教師データのサンプル数</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># FMにおけるベクトルの次元（ハイパーパラメータ）</span>
 
 <span class="c1"># client: 先に作成した Amplify クライアント</span>
@@ -8349,8 +8349,14 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="3_3"></a></p>
 <h3 id="3.3.-%E6%9C%AC%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AB%E3%82%88%E3%82%8B-FMQA-%E5%AE%9F%E8%A1%8C%E4%BE%8B">3.3. 本サンプルコードによる FMQA 実行例<a class="anchor-link" href="#3.3.-%E6%9C%AC%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AB%E3%82%88%E3%82%8B-FMQA-%E5%AE%9F%E8%A1%8C%E4%BE%8B">¶</a></h3><p>一般的に、<code>FixstarsClient</code> で採用されているヒューリスティクスというアルゴリズムの原理上、得られる解に完全な再現性はありませんが、本サンプルコードを実行した際に得られる、典型的な標準出力及び画像出力を以下に紹介します。※得られる値が異なる場合があります。</p>
+<p>以下では、評価回数や初期教師データ数を次のように設定し、実行しています。</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># 関数を評価できる回数</span>
+<span class="n">N0</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># 初期教師データのサンプル数</span>
+</pre></div>
+</blockquote>
 <ul>
-<li><p>『<a href="#3_1">3.1. FMQAの実行</a>』に記載のコードを条件を変えずに実行すると、次のような標準出力が逐次表示されます。</p>
+<li><p>『<a href="#3_1">3.1. FMQAの実行</a>』に記載のコードを上の $N$, $N_0$ で実行すると、次のような標準出力が逐次表示されます。</p>
 <ol>
 <li><p>まず、初期教師データ作成中に生成される、乱数に基づく入力値に対して構築された翼型とその流体シミュレーション結果が逐次出力されます（$N_0$ 回）。</p>
 <div class="highlight"><pre><span></span><span class="o">[</span>Index<span class="w"> </span>table<span class="o">]</span>
