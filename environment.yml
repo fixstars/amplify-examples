@@ -17,7 +17,6 @@ dependencies:
       - geopy
       - folium
       - pandas
-      - sklearn
       - torch
       - scikit-learn
       - sigfig
