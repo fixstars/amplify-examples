@@ -7989,12 +7989,11 @@ Weight of the term about the traffic light in the cost function</p>
 <h3 id="3.4.-Class-%22Traffic%22-for-the-number-of-cars">3.4. Class "<code>Traffic</code>" for the number of cars<a class="anchor-link" href="#3.4.-Class-%22Traffic%22-for-the-number-of-cars">¶</a></h3><p>The <code>Traffic</code> class manages the process related to the number of cars.</p>
 <p>In <code>next_step_num_car</code>, we first perform the `<a href="#2">2. Preparation</a>" and calculates the inflow and outflow of cars. The number of vehicles at the next time is calculated based on them. In this function, there are two patterns: one is the case where the state of the traffic light contains an Ising variable, and the other is the case where the state of the traffic light is a NumPy array.</p>
 <p>Also, in <code>car_bias_model</code> and <code>car_flow</code>, we calculate for the cost functions <code>car_bias_cost</code> and <code>car_flow_cost</code>.</p>
-&lt;!-- ### 変数
+<!-- ### 変数
 * $\text{num\_car\_from\_\{north, south, east, west\}}$：Number of  cars heading to this intersection from that direction
 * $\text{car\_flow\_weight}$: Weight on the cost function related to the number of car flow
 * $\text{car\_bias\_weight}$: Weight on the cost function related to the bias 
-
-
+-->
 </div>
 </div>
 </div>
