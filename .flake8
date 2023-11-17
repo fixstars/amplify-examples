@@ -1,0 +1,6 @@
+[flake8]
+max-line-length = 120
+ignore = E203, W503, W501
+docstring-convention = google
+import-order-style = google
+extend-ignore = D107,D202
