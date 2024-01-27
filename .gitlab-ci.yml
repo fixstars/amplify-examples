@@ -43,7 +43,7 @@ execute all:
     - pip install pipenv
     - pipenv install --skip-lock
     - |-
-      for NBPATH in $(/bin/ls -1 notebooks/{en,ja}/{tutorials,samples}/*.ipynb); do
+      for NBPATH in $(/bin/ls -1 notebooks/{en,ja}/{tutorials,examples}/*.ipynb); do
           echo "[NbConvertApp] Executing notebook $NBPATH"
           OUTPUT=$(pipenv run jupyter nbconvert --to html --stdout --execute "$NBPATH" --log-level WARN 2>&1 >/dev/null) || true
           if [ -n "$OUTPUT" ]; then
