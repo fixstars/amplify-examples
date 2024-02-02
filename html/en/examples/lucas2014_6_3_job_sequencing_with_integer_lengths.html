@@ -7961,10 +7961,10 @@ First, we create a $N\times M$ binary variables array $q$ using <code>BinarySymb
 <span class="n">values</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">assigned_machines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="c1"># x軸を描画</span>
+<span class="c1"># Draw x-axis</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"machine </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)])</span>
 
-<span class="c1"># 描画</span>
+<span class="c1"># Vizualize the solution</span>
 <span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">assigned_machines</span><span class="p">):</span>
     <span class="n">bar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">job_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
