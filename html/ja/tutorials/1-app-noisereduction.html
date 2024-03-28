@@ -7527,59 +7527,54 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E5%95%8F%E9%A1%8C%E3%81%AE%E6%A6%82%E8%A6%81">問題の概要<a class="anchor-link" href="#%E5%95%8F%E9%A1%8C%E3%81%AE%E6%A6%82%E8%A6%81">¶</a></h2><p>アニーリングマシンを用いてノイズが加わった画像から元の画像の推定を行うことを考えます。</p>
-<p>下記の仮定に基づいてノイズ除去を試みます。</p>
+<p>このサンプルコードでは、Fixstars Amplify を用いて、ノイズが加わった以下の画像から、ノイズが加わる前の元の画像を推定します。</p>
+<p><img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMQAAABRCAAAAACoZlZHAAAEYElEQVR4nNVa2bqtIAjWvvX+r8y5aBL4mcraHS52pcggyODarXlA5Ylg0l0Xwr3V78ATMto0yfr6H7bKBUOBjIq0/vneFnxPogE+IVxJCHI//xCoKswd0cFaOZSNHxHad3b4MaA2Tc25u1VJquTZ638xItGcdKaXlokZC3puZQKtDDSN6GKyOLTu7MuB4saGOqTpZXaDBsx523cXBklMS5zItBlDrJwpT2l4g0GSUAlqre8VGjCczyjpEMbOHMMRGUcJauIsIFqSP7mzCYiZ6FjpstkPAzvjfwG+F9NoCbOqkXZNhw0Sz6vgb15n06PCPMKeC14PTwmG7ExIHbqemNd/ZenwbYYoC0TYzrNe0uEoB2tejF+yKNZoAQhOej5iLRZMM0qMawbmuBH7NGW8YbdD50RQp0TlCV2Jty3jtWaoZBG4eXrM5WoLRXTCp+Cg2EkMfwN4dCK23+PrVv4d47QZ6MIpl+6dNZiNx5QgeH4cmqkKXUIXVVhk1J1HN+VC6Q16DSDQD2FoQGeDfThPxHHE+87J/rSz3uK2jaNfOXFsfEG1CzMaYXyRmuTn6iaGKX7S7W0Q84QGJdwoUqirjMSo2U1R6OR69w+w5e0I3SZtT44oY1Nklq6GPBs1M+qI10DXOYXYD/RqbqXKDjIKxvIdDPc1JfXWSMXu1saI0XhUMOgKd1pFzAY9/0ToxKrbRIcA+YgjrQWMRY2zMR2WCbdakd6AsTeWyzh2yuO0cFjWLqqr+dC7znYbM+uiwLS2ESCcqKVwI3DDHILfKUZvbfBbbHvH0XgvyGjt0xplHRR1JymEYAtOS/iXL+tIqqsIwpSICtSiM4iFGQG4kyhbTjpJj9AxqIWOCaDgf0CJsToTRLscyEO1ae180tX4500qcEh1fYqoyYIYdF2rxwPf3bVAnZoAlSeuhkjD28AhrVHN3FGKPDEwibz4VkLIKpOrrOOrfZNmeldRPwW+r+8Kqp0gGznWw4u0iuvwQFtVR1tCORaRfXcZskNFao5WsGaUKf6RhbVU9qVbraBFk7Wt6kNMW9zVx37E1xpWXWg6Xd8fZzFiOXOk3HJwggheixaAUwiDeTsU41cGrjvRWMuyuhbe9NQhs9ZoHkcAGfssZPnTSGcXKiq51rWWm7DXw2pZAl5QHMaoNgewBk8tCvrYKNnBro5gnWMuf+BmAwFWws50SjbK1+iQNrhZBPg+Eprdqq7Njl7R8JF/kjBKTz97Xhf9Ra291Fa6zU/hXj8r2ZUy3N4Al8Rt+pBAiepzgacElhh4fEqWdu9pUhSucn4KiLN5gN9Mkp/wvM/YMmwfnmRhYeauAh8T4/qKmbBtQj6PXfr92mRO/DOzJD9DWaIVNg9BguF7Mr17KC9yw5nAT6mzFEvSKfRLNcIPwW0nfF98fnVjfZmLP5GmITwkWcnZ8seGruZ4Y+7hqF2oIkdHulExzFwWdl1WRKzXSK30/20Fuh+HQE7X3R8AWXTdOx778x/ZptmHlWa1XgAAAABJRU5ErkJggg=="/></p>
+<h2 id="%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E6%A6%82%E8%A6%81">定式化の概要<a class="anchor-link" href="#%E5%AE%9A%E5%BC%8F%E5%8C%96%E3%81%AE%E6%A6%82%E8%A6%81">¶</a></h2><p>今回は簡単のため、白黒画像を取り扱います。ノイズ除去後の画像とノイズの加わった画像の関係として、以下を仮定します。</p>
 <ul>
-<li>元の画像とノイズの入った画像は一致することが多い</li>
-<li>元の画像では隣り合う画素は同じ色であることが多い</li>
+<li>ノイズ除去後の画像とノイズの入った画像は一致することが多い</li>
+<li>ノイズ除去後の画像では隣り合う画素は同じ色であることが多い</li>
 </ul>
-<p>ここでは簡単のため白黒画像を取り扱います。<br/>
-画素のデータは黒と白の二値での表現が可能なので、各画素の値を二値変数を用いて表すことができます。<br/>
-上記の仮定を表現する画素同士の相互作用を目的関数を用いて表現し、これを最適化することによって元の画像を推定することができます。</p>
-<h2 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0%E3%81%AE%E6%A7%8B%E7%AF%89">目的関数の構築<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0%E3%81%AE%E6%A7%8B%E7%AF%89">¶</a></h2><p>画素の集合を $V$ とし、各画素を表すインデックスを $i\in V$ とします。<br/>
-まず、入力画素を表すイジング変数を $y$ としそれぞれの色に対応する値を以下のように表します。</p>
+<p>これらの条件をできるだけ満たすように最適化を行うことで、ノイズの入った画像からノイズを除去します。</p>
+<h3 id="%E5%AE%9A%E6%95%B0%E3%81%A8%E5%A4%89%E6%95%B0">定数と変数<a class="anchor-link" href="#%E5%AE%9A%E6%95%B0%E3%81%A8%E5%A4%89%E6%95%B0">¶</a></h3><p>白黒画像の各画素は黒または白のいずれかなので、画像の各画素を $-1$ または $1$ の値で表現することができます。以下では、黒は $-1$ に対応し、白は $1$ に対応するということにします。</p>
+<p>ノイズが加わった画像について、画素の色を表す -1 または 1 の数値を $y_{ij}$ とおきます。</p>
 <p>$$
-y_{i} = \left\{
-\begin{align}
-&amp;+1 \quad\text{(白)}\\
-&amp;-1 \quad \text{(黒)}
-\end{align}
-\right. \quad
-i\in V\\
+y_{ij} = \begin{cases}
+-1 \quad \text{(対応する画素が黒色)} \\
++1 \quad \text{(対応する画素が白色)}
+\end{cases}
 $$</p>
-<p>また、出力画素に対応した二値のイジング変数を以下のように表します。</p>
+<p>ノイズ除去後の画像については、各画素の値があらかじめ分かっているわけではないですが、黒または白の値を取ることは確実なので、イジング変数 ($\pm1$ の値を取る変数) $s_{ij}$ で表します。このイジング変数について最適化を行うことで、ノイズの除去を行うことができます。</p>
 <p>$$
-s_{i} = \left\{
-\begin{align}
-&amp;+1 \quad\text{(白)}\\
-&amp;-1 \quad \text{(黒)}
-\end{align}
-\right. \quad
-i\in V\\
+s_{ij} \in \{-1, 1\}
 $$</p>
-<p>入力画像と出力画像は概ね一致するという仮定 (ノイズがそれほど多くないという仮定) により、入力画素と出力画素は同じ値になるようにします。つまり、$s_i$ と $y_i$ は同じ値を持つときに値が小さくなるような目的関数を導入します。例えば以下のように与えられます。</p>
+<h3 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h3><p>ノイズ除去後の画像に期待される条件は、以下の 2 種類です。</p>
+<ul>
+<li>ノイズ除去後の画像とノイズの入った画像をできるだけ一致させたい</li>
+<li>ノイズ除去後の画像において、隣り合う画素はできるだけ同じ色にしたい</li>
+</ul>
+<p>これらの条件を多項式の最小化問題として書き下します。</p>
+<p>まず、「ノイズ除去後の画像とノイズの入った画像をできるだけ一致させたい」という条件を考えます。ノイズ除去後の画像とノイズの入った画像の 2 つの画像において、同じ位置 (i, j) にある画素が一致する場合 $-y_{ij}s_{ij} = -1$、一致しない場合 $-y_{ij}s_{ij} = 1$ となるので、この式を画素ごとに足し合わせた多項式</p>
 <p>$$
-f_1 = - \sum_{i\in V} y_{i} s_{i}
+f_1 = \sum_{i, j} -y_{ij} s_{ij}
 $$</p>
-<p>$y_{i}$ と $s_{i}$ が同じ値を持つと 上記の目的関数の値は減少し、異なった値を持つと増加するので、全ての $i\in V$ において $y_{i} = s_{i}$ である場合に $f_1$ は最小値をとります。しかしながら、入力画像にはノイズがのっているので、出力画像が入力画像と同じになってしまうとノイズを減らすことができません。</p>
-<p>そこで、隣り合う画素は同じ色になりやすいという仮定を考慮します。<br/>
-つまり、隣り合った出力画素が同じ値を持つ場合に値が小さくなるような目的関数を導入します。例えば以下のように与えられます。</p>
+<p>の値が小さければ小さいほど、ノイズ除去後の画像とノイズの入った画像の一致度が高くなるといえます。</p>
+<p>次に、「ノイズ除去後の画像において、隣り合う画素はできるだけ同じ色にしたい」という条件を考えます。隣り合う位置にある 2 つの画素 $s_{ij}$, $s_{i'j'}$ について、これらの色が一致する場合 $-s_{ij}s_{i'j'} = -1$、一致しない場合 $-s_{ij}s_{i'j'} = 1$ となるので、この式を隣り合う画素のペアごとに足し合わせた多項式</p>
 <p>$$
-f_2 = -\sum_{(i,j)\in E} s_i s_j
+f_2 = \sum_{s_{i, j} \text{と} s_{i', j'} \text{が隣り合う}} -s_{i, j} s_{i', j'}
 $$</p>
-<p>ここで隣接する画素のペアの集合を $E$ としました。全ての出力画素が同じ値を持つと $f_2$ は最小の値をとります。しかし、全ての画素が同じ値になってしまうと全てが白または黒の画像になってしまうので、元の画像の情報が失われてしまいます。</p>
-<p>そこで、$f_1$ と $f_2$ を適切に足し合わせることで、出力画像が入力画像と近い値をとりつつノイズと思われる画素のみ除去することを試みます。</p>
+<p>の値が小さければ小さいほど、隣り合う画素が同じ色になっている割合が高くなるといえます。</p>
+<p>これらの 2 式 $f_1$ と $f_2$ を重みをつけて足し合わせることで、2 つの条件を両方ともできるだけ満たす場合に小さな値をとるような目的関数 $f$ を構築できます。</p>
 <p>$$
 \begin{align}
 f &amp; = f_1 + \eta f_2\\
-&amp;=- \sum_{i\in V}y_is_i - \eta \sum_{(i,j)\in E}s_i s_j
+f_1 &amp;= \sum_{i, j} -y_{ij} s_{ij}, \\
+f_2 &amp;= \sum_{s_{i, j} \text{と} s_{i', j'} \text{が隣り合う}} -s_{i, j} s_{i', j'}
 \end{align}
 $$</p>
-<p>ここで、$\eta&gt;0$ というパラメータを導入しました。これにより $f_1$ と $f_2$ の強さの調整が出来ます。$\eta$ が大きいほどノイズ除去を行う項が強いことを意味しています。</p>
-<p>この目的関数を最小化しイジング変数 $s$ の値を画素の値と解釈することで、ノイズを除去した画像が得られます。</p>
+<p>ここで、$\eta&gt;0$ というパラメータを導入しました。これにより $f_1$ と $f_2$ の強さの調整が出来ます。$\eta$ を小さくすると 2 つの条件のうち「ノイズ除去後の画像とノイズの入った画像をできるだけ一致させたい」割合が強くなり、大きくすると「隣り合う画素をできるだけ同じ色にしたい」割合が強くなります。</p>
 <h2 id="%E5%8F%82%E8%80%83">参考<a class="anchor-link" href="#%E5%8F%82%E8%80%83">¶</a></h2><ul>
 <li><a href="https://annealing-cloud.com/ja/play/demoapp/noise.html">Annealing Cloud Web: デモアプリ</a></li>
-<li><a href="https://annealing-cloud.com/ja/tutorial/2.html">Annealing Cloud Web: 画像のノイズリダクション解説</a></li>
+<li><a href="https://annealing-cloud.com/ja/tutorial/1.html">Annealing Cloud Web: 画像のノイズリダクション解説</a></li>
 </ul>
 </div>
 </div>
@@ -7591,7 +7586,20 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E7%94%BB%E5%83%8F%E3%81%AE%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">画像の読み込み<a class="anchor-link" href="#%E7%94%BB%E5%83%8F%E3%81%AE%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">¶</a></h2><p>まずは、画像データをダウンロードする関数と、ダウンロードした画像をイジング変数配列に変換する関数を定義します。</p>
+<h2 id="%E3%83%8E%E3%82%A4%E3%82%BA%E3%81%8C%E4%B9%97%E3%81%A3%E3%81%9F%E7%94%BB%E5%83%8F%E3%81%AE%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">ノイズが乗った画像の読み込み<a class="anchor-link" href="#%E3%83%8E%E3%82%A4%E3%82%BA%E3%81%8C%E4%B9%97%E3%81%A3%E3%81%9F%E7%94%BB%E5%83%8F%E3%81%AE%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">¶</a></h2><p>以下のようなノイズの乗った白黒画像 (noisy.png) を用意しました。</p>
+<p><img alt="ノイズの乗った画像" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMQAAABRCAAAAACoZlZHAAAEYElEQVR4nNVa2bqtIAjWvvX+r8y5aBL4mcraHS52pcggyODarXlA5Ylg0l0Xwr3V78ATMto0yfr6H7bKBUOBjIq0/vneFnxPogE+IVxJCHI//xCoKswd0cFaOZSNHxHad3b4MaA2Tc25u1VJquTZ638xItGcdKaXlokZC3puZQKtDDSN6GKyOLTu7MuB4saGOqTpZXaDBsx523cXBklMS5zItBlDrJwpT2l4g0GSUAlqre8VGjCczyjpEMbOHMMRGUcJauIsIFqSP7mzCYiZ6FjpstkPAzvjfwG+F9NoCbOqkXZNhw0Sz6vgb15n06PCPMKeC14PTwmG7ExIHbqemNd/ZenwbYYoC0TYzrNe0uEoB2tejF+yKNZoAQhOej5iLRZMM0qMawbmuBH7NGW8YbdD50RQp0TlCV2Jty3jtWaoZBG4eXrM5WoLRXTCp+Cg2EkMfwN4dCK23+PrVv4d47QZ6MIpl+6dNZiNx5QgeH4cmqkKXUIXVVhk1J1HN+VC6Q16DSDQD2FoQGeDfThPxHHE+87J/rSz3uK2jaNfOXFsfEG1CzMaYXyRmuTn6iaGKX7S7W0Q84QGJdwoUqirjMSo2U1R6OR69w+w5e0I3SZtT44oY1Nklq6GPBs1M+qI10DXOYXYD/RqbqXKDjIKxvIdDPc1JfXWSMXu1saI0XhUMOgKd1pFzAY9/0ToxKrbRIcA+YgjrQWMRY2zMR2WCbdakd6AsTeWyzh2yuO0cFjWLqqr+dC7znYbM+uiwLS2ESCcqKVwI3DDHILfKUZvbfBbbHvH0XgvyGjt0xplHRR1JymEYAtOS/iXL+tIqqsIwpSICtSiM4iFGQG4kyhbTjpJj9AxqIWOCaDgf0CJsToTRLscyEO1ae180tX4500qcEh1fYqoyYIYdF2rxwPf3bVAnZoAlSeuhkjD28AhrVHN3FGKPDEwibz4VkLIKpOrrOOrfZNmeldRPwW+r+8Kqp0gGznWw4u0iuvwQFtVR1tCORaRfXcZskNFao5WsGaUKf6RhbVU9qVbraBFk7Wt6kNMW9zVx37E1xpWXWg6Xd8fZzFiOXOk3HJwggheixaAUwiDeTsU41cGrjvRWMuyuhbe9NQhs9ZoHkcAGfssZPnTSGcXKiq51rWWm7DXw2pZAl5QHMaoNgewBk8tCvrYKNnBro5gnWMuf+BmAwFWws50SjbK1+iQNrhZBPg+Eprdqq7Njl7R8JF/kjBKTz97Xhf9Ra291Fa6zU/hXj8r2ZUy3N4Al8Rt+pBAiepzgacElhh4fEqWdu9pUhSucn4KiLN5gN9Mkp/wvM/YMmwfnmRhYeauAh8T4/qKmbBtQj6PXfr92mRO/DOzJD9DWaIVNg9BguF7Mr17KC9yw5nAT6mzFEvSKfRLNcIPwW0nfF98fnVjfZmLP5GmITwkWcnZ8seGruZ4Y+7hqF2oIkdHulExzFwWdl1WRKzXSK30/20Fuh+HQE7X3R8AWXTdOx778x/ZptmHlWa1XgAAAABJRU5ErkJggg=="/></p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>この画像に対してノイズ除去を行い、元の画像を推定することが今回の目的となっています。</p>
+<p>まず、ノイズが乗った画像を読み込み、NumPy 配列に変換します。</p>
 </div>
 </div>
 </div>
@@ -7606,16 +7614,9 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
 <span class="c1"># 元画像のイジング配列を作成</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"sample.png"</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"noisy.png"</span><span class="p">)</span>
+<span class="n">noisy_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7628,7 +7629,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E3%83%8E%E3%82%A4%E3%82%BA%E7%94%BB%E5%83%8F%E3%81%AE%E4%BD%9C%E6%88%90">ノイズ画像の作成<a class="anchor-link" href="#%E3%83%8E%E3%82%A4%E3%82%BA%E7%94%BB%E5%83%8F%E3%81%AE%E4%BD%9C%E6%88%90">¶</a></h2><p>次に、画素を無作為に選びその値を反転することでノイズを表現する関数を定義し、もとの画像にノイズを加えた画像を生成します。</p>
+<p>NumPy 配列 <code>noisy_img</code> は画像サイズと同じく 81 x 196 の二次元配列であり、各要素は -1 (黒) または 1 (白) となっています。この NumPy 配列を Matplotlib を用いて可視化すると以下のようになります。</p>
 </div>
 </div>
 </div>
@@ -7640,31 +7641,24 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 画像にノイズを追加する関数</span>
-<span class="k">def</span> <span class="nf">get_noisy_img_array</span><span class="p">(</span><span class="n">img_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">noise_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
-    <span class="c1"># 反転する画素を選択</span>
-    <span class="n">invert_pixels</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">img_array</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">noise_ratio</span><span class="p">,</span> <span class="n">noise_ratio</span><span class="p">]</span>
-    <span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-    <span class="k">return</span> <span class="n">img_array</span> <span class="o">*</span> <span class="n">invert_pixels</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ノイズ画像のイジング配列を作成</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">get_noisy_img_array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">noisy_img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">noisy_img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -7678,8 +7672,8 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E5%A4%89%E6%95%B0%E9%85%8D%E5%88%97%E3%81%AE%E4%BD%9C%E6%88%90">イジング変数配列の作成<a class="anchor-link" href="#%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E5%A4%89%E6%95%B0%E9%85%8D%E5%88%97%E3%81%AE%E4%BD%9C%E6%88%90">¶</a></h2><p>次に、イジング変数の配列 <code>s</code> を生成します。入力画像のデータ <code>y</code> を $h \times w$ の2次元配列とすると、出力画像に対応するイジング変数 <code>s</code> も 同じく $h \times w$ の2次元配列となります。</p>
-<p>変数の生成には <code>VariableGenerator</code> を使います。<code>VariableGenerator</code> の <code>array</code> メソッドでは、入力画像のデータ <code>y</code> と同じ配列の形で変数配列を作成できるので、目的関数の計算に便利です。</p>
+<h2 id="%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E5%A4%89%E6%95%B0%E9%85%8D%E5%88%97%E3%81%AE%E4%BD%9C%E6%88%90">イジング変数配列の作成<a class="anchor-link" href="#%E3%82%A4%E3%82%B8%E3%83%B3%E3%82%B0%E5%A4%89%E6%95%B0%E9%85%8D%E5%88%97%E3%81%AE%E4%BD%9C%E6%88%90">¶</a></h2><p>次に、ノイズ除去後の画像の各画素の値を表すイジング変数の配列 <code>s</code> を生成します。<code>s</code> はノイズの乗った画像と同じサイズ、つまり NumPy 配列 <code>noisy_img</code> と同じサイズの二次元配列です。</p>
+<p>変数の生成には <code>VariableGenerator</code> を使います。<code>VariableGenerator</code> の <code>array</code> メソッドを用いると、多次元配列の形で変数配列を作成できるので、目的関数の計算に便利です。</p>
 </div>
 </div>
 </div>
@@ -7695,7 +7689,7 @@ $$</p>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">VariableGenerator</span><span class="p">()</span>
 <span class="c1"># 元の画像と同じ 2 次元配列の形にイジング変数配列を生成</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"Ising"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"Ising"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">noisy_img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7708,7 +7702,72 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h2><p>入力画像データの配列 $y$ と出力画像に対応したイジング変数配列 $s$ を用いて、目的関数を構築します。</p>
+<h2 id="%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">目的関数<a class="anchor-link" href="#%E7%9B%AE%E7%9A%84%E9%96%A2%E6%95%B0">¶</a></h2><p>ノイズの乗った画像に対応する NumPy 配列 <code>noisy_img</code> と元の画像を表すイジング変数配列 $s$ を用いて、目的関数を構築します。</p>
+<p>まず、「ノイズ除去後の画像とノイズの入った画像は一致することが多い」という条件を表す関数を作成します。この関数は $ f_1 = \sum_{i, j} -y_{ij} s_{ij} $ で表され、一致する画素の数が多ければ大きいほど小さい値を取ります。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">f1</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">noisy_img</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>次に、「ノイズ除去後の画像において、隣り合う画素はできるだけ同じ色にしたい」という条件を表す関数を作成します。この関数は以下の式で表され、同じ色の隣り合う画素が多ければ多いほど小さな値を取ります。</p>
+<p>$$
+f_2 = \sum_{s_{i, j} \text{と} s_{i', j'} \text{が隣り合う}} -s_{i, j} s_{i', j'}
+$$</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">f2</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">s</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>ここで、上の <code>f2</code> の式の第一項は左右に隣り合う画素のペアすべてについて、対応するイジング変数の積 $s_{i, j}s_{i', j'}$ の総和を取ったものとなっています。<code>s[:, :-1]</code> と <code>s[:, 1:]</code> は同じ形を持つ二次元配列であり、これら 2 つの配列において同じ位置にある 2 つのイジング変数は <code>s</code> において左右に隣り合っていることに注意してください。同様に、第二項は上下に隣り合う画素のペアすべてについて対応するイジング変数の積の総和を取ったものです。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>作成した 2 つの関数を適切な重みを付けて足し合わせ、目的関数を作成します。今回は第一項 <code>f1</code> に対する第二項 <code>f2</code> の重みを <code>0.4</code> とします。この目的関数ができるだけ小さくなるように変数配列 <code>s</code> の値を決定したとき、<code>s</code> が表す画像はノイズが加わる前の画像に近くなることが期待されます。</p>
 </div>
 </div>
 </div>
@@ -7721,20 +7780,10 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 強度パラメータ</span>
-<span class="n">eta</span> <span class="o">=</span> <span class="mf">0.333</span>
-
-<span class="c1"># 目的関数 f を計算</span>
-
-<span class="c1"># ノイズ除去後の画像は除去前の画像と一致することが多い</span>
-<span class="c1"># -&gt; - \sum_{i\in V} y_{i} s_{i} を小さくしたい</span>
-<span class="n">f1</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-<span class="c1"># ノイズ除去後の画像において隣り合う画素は同じ色であることが多い</span>
-<span class="c1"># -&gt; -\sum_{(i,j)\in E} s_i s_j を小さくしたい</span>
-<span class="n">f2</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">s</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">eta</span> <span class="o">=</span> <span class="mf">0.4</span>
 
 <span class="c1"># 上記 2 つの関数の値が同時に小さくなるように目的関数を設定する</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">f2</span>
+<span class="n">objective</span> <span class="o">=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">f2</span>
 </pre></div>
 </div>
 </div>
@@ -7747,7 +7796,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%AE%9F%E8%A1%8C">クライアントの設定とマシンの実行<a class="anchor-link" href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%AE%9F%E8%A1%8C">¶</a></h2><p>次にクライアントを設定し、先ほど与えた目的関数の最小値に対応する解をイジングマシンで探索します。</p>
+<h2 id="%E3%82%BD%E3%83%AB%E3%83%90%E3%83%BC%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%AE%9F%E8%A1%8C">ソルバークライアントの設定とマシンの実行<a class="anchor-link" href="#%E3%82%BD%E3%83%AB%E3%83%90%E3%83%BC%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%AE%9F%E8%A1%8C">¶</a></h2><p>組合せ最適化ソルバーとして、Amplify AE を使用します。Amplify AE に対応するソルバークライアント (<code>FixstarsClient</code>) を作成し、パラメータを設定します。</p>
 </div>
 </div>
 </div>
@@ -7759,16 +7808,13 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span><span class="p">,</span> <span class="n">solve</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="c1"># クライアントの設定</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>  <span class="c1"># タイムアウト2秒</span>
+<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
 <span class="c1"># client.token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # ローカル環境で使用する場合は、Amplify AEのアクセストークンを入力してください</span>
-
-<span class="c1"># ソルバの設定と結果の取得</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7781,8 +7827,34 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E8%A7%A3%E3%81%AE%E5%8F%96%E5%BE%97%E3%81%A8%E7%B5%90%E6%9E%9C%E3%81%AE%E8%A1%A8%E7%A4%BA">解の取得と結果の表示<a class="anchor-link" href="#%E8%A7%A3%E3%81%AE%E5%8F%96%E5%BE%97%E3%81%A8%E7%B5%90%E6%9E%9C%E3%81%AE%E8%A1%A8%E7%A4%BA">¶</a></h2><p>最後に、得られた解を元のイジング変数 $s$ に代入し、出力画像のデータを取得します。</p>
-<p>入力画像と比較するとノイズが減少したことが確認できます。</p>
+<p>作成した目的関数とソルバークライアントを用いて、組合せ最適化を実行します。以下のセルを実行すると、Amplify AE による目的関数の最小化が行われます。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">solve</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E8%A7%A3%E3%81%AE%E5%8F%96%E5%BE%97%E3%81%A8%E7%B5%90%E6%9E%9C%E3%81%AE%E8%A1%A8%E7%A4%BA">解の取得と結果の表示<a class="anchor-link" href="#%E8%A7%A3%E3%81%AE%E5%8F%96%E5%BE%97%E3%81%A8%E7%B5%90%E6%9E%9C%E3%81%AE%E8%A1%A8%E7%A4%BA">¶</a></h2><p>得られたうち最良の解における変数配列 <code>s</code> の値を取得します。</p>
 </div>
 </div>
 </div>
@@ -7795,18 +7867,21 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># イジング変数に解を代入</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>  <span class="c1"># 復元画像</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>  <span class="c1"># 元画像</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>  <span class="c1"># ノイズ画像</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">s_values</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><code>s_values</code> は <code>s</code> と同じサイズの NumPy 2 次元配列であり、ノイズ除去後の画像の各画素の値を表しています。</p>
+<p>最後に、<code>s_values</code> が表す画像を表示してみましょう。最初の画像 (noisy.png) と比較するとノイズが減少したことが確認できます。</p>
 </div>
 </div>
 </div>
@@ -7818,7 +7893,8 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">s_values</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>  <span class="c1"># 復元画像</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

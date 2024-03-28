@@ -7527,59 +7527,57 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Problem-Overview">Problem Overview<a class="anchor-link" href="#Problem-Overview">¶</a></h2><p>We use an annealing machine to restore the original image from an image with added noise.</p>
-<p>We attempt to reduce noise based on the following assumptions:</p>
+<p>In this tutorial, we estimate the original from a noisy image using Fixstars Amplify.</p>
+<p><img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMQAAABRCAAAAACoZlZHAAAEYElEQVR4nNVa2bqtIAjWvvX+r8y5aBL4mcraHS52pcggyODarXlA5Ylg0l0Xwr3V78ATMto0yfr6H7bKBUOBjIq0/vneFnxPogE+IVxJCHI//xCoKswd0cFaOZSNHxHad3b4MaA2Tc25u1VJquTZ638xItGcdKaXlokZC3puZQKtDDSN6GKyOLTu7MuB4saGOqTpZXaDBsx523cXBklMS5zItBlDrJwpT2l4g0GSUAlqre8VGjCczyjpEMbOHMMRGUcJauIsIFqSP7mzCYiZ6FjpstkPAzvjfwG+F9NoCbOqkXZNhw0Sz6vgb15n06PCPMKeC14PTwmG7ExIHbqemNd/ZenwbYYoC0TYzrNe0uEoB2tejF+yKNZoAQhOej5iLRZMM0qMawbmuBH7NGW8YbdD50RQp0TlCV2Jty3jtWaoZBG4eXrM5WoLRXTCp+Cg2EkMfwN4dCK23+PrVv4d47QZ6MIpl+6dNZiNx5QgeH4cmqkKXUIXVVhk1J1HN+VC6Q16DSDQD2FoQGeDfThPxHHE+87J/rSz3uK2jaNfOXFsfEG1CzMaYXyRmuTn6iaGKX7S7W0Q84QGJdwoUqirjMSo2U1R6OR69w+w5e0I3SZtT44oY1Nklq6GPBs1M+qI10DXOYXYD/RqbqXKDjIKxvIdDPc1JfXWSMXu1saI0XhUMOgKd1pFzAY9/0ToxKrbRIcA+YgjrQWMRY2zMR2WCbdakd6AsTeWyzh2yuO0cFjWLqqr+dC7znYbM+uiwLS2ESCcqKVwI3DDHILfKUZvbfBbbHvH0XgvyGjt0xplHRR1JymEYAtOS/iXL+tIqqsIwpSICtSiM4iFGQG4kyhbTjpJj9AxqIWOCaDgf0CJsToTRLscyEO1ae180tX4500qcEh1fYqoyYIYdF2rxwPf3bVAnZoAlSeuhkjD28AhrVHN3FGKPDEwibz4VkLIKpOrrOOrfZNmeldRPwW+r+8Kqp0gGznWw4u0iuvwQFtVR1tCORaRfXcZskNFao5WsGaUKf6RhbVU9qVbraBFk7Wt6kNMW9zVx37E1xpWXWg6Xd8fZzFiOXOk3HJwggheixaAUwiDeTsU41cGrjvRWMuyuhbe9NQhs9ZoHkcAGfssZPnTSGcXKiq51rWWm7DXw2pZAl5QHMaoNgewBk8tCvrYKNnBro5gnWMuf+BmAwFWws50SjbK1+iQNrhZBPg+Eprdqq7Njl7R8JF/kjBKTz97Xhf9Ra291Fa6zU/hXj8r2ZUy3N4Al8Rt+pBAiepzgacElhh4fEqWdu9pUhSucn4KiLN5gN9Mkp/wvM/YMmwfnmRhYeauAh8T4/qKmbBtQj6PXfr92mRO/DOzJD9DWaIVNg9BguF7Mr17KC9yw5nAT6mzFEvSKfRLNcIPwW0nfF98fnVjfZmLP5GmITwkWcnZ8seGruZ4Y+7hqF2oIkdHulExzFwWdl1WRKzXSK30/20Fuh+HQE7X3R8AWXTdOx778x/ZptmHlWa1XgAAAABJRU5ErkJggg=="/></p>
+<h2 id="Formulation-Overview">Formulation Overview<a class="anchor-link" href="#Formulation-Overview">¶</a></h2><p>We will use black-and-white images here as a simple example. We can make the following assumptions about the relationship between the noisy and denoised images.</p>
 <ul>
-<li>The original image and the image with noise have relatively large overlaps.</li>
-<li>In the original image, neighboring pixels often have the same color.</li>
+<li>The noisy and denoised images have relatively large overlaps.</li>
+<li>In the denoised image, neighboring pixels are likely to have the same color.</li>
 </ul>
-<p>We use black and white images here as a simple example.
-Since the data of a pixel can be represented by a binary value of black and white, the value of each pixel can be expressed a binary variable.
-By formulating an objective function which represents the interaction between pixels expressing the above assumptions, the original image can be estimated by finding the optimal value of this function.</p>
-<h2 id="Constructing-the-Objective-Function">Constructing the Objective Function<a class="anchor-link" href="#Constructing-the-Objective-Function">¶</a></h2><p>We let $V$ be the set of pixels, and let $i\in V$ be the index representing each pixel.
-We then let the binary valued data representing the input pixels with noise be $y$, where the value of each pixel is expressed as follows:</p>
+<p>Noise reduction is performed by optimizing these conditions.</p>
+<h3 id="Constants-and-Variables">Constants and Variables<a class="anchor-link" href="#Constants-and-Variables">¶</a></h3><p>Since the color of a pixel is black or white, the value of each pixel can be expressed by a variable that takes value $-1$ or $1$.
+In the following, the black pixel corresponds to $-1$ and the white pixel to $1$.</p>
+<p>Let $y_{ij}$ denote the value corresponding to the color of each pixel in the noisy image.</p>
 <p>$$
-y_{i} = \left\{
-\begin{align}
-&amp;+1 \quad\text{(white)}\\
-&amp;-1 \quad \text{(black)}
-\end{align}
-\right. \quad
-i\in V\\
+y_{ij} = \begin{cases}
+-1 \quad \text{(if the corresponding pixel is black)} \\
++1 \quad \text{(if the corresponding pixel is white)}
+\end{cases}
 $$</p>
-<p>Also, the binary Ising variables corresponding to the output pixels are represented as follows:</p>
+<p>Let $s_{ij}$ denote the Ising variable corresponding to the color of each pixel in the denoised image. The denoised image can be obtained by optimizing these Ising variables.</p>
 <p>$$
-s_{i} = \left\{
-\begin{align}
-&amp;+1 \quad\text{(White)}\\
-&amp;-1 \quad \text{(Black)}
-\end{align}
-\right. \quad
-i\in V\\
+s_{ij} = \begin{cases}
+-1 \quad \text{(if the corresponding pixel is black)} \\
++1 \quad \text{(if the corresponding pixel is white)}
+\end{cases}
 $$</p>
-<p>Based on the assumption that the input and output images are are relatively close (i.e., there is not much noise), we need the effect that the input and output pixels have the same values. In other words, we introduce an objective function such that $s_i$ and $y_i$ become smaller when they have the same value. For example, it is given as follows:</p>
+<h2 id="Objective-Function">Objective Function<a class="anchor-link" href="#Objective-Function">¶</a></h2><p>The following two conditions about the denoised image are assumed:</p>
+<ul>
+<li>The noisy and denoised images have relatively large overlaps.</li>
+<li>In the denoised image, neighboring pixels are likely to have the same color.</li>
+</ul>
+<p>Let us write down these conditions as a polynomial minimization problem.</p>
+<p>First, consider the first assumption that the the noisy and denoised images have relatively large overlaps. $-y_{ij}s_{ij} = -1$ if the pixels at the same position (i, j) in the two images match and $-y{ij}s_{ij} = 1$ otherwise. Therefore, the following polynomial $f_1$, which is the summation of the expression by each pixel, takes smaller value if the two images have larger overlaps.</p>
 <p>$$
-f_1 = - \sum_{i\in V} y_{i} s_{i}
+f_1 = \sum_{i, j} -y_{ij} s_{ij}
 $$</p>
-<p>Since the value of the above objective function decreases when $y_{i}$ and $s_{i}$ have the same value and increases when they have different values, $f_1$ takes the minimum value when $y_{i} = s_{i}$ for all $i\in V$. However, since the input image has noise on it, the noise cannot be reduced if the output image is the same as the input image.</p>
-<p>We thus consider the assumption that neighboring pixels tend to be the same color.
-In other words, we introduce an objective function that reduces the value when neighboring output pixels have the same value. For example, it is given as follows:</p>
+<p>Next, consider the second assumption that neighboring pixels tend to be the same color. $-s_{ij}s_{i'j'} = -1$ if the pixels at the position (i, j) and (i', j') in the denoised image have the same color and $-s_{ij}s_{i'j'} = 1$ otherwise. Therefore, the following polynomial $f_2$, which is the summation of the expression by each pair of neighboring pixels, takes smaller value if the larger number of neighboring pixels have the same color.</p>
 <p>$$
-f_2 = -\sum_{(i,j)\in E} s_i s_j
+f_2 = \sum_{s_{i, j} \text{and} s_{i', j'} \text{are adjacent}} -s_{i, j} s_{i', j'}
 $$</p>
-<p>Here, the set of adjacent pixel pairs is defined as $E$. If all the output pixels have the same value, $f_2$ takes the smallest value. However, if all pixels have the same value, every pixel will turn out to be white or black, and the information in the original image will be lost.</p>
-<p>Therefore, by appropriately adding $f_1$ and $f_2$ together, we try to remove the pixels that are considered to be noise while making the output image close to the input image.</p>
+<p>By adding these expressions $f_1$ and $f_2$ together with an appropriate weight, the objective function is created, which takes smaller value if the two conditions are satisfied.</p>
 <p>$$
 \begin{align}
 f &amp; = f_1 + \eta f_2\\
-&amp;=- \sum_{i\in V}y_is_i - \eta \sum_{(i,j)\in E}s_i s_j
+f_1 &amp;= \sum_{i, j} -y_{ij} s_{ij}, \\
+f_2 &amp;= \sum_{s_{i, j} \text{and} s_{i', j'} \text{are adjacent}} -s_{i, j} s_{i', j'}
 \end{align}
 $$</p>
 <p>Here, we have introduced the parameter $\eta&gt;0$. This allows us to adjust the relative strength of $f_1$ and $f_2$. The larger the value of $\eta$ is, the stronger the effect of the noise reduction term is.</p>
 <p>By minimizing this objective function and interpreting the values of the Ising variables $s$ as the values of the pixels, we can obtain an image with reduced noise.</p>
 <h2 id="Reference">Reference<a class="anchor-link" href="#Reference">¶</a></h2><ul>
-<li><a href="https://annealing-cloud.com/ja/play/demoapp/noise.html">Annealing Cloud Web: Demo App</a></li>
-<li><a href="https://annealing-cloud.com/ja/tutorial/2.html">Annealing Cloud Web: Explanation of Image Noise Reduction</a></li>
+<li><a href="https://annealing-cloud.com/en/play/demoapp/noise.html">Annealing Cloud Web: Demo App</a></li>
+<li><a href="https://annealing-cloud.com/en/tutorial/1.html">Annealing Cloud Web: Explanation of Image Noise Reduction</a></li>
 </ul>
 </div>
 </div>
@@ -7591,7 +7589,10 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Loading-an-Image">Loading an Image<a class="anchor-link" href="#Loading-an-Image">¶</a></h2><p>First, we define a function to download an image data and a function to convert the downloaded image to an array of Ising variables.</p>
+<h2 id="Load-Noisy-Image">Load Noisy Image<a class="anchor-link" href="#Load-Noisy-Image">¶</a></h2><p>We have prepared a noisy black-and-white image (noisy.png).</p>
+<p><img alt="noisy.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMQAAABRCAAAAACoZlZHAAAEYElEQVR4nNVa2bqtIAjWvvX+r8y5aBL4mcraHS52pcggyODarXlA5Ylg0l0Xwr3V78ATMto0yfr6H7bKBUOBjIq0/vneFnxPogE+IVxJCHI//xCoKswd0cFaOZSNHxHad3b4MaA2Tc25u1VJquTZ638xItGcdKaXlokZC3puZQKtDDSN6GKyOLTu7MuB4saGOqTpZXaDBsx523cXBklMS5zItBlDrJwpT2l4g0GSUAlqre8VGjCczyjpEMbOHMMRGUcJauIsIFqSP7mzCYiZ6FjpstkPAzvjfwG+F9NoCbOqkXZNhw0Sz6vgb15n06PCPMKeC14PTwmG7ExIHbqemNd/ZenwbYYoC0TYzrNe0uEoB2tejF+yKNZoAQhOej5iLRZMM0qMawbmuBH7NGW8YbdD50RQp0TlCV2Jty3jtWaoZBG4eXrM5WoLRXTCp+Cg2EkMfwN4dCK23+PrVv4d47QZ6MIpl+6dNZiNx5QgeH4cmqkKXUIXVVhk1J1HN+VC6Q16DSDQD2FoQGeDfThPxHHE+87J/rSz3uK2jaNfOXFsfEG1CzMaYXyRmuTn6iaGKX7S7W0Q84QGJdwoUqirjMSo2U1R6OR69w+w5e0I3SZtT44oY1Nklq6GPBs1M+qI10DXOYXYD/RqbqXKDjIKxvIdDPc1JfXWSMXu1saI0XhUMOgKd1pFzAY9/0ToxKrbRIcA+YgjrQWMRY2zMR2WCbdakd6AsTeWyzh2yuO0cFjWLqqr+dC7znYbM+uiwLS2ESCcqKVwI3DDHILfKUZvbfBbbHvH0XgvyGjt0xplHRR1JymEYAtOS/iXL+tIqqsIwpSICtSiM4iFGQG4kyhbTjpJj9AxqIWOCaDgf0CJsToTRLscyEO1ae180tX4500qcEh1fYqoyYIYdF2rxwPf3bVAnZoAlSeuhkjD28AhrVHN3FGKPDEwibz4VkLIKpOrrOOrfZNmeldRPwW+r+8Kqp0gGznWw4u0iuvwQFtVR1tCORaRfXcZskNFao5WsGaUKf6RhbVU9qVbraBFk7Wt6kNMW9zVx37E1xpWXWg6Xd8fZzFiOXOk3HJwggheixaAUwiDeTsU41cGrjvRWMuyuhbe9NQhs9ZoHkcAGfssZPnTSGcXKiq51rWWm7DXw2pZAl5QHMaoNgewBk8tCvrYKNnBro5gnWMuf+BmAwFWws50SjbK1+iQNrhZBPg+Eprdqq7Njl7R8JF/kjBKTz97Xhf9Ra291Fa6zU/hXj8r2ZUy3N4Al8Rt+pBAiepzgacElhh4fEqWdu9pUhSucn4KiLN5gN9Mkp/wvM/YMmwfnmRhYeauAh8T4/qKmbBtQj6PXfr92mRO/DOzJD9DWaIVNg9BguF7Mr17KC9yw5nAT6mzFEvSKfRLNcIPwW0nfF98fnVjfZmLP5GmITwkWcnZ8seGruZ4Y+7hqF2oIkdHulExzFwWdl1WRKzXSK30/20Fuh+HQE7X3R8AWXTdOx778x/ZptmHlWa1XgAAAABJRU5ErkJggg=="/></p>
+<p>Our goal is to remove the noise from this image and estimate the original image.</p>
+<p>First, we load the noisy image and convert it to a NumPy array.</p>
 </div>
 </div>
 </div>
@@ -7606,16 +7607,8 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="c1"># Create an Ising array of the original image</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"sample.png"</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"noisy.png"</span><span class="p">)</span>
+<span class="n">noisy_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7628,7 +7621,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Creating-an-Image-with-Noise">Creating an Image with Noise<a class="anchor-link" href="#Creating-an-Image-with-Noise">¶</a></h2><p>Next, we define a function that represents noise by randomly selecting pixels and inverting their values.</p>
+<p>The NumPy array <code>noisy_img</code> is a two-dimentional array of $81 \times 196$ , the same as the image size, each element of which is -1 (black) or 1 (white). This NumPy array can be visualized using Matplotlib as follows:</p>
 </div>
 </div>
 </div>
@@ -7640,15 +7633,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Function to add noise to an image</span>
-<span class="k">def</span> <span class="nf">get_noisy_img_array</span><span class="p">(</span><span class="n">img_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">noise_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
-    <span class="c1"># Select a pixel to add noise</span>
-    <span class="n">invert_pixels</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">img_array</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">noise_ratio</span><span class="p">,</span> <span class="n">noise_ratio</span><span class="p">]</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">img_array</span> <span class="o">*</span> <span class="n">invert_pixels</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -7662,9 +7647,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create an Ising array of image with noise</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">get_noisy_img_array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">noisy_img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">noisy_img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -7678,8 +7664,8 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Creating-the-Ising-Variable-Array">Creating the Ising Variable Array<a class="anchor-link" href="#Creating-the-Ising-Variable-Array">¶</a></h2><p>Next, we create an array <code>s</code> of Ising variables. If the input image data <code>y</code> is a $h\times w$ two-dimensional array, the Ising variable <code>s</code> corresponding to the output image is also a $h\times w$ two-dimensional array.</p>
-<p>We use <code>gen_symbols</code> to generate the variables. We specify the type of the variable as <code>IsingPoly</code> here because the polynomial of the Ising variables will be the objective function in the end. Since <code>gen_symbols</code> can create an array of variables in the same form as the array of the input image data <code>y</code>, we use this feature as follows.</p>
+<h2 id="Create-the-Ising-Variable-Array">Create the Ising Variable Array<a class="anchor-link" href="#Create-the-Ising-Variable-Array">¶</a></h2><p>Next, we create an array <code>s</code> of Ising variables. <code>s</code> is a two-dimensional array of the same shape as the noisy image, i.e. the same shape as the NumPy array <code>noisy_img</code>.</p>
+<p>To create variables, use <code>VariableGenerator</code>. The <code>array</code> method of <code>VariableGenerator</code> creates variables in a multi-dimensional array form, which is useful for calculating th objective function.</p>
 </div>
 </div>
 </div>
@@ -7694,8 +7680,8 @@ $$</p>
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">VariableGenerator</span><span class="p">()</span>
-<span class="c1"># Create an Ising variable in the shape of original image</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"Ising"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># Create an Ising variable in the shape of the noisy image</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"Ising"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">noisy_img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7708,7 +7694,8 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Objective-Function">Objective Function<a class="anchor-link" href="#Objective-Function">¶</a></h2><p>We construct the objective function using the array of the input image data $y$ and the Ising variable array $s$ corresponding to the output image.</p>
+<h2 id="Objective-Function">Objective Function<a class="anchor-link" href="#Objective-Function">¶</a></h2><p>We construct the objective function using the array of the noisy image data <code>noisy_img</code> and the Ising variable array <code>s</code> corresponding to the denoised image.</p>
+<p>First, we create a function that expresses the condition that the the noisy and denoised images have relatively large overlaps. This function is expressed by $f_1 = \sum_{i, j} -y_{ij} s_{ij}$ and takes smaller value when the two images have larger overlaps.</p>
 </div>
 </div>
 </div>
@@ -7720,21 +7707,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Strength parameter</span>
-<span class="n">eta</span> <span class="o">=</span> <span class="mf">0.333</span>
-
-<span class="c1"># Calculate the objective function f</span>
-
-<span class="c1"># Image after noise removal often matches image before removal</span>
-<span class="c1"># -&gt; - we want to reduce [\sum_{i\in V} y_{i} s_{i}]</span>
-<span class="n">f1</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-<span class="c1"># Neighboring pixels are often the same color in the image after noise removal</span>
-<span class="c1"># -&gt; - we want to make [\sum_{(i,j)\in E} s_i s_j] smaller</span>
-<span class="n">f2</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">s</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-
-<span class="c1"># Set the objective function so that the values of the above two functions become small at the same time</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">f2</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">f1</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">noisy_img</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -7747,7 +7720,10 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Setting-Up-the-Client-and-Running-the-Machine">Setting Up the Client and Running the Machine<a class="anchor-link" href="#Setting-Up-the-Client-and-Running-the-Machine">¶</a></h2><p>Next, we set up the client and search for the solution corresponding to the minimum value of the objective function, by an Ising machine.</p>
+<p>Next, create a function that expresses the condition that adjacent pixels tend to have the same color. This function is expressed by the following expression, and takes value when the large number of neighboring pixels have the same color.</p>
+<p>$$
+f_2 = \sum_{s_{i, j} \text{and} s_{i', j'} \text{are adjacent}} -s_{i, j} s_{i', j'}
+$$</p>
 </div>
 </div>
 </div>
@@ -7759,16 +7735,75 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span><span class="p">,</span> <span class="n">solve</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">f2</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">s</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Here, the first term of the above expression <code>f2</code> is the total sum of the products of the corresponding Ising variables $s_{i, j} s_{i', j'}$ for all pairs of adjacent pixels to the left and right. Similarly, the second term is the total sum of the products of the corresponding Ising variables for all pairs of upper and lower neighboring pixels.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The objective function is created by adding the two functions together with an appropriate weight. In this tutorial, we set the weight of the second term <code>f2</code> for the first term <code>f1</code> to <code>0.4</code>. When the values of the variable array <code>s</code> are determined so that this objective function is as small as possible, the image represented by <code>s</code> is expected to be close to the image before the noise was added.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">objective</span> <span class="o">=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">f2</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Set-Up-the-Client-and-Run-the-Machine">Set Up the Client and Run the Machine<a class="anchor-link" href="#Set-Up-the-Client-and-Run-the-Machine">¶</a></h2><p>We use Amplify AE as our combinatorial optimization solver. A solver client that corresponds to the solver (<code>FixstarsClient</code>) is created, and the parameters of the solver are set.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="c1"># Setting Fixstars Amplify AE as a client</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>  <span class="c1"># Timeout is 2 second</span>
+<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
 <span class="c1"># client.token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # If you use it in a local environment, please enter the access token for Amplify AE</span>
-
-<span class="c1"># Solve the problem</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7781,8 +7816,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Obtaining-the-Solutions-and-Displaying-the-Results">Obtaining the Solutions and Displaying the Results<a class="anchor-link" href="#Obtaining-the-Solutions-and-Displaying-the-Results">¶</a></h2><p>Finally, we substitute the found solution to the Ising variable $s$ to obtain the data of the output image.</p>
-<p>Comparing with the input image, we can see that the noise has been reduced.</p>
+<p>Combinatorial optimization is executed using the created objective function and the solver client. When the following cell is executed, the Amplify AE will be run to minimize the objective function.</p>
 </div>
 </div>
 </div>
@@ -7794,16 +7828,60 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Assign the solution to the Ising variable array</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">solve</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>  <span class="c1"># Restored image</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>  <span class="c1"># Original image</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>  <span class="c1"># Image with noise</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Obtaining-the-Solutions-and-Displaying-the-Results">Obtaining the Solutions and Displaying the Results<a class="anchor-link" href="#Obtaining-the-Solutions-and-Displaying-the-Results">¶</a></h2><p>The value of the variable array <code>s</code> in the best solution obtained can be obtained as follows:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">s_values</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The <code>s_values</code> defined above is a two-dimensional NumPy array that has the same shape as <code>s</code> and represents the value of each pixel of the denoised image.</p>
+<p>Finally, let us show the image represented by <code>s_values</code>. Compared to the first image (noisy.png), we can see that the noise has been reduced.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">s_values</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
