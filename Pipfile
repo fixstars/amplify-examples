@@ -22,7 +22,7 @@ mypy = "*"
 ipympl = "*"
 sigfig = "*"
 tqdm = "*"
-opencv-python = "*"
+pandas-datareader = "*"
 
 [requires]
 python_version = "3"
