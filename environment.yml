@@ -23,3 +23,4 @@ dependencies:
       - ipympl
       - tqdm
       - opencv-python
+      - pandas-datareader
