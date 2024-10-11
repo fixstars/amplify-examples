@@ -24,6 +24,7 @@ sigfig = "*"
 tqdm = "*"
 opencv-python = "*"
 pandas-datareader = "*"
+plotly = "*"
 
 [requires]
 python_version = "3"
