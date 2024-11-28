@@ -8008,7 +8008,7 @@ EV バッテリーは EV の走行のみに利用され、家庭への電力供�
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="%E6%B1%82%E8%A7%A3%E3%81%AE%E5%AE%9F%E8%A1%8C">求解の実行<a class="anchor-link" href="#%E6%B1%82%E8%A7%A3%E3%81%AE%E5%AE%9F%E8%A1%8C">¶</a></h2><p>それでは、ハード制約、ソフト制約、目的関数を考慮した最適化問題を解いてみましょう。 考慮すべき項数が比較的多いので、目的関数や制約条件に適切な重み付けを行うのは簡単ではありません。これをより簡単にするために、以下の 2 段階で最適化を実行します。</p>
-<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-1.-%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E4%BF%82%E6%95%B0%E3%82%92%E5%BE%97%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AE%E6%B1%82%E8%A7%A3">ステップ 1. スケーリング係数を得るための求解<a class="anchor-link" href="#%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-1.-%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E4%BF%82%E6%95%B0%E3%82%92%E5%BE%97%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AE%E6%B1%82%E8%A7%A3">¶</a></h3><p>最初のステップでは、ハード制約のみを使用して最適化を行います。目的関数の典型的な値 ($f_{diff}$, $f_{price}$ および $f_{soft}$) を求め、それをスケーリング係数として、ステップ 2 における実際の求解で使用することが目的です。</p>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-1.-%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E4%BF%82%E6%95%B0%E3%82%92%E5%BE%97%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AE%E6%B1%82%E8%A7%A3">ステップ 1. スケーリング係数を得るための求解<a class="anchor-link" href="#%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-1.-%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E4%BF%82%E6%95%B0%E3%82%92%E5%BE%97%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AE%E6%B1%82%E8%A7%A3">¶</a></h3><p>最初のステップでは、ハード制約のみを使用して最適化を行います。目的関数の値 ($f_{diff}$, $f_{price}$ および $f_{soft}$) を求め、それらをスケーリング係数として、ステップ 2 における実際の求解で使用することが目的です。</p>
 <p>ここで、すべての目的関数 <code>objective_diff</code>、<code>objective_price</code>、<code>soft_constraint</code> は <code>amplify.Poly</code> クラスのインスタンスであり、<code>amplify.Poly</code> の <code>evaluate</code> メソッドを使用して、 得られた最善解 <code>result.best.values</code> に対応する目的値を計算します（詳細は <a href="https://amplify.fixstars.com/ja/docs/amplify/v1/evaluation.html#result-info-on-solutions">ドキュメント</a> を参照）。</p>
 </div>
 </div>
@@ -8025,11 +8025,11 @@ EV バッテリーは EV の走行のみに利用され、家庭への電力供�
 
 
 <span class="k">def</span> <span class="nf">retriable_solve</span><span class="p">(</span>
-    <span class="n">model</span><span class="p">:</span> <span class="n">amplify</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="s2">"amplify.AmplifyClient"</span><span class="p">,</span> <span class="n">num_solves</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">amplify</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">amplify</span><span class="o">.</span><span class="n">FixstarsClient</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">amplify</span><span class="o">.</span><span class="n">Result</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""A function that retries amplify.solve up to five times if no feasible solution is obtained."""</span>
+<span class="w">    </span><span class="sd">"""ハード制約を全て満たす解が得られない場合は、5回まで求解をリトライする solve 関数"""</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">amplify</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">num_solves</span><span class="o">=</span><span class="n">num_solves</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">amplify</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">break</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"retrying amplify.solve..."</span><span class="p">)</span>
@@ -8039,20 +8039,33 @@ EV バッテリーは EV の走行のみに利用され、家庭への電力供�
 
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">amplify</span><span class="o">.</span><span class="n">FixstarsClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="c1"># client.token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # ローカル環境等で使用する場合は、Fixstars Amplify AE のアクセストークンを入力してください。</span>
 
 <span class="c1"># スケーリング係数を求めるための制約問題</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">duplicate</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># 同じ目的関数値の解を複数取得するオプション（目的関数を考慮しないステップ1では、“最適”解が複数個あるため）</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">amplify</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">constraint_demand</span> <span class="o">+</span> <span class="n">constraint_bs</span> <span class="o">+</span> <span class="n">constraint_be</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">retriable_solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 
-<span class="c1"># 得られた解からスケーリング係数を取得</span>
-<span class="n">scaling_diff</span> <span class="o">=</span> <span class="n">objective_diff</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">scaling_price</span> <span class="o">=</span> <span class="n">objective_price</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">scaling_soft</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">soft_constraint</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scaling_diff</span><span class="si">=:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scaling_price</span><span class="si">=:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scaling_soft</span><span class="si">=:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="c1"># 得られた制約を満たす全ての解に対して目的関数値を計算し、その最大値を対応する目的関数のスケーリング係数とします。</span>
+<span class="n">num_sols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">)</span>
+<span class="n">scaling_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">objective_diff</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_sols</span><span class="p">)]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="n">scaling_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">objective_price</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_sols</span><span class="p">)]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="n">scaling_soft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">soft_constraint</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">solutions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_sols</span><span class="p">)]</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scaling_diff</span><span class="si">=:</span><span class="s2">.10e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scaling_price</span><span class="si">=:</span><span class="s2">.10e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scaling_soft</span><span class="si">=:</span><span class="s2">.10e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8065,7 +8078,7 @@ EV バッテリーは EV の走行のみに利用され、家庭への電力供�
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-2.-%E5%AE%9F%E9%9A%9B%E3%81%AE%E6%B1%82%E8%A7%A3">ステップ 2. 実際の求解<a class="anchor-link" href="#%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-2.-%E5%AE%9F%E9%9A%9B%E3%81%AE%E6%B1%82%E8%A7%A3">¶</a></h3><p>ステップ 2 では、まずステップ 1 で得られたスケーリング係数で $f_{diff}$, $f_{price}$ および $f_{soft}$ を除算します。 この手順により、すべての目的関数項は、ハード制約に対するペナルティ値に比較的近い値を得ることが期待されます。 目的関数に追加の重みを上乗せすることも可能なので、優先する目的関数を制御することができます。以下では、$f_{diff}$、$f_{price}$、$f_{soft}$ にそれぞれ <code>1000</code>、<code>50</code>、<code>0.1</code> の重みを考慮しています。</p>
+<h3 id="%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-2.-%E5%AE%9F%E9%9A%9B%E3%81%AE%E6%B1%82%E8%A7%A3">ステップ 2. 実際の求解<a class="anchor-link" href="#%E3%82%B9%E3%83%86%E3%83%83%E3%83%97-2.-%E5%AE%9F%E9%9A%9B%E3%81%AE%E6%B1%82%E8%A7%A3">¶</a></h3><p>ステップ 2 では、まずステップ 1 で得られたスケーリング係数で $f_{diff}$, $f_{price}$ および $f_{soft}$ を除算します。 この操作により、すべての目的関数項は、ハード制約に対するペナルティ値 (=1) に比較的近い値を得ることが期待されます。 目的関数に追加の重みを上乗せすることも可能なので、優先する目的関数を制御することができます。以下では、$f_{diff}$、$f_{price}$、$f_{soft}$ にそれぞれ <code>1000</code>、<code>50</code>、<code>0.1</code> の重みをスケーリング後に考慮しています。</p>
 </div>
 </div>
 </div>
@@ -8088,22 +8101,7 @@ EV バッテリーは EV の走行のみに利用され、家庭への電力供�
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">retriable_solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"num_iterations: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">client_result</span><span class="o">.</span><span class="n">execution_parameters</span><span class="o">.</span><span class="n">num_iterations</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"num_variables: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">intermediate</span><span class="o">.</span><span class="n">num_variables</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"objective_diff: </span><span class="si">{</span><span class="n">objective_diff</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"objective_diff: </span><span class="si">{</span><span class="n">objective_diff</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"objective_price: </span><span class="si">{</span><span class="n">objective_price</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"soft_constraint: </span><span class="si">{</span><span class="n">soft_constraint</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">best</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
