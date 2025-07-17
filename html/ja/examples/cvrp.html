@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -8113,8 +8114,8 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">geopy.distance</span> <span class="kn">import</span> <span class="n">geodesic</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geopy.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">geodesic</span>
 
 <span class="c1"># 車両数</span>
 <span class="n">nvehicle</span> <span class="o">=</span> <span class="mi">2</span>
@@ -8242,10 +8243,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">folium</span>
 
 
-<span class="k">def</span> <span class="nf">plot_solution</span><span class="p">(</span><span class="n">coord</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">best_tour</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_solution</span><span class="p">(</span><span class="n">coord</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">best_tour</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()):</span>
     <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
     <span class="n">center</span> <span class="o">=</span> <span class="p">[</span>
         <span class="nb">sum</span><span class="p">(</span><span class="n">lat</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">lat</span> <span class="ow">in</span> <span class="n">coord</span><span class="p">)</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span>
@@ -8359,7 +8360,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">upperbound_of_tour</span><span class="p">(</span><span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">demand</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">upperbound_of_tour</span><span class="p">(</span><span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">demand</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="n">max_tourable_cities</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">demand</span><span class="p">):</span>
         <span class="n">capacity</span> <span class="o">-=</span> <span class="n">w</span>
@@ -8392,7 +8393,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableGenerator</span>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">VariableGenerator</span><span class="p">()</span>
 
@@ -8511,7 +8512,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">one_hot</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">one_hot</span>
 
 <span class="n">one_trip_constraints</span> <span class="o">=</span> <span class="n">one_hot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -8568,7 +8569,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">einsum</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">einsum</span>
 
 <span class="n">weight_sums</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s2">"j,ijk-&gt;ik"</span><span class="p">,</span> <span class="n">demand</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span>
 </pre></div>
@@ -8598,7 +8599,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">less_equal</span><span class="p">,</span> <span class="n">ConstraintList</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">less_equal</span><span class="p">,</span> <span class="n">ConstraintList</span>
 
 <span class="n">capacity_constraints</span><span class="p">:</span> <span class="n">ConstraintList</span> <span class="o">=</span> <span class="n">less_equal</span><span class="p">(</span>
     <span class="n">weight_sums</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
@@ -8634,7 +8635,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">einsum</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">Poly</span><span class="p">,</span> <span class="n">einsum</span>
 
 <span class="n">max_tourable_cities</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">dimension</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -8666,7 +8667,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">Model</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span>
 
 <span class="n">constraints</span> <span class="o">=</span> <span class="n">one_trip_constraints</span> <span class="o">+</span> <span class="n">one_visit_constraints</span> <span class="o">+</span> <span class="n">capacity_constraints</span>
 <span class="n">constraints</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">distance_matrix</span><span class="p">)</span>  <span class="c1"># 重みの設定</span>
@@ -8696,8 +8697,8 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">FixstarsClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>  <span class="c1"># タイムアウト2秒</span>
@@ -8726,7 +8727,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">solve</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve</span>
 
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
@@ -8760,7 +8761,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># one-hot な変数テーブルを辞書に変換。key：車両インデックス, value：各車両が訪問した都市の順番が入ったリスト</span>
-<span class="k">def</span> <span class="nf">onehot2sequence</span><span class="p">(</span><span class="n">solution</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">onehot2sequence</span><span class="p">(</span><span class="n">solution</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
     <span class="n">nvehicle</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">sequence</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvehicle</span><span class="p">):</span>
@@ -8790,7 +8791,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">process_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">process_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
     <span class="n">new_seq</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sequence</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>

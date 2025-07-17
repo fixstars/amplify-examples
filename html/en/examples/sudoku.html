@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7610,7 +7611,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Indicate initial placement as a list</span>
 <span class="c1"># Reference: http://www.sudokugame.org/archive/printable.php?nd=4&amp;y=2018&amp;m=03&amp;d=1</span>
@@ -7630,7 +7631,7 @@ $$</p>
 
 
 <span class="c1"># Display Sudoku grid with numbers</span>
-<span class="k">def</span> <span class="nf">print_sudoku</span><span class="p">(</span><span class="n">sudoku</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_sudoku</span><span class="p">(</span><span class="n">sudoku</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sudoku</span><span class="p">)):</span>
         <span class="n">line</span> <span class="o">=</span> <span class="s2">""</span>
@@ -7668,7 +7669,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableGenerator</span>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">VariableGenerator</span><span class="p">()</span>
 <span class="n">q</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"Binary"</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
@@ -7817,7 +7818,7 @@ Since the sum of the variables for all columns specified by row <code>i</code> a
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">one_hot</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">one_hot</span>
 
 <span class="c1"># (a): Constraint that each row cannot contain the same number</span>
 <span class="c1"># Imposing the one_hot constraint for the direction j (i.e. axis=1).</span>
@@ -7878,7 +7879,7 @@ Since the sum of the variables for all columns specified by row <code>i</code> a
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="nb">sum</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span>
 
 <span class="c1"># (c): Constraint that 3x3 subgrids cannot contain the same number</span>
 <span class="n">block_constraints</span> <span class="o">=</span> <span class="p">[</span>
@@ -7949,8 +7950,8 @@ Since the sum of the variables for all columns specified by row <code>i</code> a
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">solve</span><span class="p">,</span> <span class="n">FixstarsClient</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve</span><span class="p">,</span> <span class="n">FixstarsClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>  <span class="c1"># timeout is 1000 ms</span>
@@ -8040,8 +8041,8 @@ Then, by searching for <code>k</code> such that <code>q[i][j][k] = 1</code> for 
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span><span class="p">,</span> <span class="n">solve</span><span class="p">,</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">FixstarsClient</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableGenerator</span><span class="p">,</span> <span class="n">solve</span><span class="p">,</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">FixstarsClient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># block size</span>
 <span class="n">N</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span>  <span class="c1"># total number of blocks</span>
@@ -8071,7 +8072,7 @@ Then, by searching for <code>k</code> such that <code>q[i][j][k] = 1</code> for 
 
 
 <span class="c1"># Display a sudoku grid with numbers</span>
-<span class="k">def</span> <span class="nf">print_sudoku</span><span class="p">(</span><span class="n">sudoku</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_sudoku</span><span class="p">(</span><span class="n">sudoku</span><span class="p">):</span>
     <span class="n">width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sudoku</span><span class="p">)):</span>
         <span class="n">line</span> <span class="o">=</span> <span class="s2">""</span>

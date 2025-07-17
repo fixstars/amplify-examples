@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7654,11 +7655,11 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">geopy.distance</span> <span class="kn">import</span> <span class="n">geodesic</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geopy.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">geodesic</span>
 
 
-<span class="k">def</span> <span class="nf">generate_problem</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_problem</span><span class="p">(</span>
     <span class="n">num_people</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">num_cars</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">latitude_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
@@ -7743,10 +7744,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">folium</span>
 
 
-<span class="k">def</span> <span class="nf">plot_people_and_cars</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_people_and_cars</span><span class="p">(</span>
     <span class="n">people_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">car_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">latitude_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>  <span class="c1"># 描画範囲 (緯度)</span>
@@ -7853,7 +7854,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableGenerator</span>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">VariableGenerator</span><span class="p">()</span>
 <span class="n">q</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"Binary"</span><span class="p">,</span> <span class="n">num_people</span><span class="p">,</span> <span class="n">num_cars</span><span class="p">)</span>
@@ -7885,7 +7886,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="nb">sum</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span>
 
 <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
 
@@ -7927,7 +7928,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">one_hot</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">one_hot</span>
 
 <span class="n">one_person_one_car_constraints</span> <span class="o">=</span> <span class="n">one_hot</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -7954,7 +7955,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">less_equal</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">less_equal</span>
 
 <span class="n">car_capacity_constraints</span> <span class="o">=</span> <span class="n">less_equal</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">car_capacity</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
@@ -8013,7 +8014,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">Model</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">objective</span> <span class="o">+</span> <span class="n">one_person_one_car_constraints</span> <span class="o">+</span> <span class="n">car_capacity_constraints</span>
 </pre></div>
@@ -8041,8 +8042,8 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span><span class="p">,</span> <span class="n">solve</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">FixstarsClient</span><span class="p">,</span> <span class="n">solve</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>  <span class="c1"># タイムアウトは 2000 ms</span>
@@ -8133,10 +8134,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">branca.colormap</span> <span class="k">as</span> <span class="nn">cm</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">branca.colormap</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cm</span>
 
 
-<span class="k">def</span> <span class="nf">plot_result</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_result</span><span class="p">(</span>
     <span class="n">car_assignment</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
     <span class="n">people_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">car_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -8341,7 +8342,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">einsum</span><span class="p">,</span> <span class="n">Poly</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">einsum</span><span class="p">,</span> <span class="n">Poly</span>
 
 <span class="n">objective</span><span class="p">:</span> <span class="n">Poly</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s2">"ij,ik,jk-&gt;"</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 </pre></div>
@@ -8377,7 +8378,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">equal_to</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">equal_to</span>
 
 <span class="c1"># x の各行に対する one-hot 制約</span>
 <span class="n">people_row_constraints</span> <span class="o">=</span> <span class="n">one_hot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -8520,7 +8521,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_clusters</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_clusters</span><span class="p">(</span>
     <span class="n">people_coords</span><span class="p">,</span>
     <span class="n">car_coords</span><span class="p">,</span>
     <span class="n">people_cluster_indices</span><span class="p">,</span>
@@ -8629,7 +8630,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">assign_cars</span><span class="p">(</span><span class="n">distances</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">assign_cars</span><span class="p">(</span><span class="n">distances</span><span class="p">):</span>
     <span class="n">num_people</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">num_cars</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 

@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -8157,11 +8158,11 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">plot_solution</span><span class="p">(</span><span class="n">v_hints</span><span class="p">,</span> <span class="n">h_hints</span><span class="p">,</span> <span class="n">solution</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_solution</span><span class="p">(</span><span class="n">v_hints</span><span class="p">,</span> <span class="n">h_hints</span><span class="p">,</span> <span class="n">solution</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))):</span>
     <span class="k">if</span> <span class="n">solution</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">v_hints</span><span class="p">)</span> <span class="ow">and</span> <span class="n">solution</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">h_hints</span><span class="p">):</span>
         <span class="n">solution</span> <span class="o">=</span> <span class="n">solution</span>
     <span class="k">else</span><span class="p">:</span>
@@ -8257,7 +8258,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableGenerator</span>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">VariableGenerator</span><span class="p">()</span>
 
@@ -8334,10 +8335,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">PolyArray</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolyArray</span>
 
 
-<span class="k">def</span> <span class="nf">assign_init_values</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">assign_init_values</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="c1"># Initial value constraints: zero-padding in states that each square cannot take.</span>
@@ -8375,10 +8376,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">one_hot</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">one_hot</span>
 
 
-<span class="k">def</span> <span class="nf">make_state_constraint</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_state_constraint</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">one_hot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8428,11 +8429,11 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">Constraint</span><span class="p">,</span> <span class="n">ConstraintList</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constraint</span><span class="p">,</span> <span class="n">ConstraintList</span>
 
 
 <span class="c1"># Function to generate indices of the white state from the hint</span>
-<span class="k">def</span> <span class="nf">get_white_indices</span><span class="p">(</span><span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_white_indices</span><span class="p">(</span><span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span>
     <span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hint</span><span class="p">:</span>
@@ -8441,7 +8442,7 @@ $$</p>
     <span class="k">return</span> <span class="n">indices</span>
 
 
-<span class="k">def</span> <span class="nf">make_white_constraint_forward</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_white_constraint_forward</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
     <span class="n">white_constraints</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
 
     <span class="c1"># Keep the indices of the white state</span>
@@ -8503,7 +8504,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_white_constraint_backward</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_white_constraint_backward</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
     <span class="n">last_black_constraints</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
 
     <span class="c1"># Keep the indices of the white state</span>
@@ -8557,7 +8558,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Function to generate indices of the black state from the hint</span>
-<span class="k">def</span> <span class="nf">get_black_indices</span><span class="p">(</span><span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_black_indices</span><span class="p">(</span><span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
     <span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hint</span><span class="p">:</span>
@@ -8566,7 +8567,7 @@ $$</p>
     <span class="k">return</span> <span class="n">indices</span>
 
 
-<span class="k">def</span> <span class="nf">assign_black_forward</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">assign_black_forward</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
     <span class="c1"># Keep the indices of the black state</span>
     <span class="n">s_black_indices</span> <span class="o">=</span> <span class="n">get_black_indices</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
 
@@ -8605,10 +8606,10 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">equal_to</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">equal_to</span>
 
 
-<span class="k">def</span> <span class="nf">equal_constraints</span><span class="p">(</span><span class="n">q_left</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">q_top</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">v_len</span><span class="p">,</span> <span class="n">h_len</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">equal_constraints</span><span class="p">(</span><span class="n">q_left</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">q_top</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">v_len</span><span class="p">,</span> <span class="n">h_len</span><span class="p">):</span>
     <span class="n">constraints</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">v_len</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h_len</span><span class="p">):</span>
@@ -8671,10 +8672,10 @@ For more information on the <code>sum</code> function, see <a href="https://ampl
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="nb">sum</span> <span class="k">as</span> <span class="n">amplify_sum</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span> <span class="k">as</span> <span class="n">amplify_sum</span>
 
 
-<span class="k">def</span> <span class="nf">assign_state_color_link</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">assign_state_color_link</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="c1"># Keep the indices of the white state</span>
         <span class="n">s_white_indices</span> <span class="o">=</span> <span class="n">get_white_indices</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
@@ -8706,8 +8707,8 @@ For more information on the <code>sum</code> function, see <a href="https://ampl
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">FixstarsClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Timeout: 1 sec</span>
@@ -8748,7 +8749,7 @@ For more information on the <code>sum</code> function, see <a href="https://ampl
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fix_variables</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fix_variables</span><span class="p">(</span>
     <span class="n">q_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PolyArray</span><span class="p">],</span> <span class="n">p_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PolyArray</span><span class="p">],</span> <span class="n">hint_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
 <span class="p">):</span>
     <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">hint</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">q_list</span><span class="p">,</span> <span class="n">p_list</span><span class="p">,</span> <span class="n">hint_list</span><span class="p">):</span>
@@ -8765,7 +8766,7 @@ For more information on the <code>sum</code> function, see <a href="https://ampl
 
 
 <span class="c1"># Transition constraints: (ii-a'), (ii-b'), (ii-c')</span>
-<span class="k">def</span> <span class="nf">make_transition_constraints</span><span class="p">(</span><span class="n">p_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PolyArray</span><span class="p">],</span> <span class="n">hint_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_transition_constraints</span><span class="p">(</span><span class="n">p_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PolyArray</span><span class="p">],</span> <span class="n">hint_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]):</span>
     <span class="n">state_constraints</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
     <span class="n">white_constraints</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
     <span class="n">last_black_constraints</span> <span class="o">=</span> <span class="n">ConstraintList</span><span class="p">()</span>
@@ -8825,7 +8826,7 @@ If the formulation consists only of constraints, as in this case, you can <a hre
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">solve</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve</span>
 
 <span class="c1"># Create an Amplify solver with the previously instantiated client</span>
 
@@ -9036,7 +9037,7 @@ Each element of <code>l</code> has the form <code>tuple[tuple, float]</code>, wh
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">Poly</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">Poly</span>
 
 <span class="c1"># Dictionary which stores the ids of the left-hand side variable as keys and the right-hand side variables as values in the assignment</span>
 <span class="n">substitute_dicts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Poly</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -9087,7 +9088,7 @@ Each element of <code>l</code> has the form <code>tuple[tuple, float]</code>, wh
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">substitute_according_to_dicts</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Poly</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Poly</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">substitute_according_to_dicts</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Poly</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Poly</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>

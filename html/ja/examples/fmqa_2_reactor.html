@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7617,15 +7618,15 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="c1"># ある反応性物質 (A-&gt;B) の濃度 に関する次の輸送方程式（偏微分方程式）を有限差分法で解くクラス。</span>
 
 
-<span class="k">class</span> <span class="nc">Reactor</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nfolds</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt_prod</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">rr</span><span class="o">=</span><span class="mf">1e4</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Reactor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nfolds</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dt_prod</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">rr</span><span class="o">=</span><span class="mf">1e4</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nfolds</span> <span class="o">=</span> <span class="n">nfolds</span>  <span class="c1"># シミュレーション領域の空間解像度を決定するパラメータ</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>  <span class="c1"># 分子拡散係数</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dt_prod</span> <span class="o">=</span> <span class="n">dt_prod</span>  <span class="c1"># 予め決められた生産時間</span>
@@ -7633,7 +7634,7 @@ $$</p>
 
     <span class="c1"># 2次精度中心差分法により、分布 f の2階微分を求める関数（周期境界条件を仮定）</span>
 
-    <span class="k">def</span> <span class="nf">__dfdx2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dfdx2</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__dfdx2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dfdx2</span><span class="p">):</span>
         <span class="n">dfdx2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">f</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span>
         <span class="n">dfdx2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">f</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span>
@@ -7647,7 +7648,7 @@ $$</p>
 
     <span class="c1"># 場の初期条件を決定</span>
 
-    <span class="k">def</span> <span class="nf">__init_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__init_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nfolds</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 空間離散化で用いる格子点数</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 格子点間隔</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">concn_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span>  <span class="c1"># Aの濃度分布</span>
@@ -7661,7 +7662,7 @@ $$</p>
 
     <span class="c1"># A の初期分布 init_A に応じて、輸送方程式を dt_prod の物理時間だけ時間発展させ、B の総生成量を返す関数</span>
 
-    <span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_A</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_A</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__init_field</span><span class="p">(</span><span class="n">init_A</span><span class="p">)</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span>
@@ -7790,7 +7791,7 @@ $$</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 目的関数（生成された物質 B の総量の負値を返す）</span>
-<span class="k">def</span> <span class="nf">my_obj_func</span><span class="p">(</span><span class="n">init_A</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_obj_func</span><span class="p">(</span><span class="n">init_A</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">my_reactor</span> <span class="o">=</span> <span class="n">Reactor</span><span class="p">()</span>
     <span class="n">minus_total</span> <span class="o">=</span> <span class="o">-</span><span class="n">my_reactor</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">init_A</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">fig</span><span class="p">:</span>
@@ -7833,12 +7834,12 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">seed_everything</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">seed_everything</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"PYTHONHASHSEED"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
@@ -7869,8 +7870,8 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">FixstarsClient</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">FixstarsClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">FixstarsClient</span><span class="p">()</span>
 <span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>  <span class="c1"># 1000 ミリ秒</span>
@@ -7905,16 +7906,16 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
-<span class="k">class</span> <span class="nc">TorchFM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorchFM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lin</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 右辺第1項及び2項は全結合ネットワーク</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">out_1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">out_2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">out_inter</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">out_1</span> <span class="o">-</span> <span class="n">out_2</span><span class="p">)</span>
@@ -7945,14 +7946,14 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Type</span>
 
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 
-<span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span>
     <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">model_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span>
@@ -8047,7 +8048,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gen_training_data</span><span class="p">(</span><span class="n">D</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">N0</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">true_func</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">gen_training_data</span><span class="p">(</span><span class="n">D</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">N0</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">true_func</span><span class="p">):</span>
     <span class="k">assert</span> <span class="n">N0</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">**</span><span class="n">D</span>
     <span class="c1"># N0個の入力値を乱数を用いて取得</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N0</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
@@ -8088,14 +8089,14 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span><span class="p">,</span> <span class="n">solve</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableGenerator</span><span class="p">,</span> <span class="n">solve</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 
-<span class="k">class</span> <span class="nc">FMQA</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">N0</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">true_func</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FMQA</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">N0</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">true_func</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="n">N0</span> <span class="o">&lt;</span> <span class="n">N</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">N</span>
@@ -8106,7 +8107,7 @@ $$</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># 教師データに基づいて N-N0 回のFMQAを教師データを追加しながら繰り返し実施するメンバー関数</span>
-    <span class="k">def</span> <span class="nf">cycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting FMQA cycles..."</span><span class="p">)</span>
         <span class="n">pred_x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">pred_y</span> <span class="o">=</span> <span class="mf">1e18</span>
@@ -8148,7 +8149,7 @@ $$</p>
         <span class="k">return</span> <span class="n">pred_x</span>
 
     <span class="c1"># 1回のFMQAを実施するメンバー関数</span>
-    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="c1"># FM を機械学習</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
             <span class="n">X</span><span class="p">,</span>
@@ -8179,7 +8180,7 @@ $$</p>
         <span class="k">return</span> <span class="n">q_values</span>
 
     <span class="c1"># FM パラメータから QUBO として FM を定義する関数。前定義の TorchFM クラスと同様に、g(x) の関数形通りに数式を記述。</span>
-    <span class="k">def</span> <span class="nf">__FM_as_QUBO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__FM_as_QUBO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">lin</span> <span class="o">=</span> <span class="n">w0</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">w</span><span class="p">)</span>
         <span class="n">out_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="c1"># 次式において、x[j] はバイナリ変数なので、x[j] = x[j]^2 であることに注意。</span>
@@ -8187,7 +8188,7 @@ $$</p>
         <span class="k">return</span> <span class="n">lin</span> <span class="o">+</span> <span class="p">(</span><span class="n">out_1</span> <span class="o">-</span> <span class="n">out_2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
     <span class="c1"># 初期教師データ及び各 FMQA サイクル内で実施した i 回の目的関数評価値の履歴をプロットする関数</span>
-    <span class="k">def</span> <span class="nf">plot_history</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_history</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>

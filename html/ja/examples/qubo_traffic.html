@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7790,16 +7791,16 @@ $$
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> widget
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">amplify</span> <span class="kn">import</span> <span class="n">VariableGenerator</span><span class="p">,</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">solve</span><span class="p">,</span> <span class="n">FixstarsClient</span>
-<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">FuncAnimation</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sigfig</span> <span class="kn">import</span> <span class="nb">round</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableGenerator</span><span class="p">,</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">solve</span><span class="p">,</span> <span class="n">FixstarsClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.animation</span><span class="w"> </span><span class="kn">import</span> <span class="n">FuncAnimation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sigfig</span><span class="w"> </span><span class="kn">import</span> <span class="nb">round</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
 
 
 <span class="c1"># Fixstars Amplify クライアントを作成</span>
@@ -7835,8 +7836,8 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Roads</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Roads</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">num_road</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">init_can_come_from</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
@@ -7869,43 +7870,43 @@ $$
         <span class="bp">self</span><span class="o">.</span><span class="n">_can_go_to_west</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_can_come_from_east</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_road</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_road</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_road</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">straight_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">straight_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_straight_rate</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_come_from_north</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_come_from_north</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_come_from_north</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_come_from_south</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_come_from_south</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_come_from_south</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_come_from_east</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_come_from_east</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_come_from_east</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_come_from_west</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_come_from_west</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_come_from_west</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_go_to_north</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_go_to_north</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_go_to_north</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_go_to_south</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_go_to_south</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_go_to_south</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_go_to_east</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_go_to_east</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_go_to_east</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">can_go_to_west</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_go_to_west</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_go_to_west</span>
 </pre></div>
 </div>
@@ -7939,8 +7940,8 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Signals</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roads</span><span class="p">:</span> <span class="n">Roads</span><span class="p">,</span> <span class="n">signal_weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Signals</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roads</span><span class="p">:</span> <span class="n">Roads</span><span class="p">,</span> <span class="n">signal_weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_roads</span> <span class="o">=</span> <span class="n">roads</span>
 
         <span class="c1"># コスト関数での信号機に関する項の重み</span>
@@ -7966,23 +7967,23 @@ $$
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_signal</span> <span class="o">=</span> <span class="n">init_signal</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">signal_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">signal_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signal_weight</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pre_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_signal</span>
 
     <span class="nd">@pre_signal</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">pre_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pre_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pre_signal</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">current_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">current_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_signal</span>
 
     <span class="nd">@current_signal</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">current_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">current_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_signal</span> <span class="o">=</span> <span class="n">value</span>
 </pre></div>
 </div>
@@ -8015,8 +8016,8 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Traffic</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Traffic</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">roads</span><span class="p">:</span> <span class="n">Roads</span><span class="p">,</span>
         <span class="n">init_cars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
@@ -8038,47 +8039,47 @@ $$
         <span class="bp">self</span><span class="o">.</span><span class="n">_car_bias_weight</span> <span class="o">=</span> <span class="n">car_bias_weight</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_car_from_north</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_north</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_north</span>
 
     <span class="nd">@num_car_from_north</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">num_car_from_north</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_north</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_north</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_car_from_south</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_south</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_south</span>
 
     <span class="nd">@num_car_from_south</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">num_car_from_south</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_south</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_south</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_car_from_east</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_east</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_east</span>
 
     <span class="nd">@num_car_from_east</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">num_car_from_east</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_east</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_east</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_car_from_west</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_west</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_west</span>
 
     <span class="nd">@num_car_from_west</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">num_car_from_west</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_car_from_west</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_west</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">car_flow_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">car_flow_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_car_flow_weight</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">car_bias_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">car_bias_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_car_bias_weight</span>
 
     <span class="c1"># 次の時刻の車数の計算</span>
-    <span class="k">def</span> <span class="nf">_next_step_num_car</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">PolyArray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_next_step_num_car</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">PolyArray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span>
         <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
         <span class="n">Tuple</span><span class="p">[</span><span class="n">PolyArray</span><span class="p">,</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">PolyArray</span><span class="p">,</span> <span class="n">PolyArray</span><span class="p">],</span>
     <span class="p">]:</span>
@@ -8211,7 +8212,7 @@ $$
         <span class="p">)</span>
 
     <span class="c1"># 計算結果をもとに車数を更新する</span>
-    <span class="k">def</span> <span class="nf">update_num_car</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_num_car</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
         <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_north</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_south</span><span class="p">,</span>
@@ -8220,7 +8221,7 @@ $$
         <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_step_num_car</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
 
     <span class="c1"># 現在の南北方向からの車数と東西方向からの車数の差を計算</span>
-    <span class="k">def</span> <span class="nf">current_car_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">current_car_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">car_bias</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_north</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_south</span><span class="p">)</span>
             <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_east</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_car_from_west</span><span class="p">)</span>
@@ -8229,7 +8230,7 @@ $$
         <span class="k">return</span> <span class="n">car_bias</span>
 
     <span class="c1"># コスト関数の car_bias_cost の計算のために次の時刻の東西方向と南北方向の車数の差を計算</span>
-    <span class="k">def</span> <span class="nf">car_bias_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">car_bias_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
         <span class="c1"># イジング変数が含まれた状態の次の時刻の車数を計算</span>
         <span class="p">(</span>
             <span class="n">temp_num_car_from_north</span><span class="p">,</span>
@@ -8247,7 +8248,7 @@ $$
         <span class="k">return</span> <span class="n">next_car_bias</span>
 
     <span class="c1"># コスト関数の car_flow_cost のための流れる車数を計算</span>
-    <span class="k">def</span> <span class="nf">car_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">car_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">PolyArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
         <span class="c1"># 流れる車数</span>
         <span class="n">car_flow</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -8312,8 +8313,8 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">IsingVariable</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roads</span><span class="p">:</span> <span class="n">Roads</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">IsingVariable</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roads</span><span class="p">:</span> <span class="n">Roads</span><span class="p">):</span>
         <span class="c1"># イジング変数 sigma の初期化</span>
         <span class="n">gen</span> <span class="o">=</span> <span class="n">VariableGenerator</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -8361,7 +8362,7 @@ $$
                 <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span>
 </pre></div>
 </div>
@@ -8394,13 +8395,13 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 
 
-<span class="k">class</span> <span class="nc">City</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_road</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">City</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_road</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_road</span> <span class="o">=</span> <span class="n">num_road</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">can_come_from_north</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_road</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">num_road</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">can_come_from_south</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_road</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">num_road</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))</span>
@@ -8413,7 +8414,7 @@ $$
         <span class="bp">self</span><span class="o">.</span><span class="n">num_car_from_west</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_road</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">num_road</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))</span>
 
     <span class="c1"># 乱数を用いて車数を決定する</span>
-    <span class="k">def</span> <span class="nf">set_num_cars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">average</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_num_cars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">average</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">314</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_car_from_north</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span>
@@ -8441,7 +8442,7 @@ $$
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">Grid</span><span class="p">(</span><span class="n">num_road</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">variance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">average</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Grid</span><span class="p">(</span><span class="n">num_road</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">variance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">average</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">City</span><span class="p">(</span><span class="n">num_road</span><span class="p">)</span>
 
     <span class="c1"># 各交差点にどの方角から進入できるか</span>
@@ -8493,8 +8494,8 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Simulation</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Simulation</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">city</span><span class="p">:</span> <span class="n">City</span><span class="p">,</span>
         <span class="n">straight_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -8530,7 +8531,7 @@ $$
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
 
     <span class="c1"># 道路網と車数のプロット</span>
-    <span class="k">def</span> <span class="nf">plot_traffic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_traffic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_roads</span><span class="o">.</span><span class="n">num_road</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_roads</span><span class="o">.</span><span class="n">num_road</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -8643,7 +8644,7 @@ $$
 
     <span class="c1"># コスト関数の計算</span>
     <span class="c1"># 車数の偏りについて</span>
-    <span class="k">def</span> <span class="nf">calc_car_bias_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_car_bias_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
         <span class="c1"># 次の時刻の車数の東西方向と南北方向の車数の差をイジング変数が含まれた状態で計算</span>
         <span class="n">next_car_bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cars</span><span class="o">.</span><span class="n">car_bias_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ising</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
 
@@ -8653,7 +8654,7 @@ $$
         <span class="k">return</span> <span class="n">car_bias_cost</span>
 
     <span class="c1"># 信号機の状態について</span>
-    <span class="k">def</span> <span class="nf">calc_signal_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_signal_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
         <span class="c1"># 前の時刻の信号機の状態との差を取る</span>
         <span class="n">signal_cost</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_ising</span><span class="o">.</span><span class="n">variables</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signals</span><span class="o">.</span><span class="n">pre_signal</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -8662,14 +8663,14 @@ $$
         <span class="k">return</span> <span class="n">signal_cost</span>
 
     <span class="c1"># 流れる車数について</span>
-    <span class="k">def</span> <span class="nf">calc_car_flow_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_car_flow_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
         <span class="c1"># 流れる車数をイジング変数が含まれた状態で計算し、マイナスを取る</span>
         <span class="n">car_flow_cost</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_cars</span><span class="o">.</span><span class="n">car_flow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ising</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">car_flow_cost</span>
 
     <span class="c1"># コスト関数の項をすべて足し合わせる</span>
-    <span class="k">def</span> <span class="nf">calc_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyArray</span><span class="p">:</span>
         <span class="n">car_bias_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_car_bias_cost</span><span class="p">()</span>
         <span class="n">signal_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_signal_cost</span><span class="p">()</span>
         <span class="n">car_flow_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_car_flow_cost</span><span class="p">()</span>
@@ -8684,7 +8685,7 @@ $$
         <span class="k">return</span> <span class="n">cost</span>
 
     <span class="c1"># 1ステップ分実行</span>
-    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># コスト関数の計算</span>
         <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_cost</span><span class="p">()</span>
 
@@ -8706,7 +8707,7 @@ $$
 
         <span class="bp">self</span><span class="o">.</span><span class="n">num_step</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">get_car_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_car_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cars</span><span class="o">.</span><span class="n">current_car_bias</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8775,7 +8776,7 @@ $$
 
 
 <span class="c1"># シミュレーションの実行関数</span>
-<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
     <span class="n">sim</span><span class="o">.</span><span class="n">plot_traffic</span><span class="p">()</span>
     <span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 

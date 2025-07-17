@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7599,8 +7600,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -7614,7 +7615,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_stock_prices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_stock_prices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
         <span class="s2">"../../../storage/portfolio/dummy_stock_price.csv"</span><span class="p">,</span>
         <span class="n">index_col</span><span class="o">=</span><span class="s2">"Date"</span><span class="p">,</span>
@@ -7684,8 +7685,8 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">amplify</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">amplify</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -7699,7 +7700,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calculate_return_rates</span><span class="p">(</span><span class="n">prices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">num_days_operation</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_return_rates</span><span class="p">(</span><span class="n">prices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">num_days_operation</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">prices</span><span class="p">[</span><span class="n">num_days_operation</span><span class="p">:]</span> <span class="o">-</span> <span class="n">prices</span><span class="p">[:</span><span class="o">-</span><span class="n">num_days_operation</span><span class="p">])</span> <span class="o">/</span> <span class="n">prices</span><span class="p">[</span>
         <span class="p">:</span><span class="o">-</span><span class="n">num_days_operation</span>
     <span class="p">]</span>
@@ -7733,7 +7734,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">optimize_portfolio</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">optimize_portfolio</span><span class="p">(</span>
     <span class="n">historical_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">num_days_operation</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
@@ -7856,7 +7857,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stock_prices</span><span class="p">[</span><span class="s2">"salmon"</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"salmon"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stock_prices</span><span class="p">[</span><span class="s2">"darkslategray"</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"darkslategray"</span><span class="p">)</span>
@@ -7939,7 +7940,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
 <span class="c1"># カラーマップ</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">"Set3"</span><span class="p">)(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">)))</span>
@@ -8000,7 +8001,7 @@ $$</p>
 <span class="n">uniform_ratio_portfolio</span> <span class="o">=</span> <span class="p">{</span><span class="n">stock_name</span><span class="p">:</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">stock_name</span> <span class="ow">in</span> <span class="n">df_future</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">calculate_portfolio_return_rates</span><span class="p">(</span><span class="n">portfolio</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_portfolio_return_rates</span><span class="p">(</span><span class="n">portfolio</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
     <span class="n">return_rates</span> <span class="o">=</span> <span class="n">calculate_return_rates</span><span class="p">(</span><span class="n">df_future</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">num_days_operation</span><span class="p">)</span>
     <span class="n">ratio_array</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">portfolio</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stock_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">stock_name</span> <span class="ow">in</span> <span class="n">df_future</span><span class="o">.</span><span class="n">columns</span><span class="p">])</span>
@@ -8120,7 +8121,7 @@ $$</p>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">get_portfolio</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_portfolio</span><span class="p">(</span>
     <span class="n">prices</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span>
     <span class="n">num_days_backward</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -8149,7 +8150,7 @@ $$</p>
     <span class="k">return</span> <span class="n">portfolio</span>
 
 
-<span class="k">def</span> <span class="nf">simulate_stock_trading</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_stock_trading</span><span class="p">(</span>
     <span class="n">prices</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">funds</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span>
@@ -8220,7 +8221,7 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">simulate_stick_operation</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_stick_operation</span><span class="p">(</span>
     <span class="n">prices</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">num_rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">simulation_start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span>
@@ -8333,14 +8334,14 @@ $$</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">dates</span> <span class="k">as</span> <span class="n">mdates</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">dates</span> <span class="k">as</span> <span class="n">mdates</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">operation_history</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="n">operation_history</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">start_funds</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">end_funds</span> <span class="ow">in</span> <span class="n">operation_history</span><span class="p">:</span>
         <span class="p">(</span><span class="n">line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="p">[</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">],</span> <span class="p">[</span><span class="n">start_funds</span><span class="p">,</span> <span class="n">end_funds</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span>
@@ -8380,10 +8381,10 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="%E4%BB%98%E9%8C%B2">付録<a class="anchor-link" href="#%E4%BB%98%E9%8C%B2">¶</a></h2><p>以下のようにして、実際の株価のヒストリカルデータを取得することができます。データ取得には <code>pandas_datareader</code> を用い、<a href="https://stooq.com/">Stooq</a> のデータベースからダウンロードしています。銘柄の数と同じ回数だけ API の呼び出しが行われるので、常識の範囲内でご使用ください。</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">data</span> <span class="k">as</span> <span class="n">web</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pandas_datareader</span><span class="w"> </span><span class="kn">import</span> <span class="n">data</span> <span class="k">as</span> <span class="n">web</span>
 
 
-<span class="k">def</span> <span class="nf">load_historical_data</span><span class="p">(</span><span class="n">tickers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_historical_data</span><span class="p">(</span><span class="n">tickers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Stooq から start_date 以降のヒストリカルデータをダウンロード"""</span>
     <span class="n">history_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tickers</span><span class="p">):</span>
