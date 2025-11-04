@@ -112,9 +112,7 @@ class Car:
         self.goalpoint = None
         self.draw_sgpoint = True
         self.color = color
-        self.round_trip_wait_time = (
-            round_trip_wait_time  # 往復時の待ち時間(-1:往復しない)
-        )
+        self.round_trip_wait_time = round_trip_wait_time  # 往復時の待ち時間(-1:往復しない)
         self.wait_count = 0
         # self.from_index = None # どの信号から走り始めたのか
 
@@ -1344,9 +1342,7 @@ class SignalController:
                 tmp_list.append(
                     (
                         self.red_duration[index_list[signal_offset]],  # 赤信号の秒数
-                        self.green_duration[
-                            index_list[signal_offset + 1]
-                        ],  # 青信号の秒数
+                        self.green_duration[index_list[signal_offset + 1]],  # 青信号の秒数
                         self.phase[index_list[signal_offset + 2]],
                     )
                 )  # 位相の秒数

@@ -7,7 +7,6 @@ verify_ssl = true
 jupyter = "*"
 
 [packages]
-amplify = {version=">=1.0.0", extras = ["extra"]}
 jupyter = "*"
 japanmap = "*"
 matplotlib = "*"
@@ -26,6 +25,7 @@ tqdm = "*"
 opencv-python = "*"
 pandas-datareader = "*"
 plotly = "*"
+amplify = ">=1.4.1"
 
 [requires]
 python_version = "3"

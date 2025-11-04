@@ -112,7 +112,8 @@ class MixingSimulator:
         # 拡散項（2次精度中心）
         diff = self._diff * (
             (self._c[2:, 1:-1] - 2 * self._c[1:-1, 1:-1] + self._c[:-2, 1:-1]) / dx**2
-            + (self._c[1:-1, 2:] - 2 * self._c[1:-1, 1:-1] + self._c[1:-1, :-2]) / dy**2
+            + (self._c[1:-1, 2:] - 2 * self._c[1:-1, 1:-1] + self._c[1:-1, :-2])
+            / dy**2
         )
 
         # 時間発展
