@@ -7659,9 +7659,9 @@ $$</p>
 <li>数字 1 が、そのマスに書かれている</li>
 <li>数字 2 が、そのマスあるいはひとつ左のマスに書かれている</li>
 </ul>
-<p>$q^\text{row}$ に課した制約条件により、これらの条件が 2 つ以上満たされることはありえないので、$i$ 行目のヒント数字が $2 1 2$ であるとき、$i$ 行 $j$ 列のマスの色は、$q^\text{row}$ を用いた以下の数式の値が 1 であれば黒、0 であれば白となります。</p>
+<p>$q^\text{row}$ に課した制約条件により、これらの条件が 2 つ以上満たされることはありえないので、$i$ 行目のヒント数字が <code>2 1 2</code> であるとき、$i$ 行 $j$ 列のマスの色は、$q^\text{row}$ を用いた以下の数式の値が 1 であれば黒、0 であれば白となります。</p>
 <p>$$
-q^\text{row}_{i, j, 0} + q^\text{row}_{i, j-1, 0} + q^\text{row}_{i, j, 1} + q^\text{row}_{i, j, 0} + q^\text{row}_{i, j-1, 0} 
+q^\text{row}_{i, j, 0} + q^\text{row}_{i, j-1, 0} + q^\text{row}_{i, j, 1} + q^\text{row}_{i, j, 2} + q^\text{row}_{i, j-1, 2} 
 $$</p>
 <p>ヒント数字が別の値である場合も同様にして、盤面の各マスの色を $q^\text{row}$ の 1 次式により表すことができます。一般的には、$i$ 行 $j$ 列のマスの色は、$i$ 行のヒント数字を $h_0, h_1, \ldots$ として、</p>
 <p>$$
@@ -7941,7 +7941,7 @@ $$</p>
 <p>$$
   \sum_k q^\text{row}_{i,j,k} \leq 1
 $$</p>
-<p>です。2 次元配列 <code>q_row</code> の $k$ (<code>axis=1</code>) に関する和を取るので、<code>less_equal</code> 関数に <code>axis=1</code> を与えます。</p>
+<p>です。2 次元配列 <code>q_row[i]</code> の $k$ (<code>axis=1</code>) に関する和を取るので、<code>less_equal</code> 関数に <code>axis=1</code> を与えます。</p>
 </div>
 </div>
 </div>
