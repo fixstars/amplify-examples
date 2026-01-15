@@ -1,0 +1,25 @@
+[project]
+name = "amplify-examples"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "amplify>=1.4.1",
+    "appmode",
+    "black[jupyter]",
+    "folium",
+    "geopy",
+    "ipympl",
+    "ipywidgets",
+    "japanmap",
+    "jupyter",
+    "matplotlib",
+    "mypy",
+    "opencv-python",
+    "pandas",
+    "pandas-datareader",
+    "plotly",
+    "scikit-learn",
+    "sigfig",
+    "torch",
+    "tqdm",
+]
