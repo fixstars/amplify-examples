@@ -7765,18 +7765,6 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Note">Note<a class="anchor-link" href="#Note">¶</a></h3><p>Using the <code>amplify.sum()</code> function for summing polynomial objects, it can be written as below:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">amplify</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span> <span class="k">as</span> <span class="n">amplify_sum</span>
-<span class="n">cost</span> <span class="o">=</span> <span class="n">amplify_sum</span><span class="p">(</span>
-    <span class="nb">range</span><span class="p">(</span><span class="n">NUM_CITIES</span><span class="p">),</span>
-    <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">amplify_sum</span><span class="p">(</span>
-        <span class="nb">range</span><span class="p">(</span><span class="n">NUM_CITIES</span><span class="p">),</span>
-        <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">amplify_sum</span><span class="p">(</span>
-            <span class="nb">range</span><span class="p">(</span><span class="n">NUM_CITIES</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">j</span><span class="p">:</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">ncity</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
 <p>Next, we construct the constraints. The one-hot constraints are created with the <code>one_hot()</code> function.</p>
 </div>
 </div>
