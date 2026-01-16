@@ -49,7 +49,7 @@ build docker:
     - epyc128
   script:
     - docker system prune -f --filter "until=720h" --filter "label=repository=${CI_PROJECT_URL}"
-    - docker buildx build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} .
+    - docker buildx build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} -f Dockerfile_dev .
 
 execute changes:
   extends: .python-base
