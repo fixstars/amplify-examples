@@ -29,6 +29,8 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   BASE_PYTHON_VER: "3.10"
   UV_CACHE_DIR: $CI_PROJECT_DIR/.cache/uv
+  UV_CONCURRENT_DOWNLOADS: 4
+  UV_CONCURRENT_INSTALLS: 4
 
 .git-scripts:
   setup-config:

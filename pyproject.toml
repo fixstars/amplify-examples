@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
     "amplify>=1.4.1",
+    "amplify-bbopt>=1.2.0",
     "appmode",
     "black[jupyter]",
     "folium",
