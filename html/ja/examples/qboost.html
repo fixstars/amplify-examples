@@ -8241,6 +8241,7 @@ Quantum Adiabatic Algorithm</a></p>
 <span class="w">    </span><span class="sd">"""Amplify AEを用いて最適化"""</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">AmplifyAEClient</span><span class="p">()</span>
     <span class="n">client</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">time_limit_ms</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="c1"># client.token = "API トークンを入力してください"</span>
 
     <span class="c1"># Solve QUBO formulation</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">amplify_solve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
