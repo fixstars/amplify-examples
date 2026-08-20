@@ -59,25 +59,29 @@ execute changes:
   tags:
     - docker
     - epyc128
+  variables:
+    GIT_DEPTH: 0
+    GIT_FETCH_EXTRA_FLAGS: --filter=blob:none
   script:
     - |-
-      for NBPATH in $(git diff --name-only HEAD^..HEAD | grep '.ipynb' | grep -v 'demo' || true); do
-          echo "[NbConvertApp] Executing notebook $NBPATH"
-          OUTPUT=$(uv run jupyter nbconvert --to html --stdout --execute "$NBPATH" --log-level WARN 2>&1 >/dev/null)
-          EXIT_CODE=$?
-          if [ -n "$OUTPUT" ]; then
-              echo "$OUTPUT" 1>&2
+      git cat-file -e "${CI_MERGE_REQUEST_DIFF_BASE_SHA}^{commit}" \
+          || { echo "base commit not found: '$CI_MERGE_REQUEST_DIFF_BASE_SHA'" 1>&2; exit 1; }
+      NBPATHS=$(git diff --name-only "$CI_MERGE_REQUEST_DIFF_BASE_SHA" HEAD | grep '.ipynb' | grep -v 'demo' || true)
+      for NBPATH in $NBPATHS; do
+          if [ ! -f "$NBPATH" ]; then
+              continue
           fi
-          if [ $EXIT_CODE -ne 0 ]; then
-              STATUS=1
-          fi
+          ./run-notebook.sh "$NBPATH" || FAILED="$FAILED $NBPATH"
       done
-    - if [ -n "$STATUS" ]; then exit 1; fi
+    - |-
+      if [ -n "$FAILED" ]; then
+          echo "[execute changes] failed notebooks:$FAILED" 1>&2
+          exit 1
+      fi
   rules:
-    - changes:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
         - notebooks/**/*.ipynb
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-      when: never
 
 execute all:
   extends: .python-base
@@ -88,17 +92,13 @@ execute all:
   script:
     - |-
       for NBPATH in $(/bin/ls -1 notebooks/{en,ja}/{tutorials,examples}/*.ipynb); do
-          echo "[NbConvertApp] Executing notebook $NBPATH"
-          OUTPUT=$(uv run jupyter nbconvert --to html --stdout --execute "$NBPATH" --log-level WARN 2>&1 >/dev/null)
-          EXIT_CODE=$?
-          if [ -n "$OUTPUT" ]; then
-              echo "$OUTPUT" 1>&2
-          fi
-          if [ $EXIT_CODE -ne 0 ]; then
-              STATUS=1
-          fi
+          ./run-notebook.sh "$NBPATH" || FAILED="$FAILED $NBPATH"
       done
-    - if [ -n "$STATUS" ]; then exit 1; fi
+    - |-
+      if [ -n "$FAILED" ]; then
+          echo "[execute all] failed notebooks:$FAILED" 1>&2
+          exit 1
+      fi
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
       changes:
