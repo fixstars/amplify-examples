@@ -8295,7 +8295,7 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="sec-2_6"></a></p>
-<h3 id="2.6.-Running-the-Optimization-Cycle">2.6. Running the Optimization Cycle<a class="anchor-link" href="#2.6.-Running-the-Optimization-Cycle">¶</a></h3><p><code>MultiOptimizer</code> provides an <code>optimize()</code> function that runs the optimization cycle, but because we want to adjust the surrogate model's weight at each cycle, we need to <a href="https://amplify.fixstars.com/en/docs/amplify-bbopt/v1/custom_cycle.html#id6">customize the optimization cycle</a> instead.</p>
+<h3 id="2.6.-Running-the-Optimization-Cycle">2.6. Running the Optimization Cycle<a class="anchor-link" href="#2.6.-Running-the-Optimization-Cycle">¶</a></h3><p><code>MultiOptimizer</code> provides an <code>optimize()</code> function that runs the optimization cycle, but because we want to adjust the surrogate model's weight at each cycle, we need to <a href="https://amplify.fixstars.com/en/docs/amplify-bbopt/v1/custom_cycle.html#implementing-a-custom-optimization-cycle">customize the optimization cycle</a> instead.</p>
 <p>We break a single cycle of <code>optimize()</code> down into the following four steps and run the optimization cycle ourselves:</p>
 <ol>
 <li>Build the surrogate models from the training data accumulated so far.</li>
@@ -8303,7 +8303,7 @@ $$</p>
 <li>Minimize the weighted-sum surrogate model with an Ising machine to obtain a new mask (solution).</li>
 <li>Evaluate the new mask with the black-box function to obtain its actual objective values, then add it to the training data.</li>
 </ol>
-<p>To keep the explanation simple, step 4 always adopts the best solution (<code>solutions[0]</code>) as is and omits fallback handling, such as avoiding duplicates of previously obtained solutions (see <a href="https://amplify.fixstars.com/en/docs/amplify-bbopt/v1/custom_cycle.html#step-2">here</a> for details). We also append each objective value to a separate history list (<code>objectives_opt</code>), which we'll use in chapter <a href="#sec-3">3</a> to plot the evolution of the objective function values.</p>
+<p>To keep the explanation simple, step 4 always adopts the best solution (<code>solutions[0]</code>) as is and omits fallback handling, such as avoiding duplicates of previously obtained solutions (see <a href="https://amplify.fixstars.com/en/docs/amplify-bbopt/v1/custom_cycle.html#step-2-optimize-the-surrogate-model-function">here</a> for details). We also append each objective value to a separate history list (<code>objectives_opt</code>), which we'll use in chapter <a href="#sec-3">3</a> to plot the evolution of the objective function values.</p>
 </div>
 </div>
 </div>
